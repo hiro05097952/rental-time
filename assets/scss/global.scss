@@ -1,0 +1,13 @@
+.is-invalid{
+  @apply relative;
+  input{
+    @apply border-red-500;
+  }
+  span{
+    @apply text-red-500 text-xs tracking-wide absolute left-0 top-0 mt-10 ml-3;
+  }
+}
+.banScroll{
+  max-height: 100vh;
+  overflow: hidden;
+}

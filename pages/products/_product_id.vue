@@ -39,7 +39,7 @@
             tracking-wider">
             販物資訊
             <span class="text-sm text-white bg-green-600 mx-2 px-2 inline-block">
-              {{ product.category }}
+              {{ product.category | category }}
             </span>
           </h2>
           <ul
@@ -105,9 +105,9 @@
     <div
       class="side w-1/4 px-3 pb-4 text-gray-800"
       style="min-width: 300px">
-      <no-ssr>
+      <client-only>
         <v-calendar is-expanded />
-      </no-ssr>
+      </client-only>
       <div
         class="bg-gray-200 my-4 px-2 py-4 rounded-md">
         <span class="text-xl font-bold text-center block">

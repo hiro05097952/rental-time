@@ -28,7 +28,7 @@ function editUserValidate(data) {
   const schema = Joi.object({
     name: Joi.string().max(10).required(),
     address: Joi.string().max(50).required(),
-    slogan: Joi.any(),
+    slogan: Joi.string().max(50).allow(''),
     description: Joi.any(),
   });
 
@@ -67,7 +67,8 @@ function mailValidate(data) {
 function changePasswordValidate(data) {
   const schema = Joi.object({
     currentPassword: Joi.string().min(12).max(16).required(),
-    newPassword: Joi.string().min(12).max(16).required(),
+    newPassword: Joi.string().min(12).max(16).required()
+      .invalid(Joi.ref('currentPassword')),
     passwordConfirmation: Joi.string().required().valid(Joi.ref('newPassword')),
   });
 

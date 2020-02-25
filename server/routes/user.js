@@ -4,6 +4,7 @@ const router = express.Router();
 const uuidv1 = require('uuid/v1');
 const hash = require('hash.js');
 const jwt = require('jsonwebtoken');
+const htmlEncode = require('js-htmlencode');
 
 const db = require('../model/pool');
 const validate = require('../config/validate');
@@ -16,6 +17,8 @@ router.get('/', async (req, res, next) => {
     emailVerified, identified FROM user WHERE userId = "${req.session.user.userId}"`);
     // convert buffer to base64
     user.img = Buffer.from(user.img).toString('base64');
+    user.description = htmlEncode.htmlDecode(user.description);
+
     res.send({
       success: true,
       user,
@@ -60,10 +63,10 @@ router.post('/', async (req, res, next) => {
 router.put('/', async (req, res, next) => {
   const { error } = validate.editUserValidate(req.body);
   if (error) { return next(error.message); }
-
+  const description = htmlEncode.htmlEncode(req.body.description);
   try {
     await db.query(`UPDATE user SET name = "${req.body.name}", address = "${req.body.address}",
-    slogan = "${req.body.slogan}", description = "${req.body.description}"
+    slogan = "${req.body.slogan}", description = "${description}"
     WHERE userId = "${req.session.user.userId}"`);
     res.send({
       success: true,
@@ -92,17 +95,6 @@ router.get('/emailverify/:userId', async (req, res, next) => {
 });
 
 // password change
-router.get('/password', async (req, res, next) => {
-  try {
-    const [currentData] = await db.query(`SELECT password FROM user WHERE userId = "${req.session.user.userId}"`);
-    res.send({
-      success: true,
-      currentPassword: currentData.password,
-    });
-  } catch (err) {
-    next(err.sqlMessage);
-  }
-});
 router.post('/password', async (req, res, next) => {
   const { error } = validate.changePasswordValidate(req.body);
   if (error) {

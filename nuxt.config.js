@@ -33,6 +33,7 @@ module.exports = {
     '~/plugins/sweetalert2',
     '~/plugins/vee-validate',
     { ssr: false, src: '~plugins/v-calendar.js' },
+    '~/plugins/g-filter.js',
   ],
   /*
   ** Nuxt.js dev-modules

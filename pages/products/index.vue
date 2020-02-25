@@ -222,7 +222,7 @@
                   {{ item.meetingPlace }}
                 </p>
                 <p class="text-sm text-white bg-green-600 mx-2 px-2">
-                  {{ item.category }}
+                  {{ item.category | category }}
                 </p>
               </div>
               <p class="font-bold text-sm text-gray-700 mt-2 text-center">

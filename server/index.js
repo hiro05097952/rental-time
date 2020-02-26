@@ -75,6 +75,12 @@ async function start() {
   app.use('/api/follow', followRouter);
   app.use('/api/mail', mailRouter);
   app.use('/api/mails', mailsRouter);
+  app.use('/api/test', (req, res) => {
+    res.send({
+      success: true,
+      message: 'testset!!!',
+    });
+  });
 
   // error handler
   // eslint-disable-next-line no-unused-vars

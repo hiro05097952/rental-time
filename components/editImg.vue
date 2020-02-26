@@ -131,5 +131,4 @@ export default {
 </script>
 
 <style>
-@import url('croppie/croppie.css');
 </style>

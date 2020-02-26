@@ -1,3 +1,5 @@
+const whitelister = require('purgecss-whitelister');
+
 require('dotenv').config();
 
 module.exports = {
@@ -25,6 +27,9 @@ module.exports = {
   */
   css: [
     { src: '~/assets/scss/global.scss', lang: 'scss' },
+    'sweetalert2/dist/sweetalert2.min.css',
+    'quill/dist/quill.snow.css',
+    'croppie/croppie.css',
   ],
   /*
   ** Plugins to load before mounting the App
@@ -32,8 +37,8 @@ module.exports = {
   plugins: [
     '~/plugins/sweetalert2',
     '~/plugins/vee-validate',
-    { ssr: false, src: '~plugins/v-calendar.js' },
     '~/plugins/g-filter.js',
+    { ssr: false, src: '~plugins/v-calendar.js' },
   ],
   /*
   ** Nuxt.js dev-modules
@@ -52,7 +57,15 @@ module.exports = {
     '@nuxtjs/axios',
     // Doc: https://github.com/nuxt-community/dotenv-module
     '@nuxtjs/dotenv',
+    'nuxt-purgecss',
   ],
+  purgeCSS: {
+    whitelist: whitelister(([
+      'node_modules/quill/dist/quill.snow.css',
+      'node_modules/sweetalert2/dist/sweetalert2.min.css',
+      'node_modules/croppie/croppie.css',
+    ])),
+  },
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options
@@ -67,8 +80,8 @@ module.exports = {
     /*
     ** You can extend webpack config here
     */
-    // eslint-disable-next-line no-unused-vars
-    extend(config, ctx) {
-    },
+    extractCSS: true,
+    // extend(config, { isDev, isClient }) {
+    // },
   },
 };

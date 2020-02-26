@@ -197,13 +197,6 @@ export default {
     changePassword,
     editImg,
   },
-  head() {
-    return {
-      link: [
-        { rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.7/quill.snow.min.css' },
-      ],
-    };
-  },
   async asyncData({ $axios }) {
     try {
       const { data } = await $axios.get('/api/user');

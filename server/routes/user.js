@@ -14,7 +14,7 @@ const nodeMailer = require('../config/nodemailer');
 router.get('/', async (req, res, next) => {
   try {
     const [user] = await db.query(`SELECT img, name, address, slogan, email, description,
-    emailVerified, identified FROM user WHERE userId = "${req.session.user.userId}"`);
+    emailVerified, identified, point FROM user WHERE userId = "${req.session.user.userId}"`);
     // convert buffer to base64
     user.img = Buffer.from(user.img).toString('base64');
     user.description = htmlEncode.htmlDecode(user.description);
@@ -49,7 +49,7 @@ router.post('/', async (req, res, next) => {
     await nodeMailer.sendSignUpEmail({
       name: sqlData.name,
       email: sqlData.email,
-      url: `http://localhost:3000/user/emailverify/${sqlData.userId}`,
+      url: `${process.env.BASE_URL}/user/emailverify/${sqlData.userId}`,
     });
     res.send({
       success: true,
@@ -88,7 +88,7 @@ router.get('/emailverify/:userId', async (req, res, next) => {
 
     await db.query(`UPDATE user SET emailVerified = "1" WHERE userId = "${req.params.userId}"`);
     // 轉址
-    res.redirect('https://google.com');
+    res.redirect(`${process.env.BASE_URL}`);
   } catch (err) {
     return next(err.sqlMessage);
   }
@@ -138,7 +138,8 @@ router.post('/password/reset', async (req, res, next) => {
     await nodeMailer.sendForgotPasswordEmail({
       email: req.body.email,
       name: checkUser[0].name,
-      url: `https://google.com/${token}`,
+      // 轉址到前端輸入更改密碼頁面
+      url: `${process.env.BASE_URL}/account/forgot_password/${token}`,
     });
     res.send({
       success: true,

@@ -87,6 +87,24 @@ function forgotPasswordValidate(data, type) {
   return type === 'email' ? emailSchema.validate(data) : newPasswordSchema.validate(data);
 }
 
+function addNewPointValidate(data) {
+  const schema = Joi.object({
+    name: Joi.string().max(45).required(),
+    price: Joi.number().integer().max(10000).required(),
+  });
+
+  return schema.validate(data);
+}
+
+function chargePointValidate(data) {
+  const schema = Joi.object({
+    itemName: Joi.string().max(10).required(),
+    pointId: Joi.string().max(100).required(),
+  });
+
+  return schema.validate(data);
+}
+
 module.exports = {
   signupValidate,
   loginValidate,
@@ -95,4 +113,6 @@ module.exports = {
   mailValidate,
   changePasswordValidate,
   forgotPasswordValidate,
+  chargePointValidate,
+  addNewPointValidate,
 };

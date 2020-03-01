@@ -4,6 +4,7 @@ const { Nuxt, Builder } = require('nuxt');
 const logger = require('morgan');
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
+const cors = require('cors');
 // const io = require('socket.io')();
 require('dotenv').config();
 // require('./socket/socket')(io);
@@ -19,6 +20,11 @@ const likeRouter = require('./routes/like');
 const followRouter = require('./routes/follow');
 const mailRouter = require('./routes/mail');
 const mailsRouter = require('./routes/mails');
+const pointsRouter = require('./routes/points');
+const adminPointRouter = require('./routes/adminPoint');
+const chargeRouter = require('./routes/charge');
+const chargesRouter = require('./routes/charges');
+const testRouter = require('./routes/test');
 
 const app = express();
 // 把 socket.io 綁在 app 下
@@ -39,6 +45,20 @@ app.use(session({
     database: process.env.database,
   }),
 }));
+
+// cors
+const whitelist = ['https://postgate.ecpay.com.tw'];
+const corsOptions = {
+  origin(origin, callback) {
+    if (whitelist.includes(origin)) {
+      callback(null, origin);
+    } else {
+      callback(null, false);
+    }
+  },
+  credentials: true,
+};
+app.use(cors(corsOptions));
 
 // self
 app.use(logger('dev'));
@@ -75,12 +95,13 @@ async function start() {
   app.use('/api/follow', followRouter);
   app.use('/api/mail', mailRouter);
   app.use('/api/mails', mailsRouter);
-  app.use('/api/test', (req, res) => {
-    res.send({
-      success: true,
-      message: 'testset!!!',
-    });
-  });
+  // 新增點數卷、取得點數卷
+  app.use('/api/admin/point', adminPointRouter);
+  app.use('/api/points', pointsRouter);
+  // 儲值點數
+  app.use('/api/charges', chargesRouter);
+  app.use('/api/charge', chargeRouter);
+  app.use('/api/test', testRouter);
 
   // error handler
   // eslint-disable-next-line no-unused-vars

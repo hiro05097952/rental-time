@@ -146,11 +146,14 @@
           <label class="block tracking-wide text-grey-darker font-bold mb-2" for="description">
             自我介紹
           </label>
-          <client-only>
-            <quill-editor
-              v-model="user.description"
-              :options="editorOption" />
-          </client-only>
+          <textarea
+            class="appearance-none block w-full bg-grey-lighter
+            text-grey-darker border border-grey-lighter rounded py-3 px-4
+            h-64"
+            id="description"
+            type="text"
+            placeholder="請輸入自我介紹"
+            v-model="user.description" />
         </div>
       </div>
 
@@ -180,15 +183,8 @@
 </template>
 
 <script>
-import Vue from 'vue';
 import changePassword from '~/components/changePassword.vue';
 import editImg from '~/components/editImg.vue';
-
-if (typeof window !== 'undefined') {
-  // eslint-disable-next-line global-require
-  const { quillEditor } = require('vue-quill-editor');
-  Vue.component('quillEditor', quillEditor);
-}
 
 export default {
   name: 'EditUser',
@@ -210,21 +206,6 @@ export default {
       user: '',
       editPassword: false,
       editImg: false,
-      editorOption: {
-        placeholder: '請輸入自我介紹',
-        modules: {
-          toolbar: [
-            [{ size: ['small', false, 'large', 'huge'] }],
-            ['bold', 'italic', 'underline', 'strike'],
-            [{ list: 'ordered' }, { list: 'bullet' }],
-            [{ indent: '-1' }, { indent: '+1' }],
-            [{ color: [] }, { background: [] }],
-            [{ align: [] }],
-            ['clean'],
-            ['link'],
-          ],
-        },
-      },
     };
   },
   methods: {
@@ -235,7 +216,7 @@ export default {
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: '確證',
+        confirmButtonText: '確認',
         cancelButtonText: '取消',
         toast: false,
         position: 'center',
@@ -276,7 +257,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped lang="scss">
 .emailValid{
   @apply bg-gray-500 cursor-not-allowed;
 }
@@ -284,6 +265,11 @@ export default {
   @apply bg-blue-500;
   &:hover{
     @apply bg-blue-700;
+  }
+}
+.is-invalid.is-invalid{
+  span{
+    top: 15px;
   }
 }
 </style>

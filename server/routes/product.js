@@ -1,6 +1,7 @@
 const express = require('express');
 
 const router = express.Router();
+const htmlEncode = require('js-htmlencode');
 
 const validate = require('../config/validate');
 const db = require('../model/pool');
@@ -26,6 +27,7 @@ router.get('/:productId', async (req, res, next) => {
     // convert blob to base64
     product[0].coverImg = covertToBase64(product[0].coverImg);
     product[0].img = covertToBase64(product[0].img);
+    product[0].description = htmlEncode.htmlDecode(product[0].description);
 
     res.send({
       success: true,
@@ -40,6 +42,7 @@ router.post('/', async (req, res, next) => {
   if (error) { return next(error.message); }
   const sqlData = {
     ...req.body,
+    description: htmlEncode.htmlEncode(req.body.description),
     userId: req.session.user.userId,
   };
   try {
@@ -61,7 +64,9 @@ router.put('/:productId', async (req, res, next) => {
     const result = await db.query(`SELECT * FROM product WHERE productId = "${req.params.productId}" && userId = "${req.session.user.userId}"`);
     if (!result.length) { return next(new Error().message = '查無此服務'); }
 
-    await db.query(`UPDATE product SET title = "${req.body.title}", description = "${req.body.description}", 
+    const description = htmlEncode.htmlEncode(req.body.description);
+
+    await db.query(`UPDATE product SET title = "${req.body.title}", description = "${description}", 
     type = "${req.body.type}", meetingPlace = "${req.body.meetingPlace}", category = "${req.body.category}", 
     atLeast = "${req.body.atLeast}", NGDate = "${req.body.NGDate}", tag = "${req.body.tag}", price = "${req.body.price}"
     WHERE productId = "${req.params.productId}" && userId = "${req.session.user.userId}"`);

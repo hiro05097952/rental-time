@@ -18,13 +18,14 @@
       </button>
       <client-only>
         <div
-          style="height: 16rem; width: 16rem;">
+          style="height: 16rem;"
+          :style="{ width: `${$route.name === 'products-edit' ? 28 : 16 }rem` }">
           <vue-croppie
             ref="croppieRef"
             :enable-orientation="true"
             :enable-resize="false"
-            :viewport="{ width: 200, height: 200, type: 'circle' }"
-            @result="uploadUserImg"
+            :viewport="viewport"
+            @result="checkRouter"
             v-show="getImg" />
           <label
             class="w-full h-full border-2 border-gray-400 rounded-md flex items-center
@@ -76,7 +77,18 @@ export default {
   data() {
     return {
       getImg: false,
+      viewport: {
+        width: 200,
+        height: 200,
+        type: 'circle',
+      },
     };
+  },
+  mounted() {
+    if (this.$route.name === 'products-edit') {
+      this.viewport.width = 400;
+      this.viewport.type = 'square';
+    }
   },
   methods: {
     close() {
@@ -94,6 +106,13 @@ export default {
         this.getImg = true;
       };
       converter.readAsDataURL(files[0]);
+    },
+    checkRouter(blob) {
+      if (this.$route.name === 'products-edit') {
+        this.passCoverImg(blob);
+        return;
+      }
+      this.uploadUserImg(blob);
     },
     async uploadUserImg(blob) {
       try {
@@ -116,6 +135,14 @@ export default {
           title: response.data.message,
         });
       }
+    },
+    async passCoverImg(blob) {
+      const converter = new FileReader();
+      converter.onloadend = () => {
+        this.$emit('pass-change-img', converter.result);
+        this.close();
+      };
+      converter.readAsDataURL(blob);
     },
     cropViaEvent() {
       this.$refs.croppieRef.result({

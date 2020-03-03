@@ -105,6 +105,26 @@ function chargePointValidate(data) {
   return schema.validate(data);
 }
 
+function orderValidate(data) {
+  const schema = Joi.object({
+    productId: Joi.string().max(100).required(),
+    qty: Joi.number().min(1).max(10).integer()
+      .required(),
+    startTime: Joi.date().timestamp().greater('now').required(),
+  });
+
+  return schema.validate(data);
+}
+
+function editOrderValidate(data) {
+  const schema = Joi.object({
+    orderId: Joi.string().max(100),
+    token: Joi.string().token(),
+  });
+
+  return schema.validate(data);
+}
+
 module.exports = {
   signupValidate,
   loginValidate,
@@ -115,4 +135,6 @@ module.exports = {
   forgotPasswordValidate,
   chargePointValidate,
   addNewPointValidate,
+  orderValidate,
+  editOrderValidate,
 };

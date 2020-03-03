@@ -133,7 +133,7 @@ router.post('/password/reset', async (req, res, next) => {
     const token = await jwt.sign({
       exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24), // 1 days
       email: req.body.email,
-    }, 'secret_key');
+    }, 'rental_time_forgot_password');
     console.log('token => ', token);
     await nodeMailer.sendForgotPasswordEmail({
       email: req.body.email,
@@ -156,7 +156,7 @@ router.post('/password/reset', async (req, res, next) => {
     return next(error.message);
   }
   try {
-    const decoded = await jwt.verify(req.query.token, 'secret_key');
+    const decoded = await jwt.verify(req.query.token, 'rental_time_forgot_password');
     const checkUser = await db.query(`SELECT * FROM user WHERE email = "${decoded.email}"`);
     if (!checkUser.length) {
       return next(new Error().message = '此 Email 未註冊過');

@@ -8,8 +8,8 @@ const db = require('../model/pool');
 // 儲值紀錄
 router.get('/', async (req, res, next) => {
   try {
-    const charges = await db.query(`SELECT * FROM charge c, point p
-    WHERE c.userId = "${req.session.user.userId}"`);
+    const charges = await db.query(`SELECT chargeId, userId, c.pointId, createTime, name, price FROM charge c, point p
+    WHERE c.userId = "${req.session.user.userId}" && c.pointId = p.pointId;`);
 
     res.send({
       success: true,

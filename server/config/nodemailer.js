@@ -64,7 +64,36 @@ function sendForgotPasswordEmail(user) {
   });
 }
 
+function sendChatEmail(data) {
+  return new Promise((resolve, reject) => {
+    transporter.sendMail({
+      from: `'Rental Time' ${data.email}`,
+      to: data.email,
+      subject: '密碼重置請求',
+      html: `<div>
+      <p>${data.name} 您好：</p>
+      
+      <p>您的販物「${data.title}」已開始進行，點選以下按鈕進入聊天室。</p>
+      
+      <button style="background: teal;border: none;padding: 5px 15px;border-radius: 5px;">
+        <a href="${data.url}" style=" text-decoration: none;color: white;font-size: 14px;">
+          變更密碼
+        </a>
+      </button>
+      
+      <p>感謝您！</p>
+      
+      您的 Rental Time 小組</dvi>`,
+    }).then(() => {
+      resolve();
+    }).catch((err) => {
+      reject(err.response);
+    });
+  });
+}
+
 module.exports = {
   sendSignUpEmail,
   sendForgotPasswordEmail,
+  sendChatEmail,
 };

@@ -1,28 +1,47 @@
+const socket = require('socket.io');
+const jwt = require('jsonwebtoken');
+
 function findNowRoom(client) {
   return Object.keys(client.rooms).find((item) => item !== client.id);
 }
 
-module.exports = function socket(io) {
+module.exports = function socketStart(server) {
+  const io = socket.listen(server);
   io.on('connection', (client) => {
     console.log(`socket 用戶連接 ${client.id}`);
 
-    client.on('joinRoom', (room) => {
-      // console.log(room);
-      const nowRoom = findNowRoom(client);
-      if (nowRoom) {
-        client.leave(nowRoom);
+    // join room in initial
+    client.on('joinRoom', async (token) => {
+      try {
+        // console.log(room);
+        const nowRoom = findNowRoom(client);
+        if (nowRoom) {
+          client.leave(nowRoom);
+        }
+        const decodeJWT = jwt.verify(token, 'reantal_time_chat');
+
+        client.join(decodeJWT.room, () => {
+          io.sockets.in(decodeJWT.room).emit('roomBroadcast', {
+            success: true,
+            message: '已有新人加入聊天室！',
+          });
+        });
+      } catch (err) {
+        client.emit('roomBroadcast', {
+          success: false,
+          message: '加入聊天室失敗',
+        });
       }
-      client.join(room, () => {
-        io.sockets.in(room).emit('roomBroadcast', '已有新人加入聊天室！');
-      });
     });
 
+    // webRTC
     client.on('peerconnectSignaling', (message) => {
       // console.log('接收資料：', message);
       const nowRoom = findNowRoom(client);
       client.to(nowRoom).emit('peerconnectSignaling', message);
     });
 
+    // chat
     client.on('message', (message) => {
       const nowRoom = findNowRoom(client);
       if (nowRoom) {
@@ -34,6 +53,13 @@ module.exports = function socket(io) {
         });
       }
     });
+
+    // client.on('finish', () => {
+    //   const nowRoom = findNowRoom(client);
+    //   if (nowRoom) {
+    //     client.leave(nowRoom);
+    //   }
+    // });
 
     client.on('disconnect', () => {
       console.log(`socket 用戶離開 ${client.id}`);

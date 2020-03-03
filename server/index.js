@@ -5,9 +5,7 @@ const logger = require('morgan');
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
 const cors = require('cors');
-// const io = require('socket.io')();
 require('dotenv').config();
-// require('./socket/socket')(io);
 
 // const middlewareRouter = require('./config/middleware');
 const userRouter = require('./routes/user');
@@ -24,6 +22,10 @@ const pointsRouter = require('./routes/points');
 const adminPointRouter = require('./routes/adminPoint');
 const chargeRouter = require('./routes/charge');
 const chargesRouter = require('./routes/charges');
+const orderRouter = require('./routes/order');
+const ordersRouter = require('./routes/orders');
+
+const socketStart = require('./socket/socket');
 const testRouter = require('./routes/test');
 
 const app = express();
@@ -101,6 +103,9 @@ async function start() {
   // 儲值點數
   app.use('/api/charges', chargesRouter);
   app.use('/api/charge', chargeRouter);
+  app.use('/api/order', orderRouter);
+  app.use('/api/orders', ordersRouter);
+
   app.use('/api/test', testRouter);
 
   // error handler
@@ -116,7 +121,11 @@ async function start() {
   app.use(nuxt.render);
 
   // Listen the server
-  app.listen(port, host);
+  const server = app.listen(port, host);
+
+  // socket
+  socketStart(server);
+
   consola.ready({
     message: `Server listening on http://${host}:${port}`,
     badge: true,

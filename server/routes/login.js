@@ -11,7 +11,7 @@ router.post('/', async (req, res, next) => {
   if (error) { return next(error.message); }
 
   try {
-    const result = await db.query(`SELECT userId, emailVerified FROM user WHERE email = "${req.body.email}"
+    const result = await db.query(`SELECT userId, emailVerified, point FROM user WHERE email = "${req.body.email}"
     && password = "${hash.sha256().update(req.body.password).digest('hex')}"`);
     // console.log('result =>', result);
     if (!result.length) {
@@ -20,6 +20,7 @@ router.post('/', async (req, res, next) => {
     req.session.user = {
       emailVerified: result[0].emailVerified,
       userId: result[0].userId,
+      point: result[0].point,
     };
     res.send({
       success: true,
@@ -42,7 +43,8 @@ router.get('/', (req, res, next) => {
     success: true,
     message: '登入中',
     userInfo: {
-      emailVerified: req.session.emailVerified,
+      emailVerified: req.session.user.emailVerified,
+      point: req.session.user.point,
     },
   });
 });

@@ -42,8 +42,6 @@ function productValidate(data) {
     coverImg: Joi.any(),
     type: Joi.string().valid('meeting', 'video', 'phone', 'chat').required(),
     meetingPlace: Joi.any().when('type', { is: 'meeting', then: Joi.string().required() }),
-    tag: Joi.any(),
-    NGDate: Joi.any(),
     atLeast: Joi.number().integer().multiple(30),
     category: Joi.string().valid('entrepreneurship',
       'marking', 'chat', 'misic', 'businessCommunication', 'cook', 'picture',

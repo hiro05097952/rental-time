@@ -45,11 +45,6 @@
           <ul
             class="tracking-wider text-lg text-gray-900
             flex flex-col">
-            <li class="my-2" v-if="product.tag">
-              <span class="text-sm text-white bg-green-600 mx-2 px-2 inline-block">
-                {{ product.tag }}
-              </span>
-            </li>
             <li class="flex items-center my-2">
               <div
                 class="h-4 w-4 border border-gray-500 rounded-sm"
@@ -79,10 +74,6 @@
             <li class="my-2">
               <i class="icon_location w-5 h-5 inline-block opacity-75" />
               地點：{{ product.meetingPlace }}
-            </li>
-            <li class="my-2">
-              <i class="icon_error w-5 h-5 inline-block opacity-75" />
-              NG：{{ product.NGDate }}
             </li>
             <li class="mt-2 self-end text-base">
               更新日期：{{ product.createTime | dateDisplay }}

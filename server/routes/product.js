@@ -16,9 +16,9 @@ function covertToBase64(buf) {
 // exclude u.id, u.uuid eamil password emailVerified u.createTime
 router.get('/:productId', async (req, res, next) => {
   try {
-    const product = await db.query(`SELECT title, category, type, meetingPlace, tag,
+    const product = await db.query(`SELECT title, category, type, meetingPlace,
     p.description productDescription, u.description userdescription, coverImg, p.createTime,
-    NGDate, atLeast, p.productId, p.userId, img, name, address, slogan, identified, price
+    atLeast, p.productId, p.userId, img, name, address, slogan, identified, price
     FROM product p, user u WHERE p.userId = u.userId && productId = ${req.params.productId}`);
 
     if (!product.length) {
@@ -68,7 +68,7 @@ router.put('/:productId', async (req, res, next) => {
 
     await db.query(`UPDATE product SET title = "${req.body.title}", description = "${description}", 
     type = "${req.body.type}", meetingPlace = "${req.body.meetingPlace}", category = "${req.body.category}", 
-    atLeast = "${req.body.atLeast}", NGDate = "${req.body.NGDate}", tag = "${req.body.tag}", price = "${req.body.price}"
+    atLeast = "${req.body.atLeast}", price = "${req.body.price}"
     WHERE productId = "${req.params.productId}" && userId = "${req.session.user.userId}"`);
     res.send({
       success: true,

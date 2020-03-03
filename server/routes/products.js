@@ -14,7 +14,7 @@ function covertToBase64(buf) {
 // exclude u.id, u.uuid eamil password emailVerified u.createTime
 router.get('/', async (req, res, next) => {
   try {
-    const products = await db.query(`SELECT title, category, type, meetingPlace, tag,
+    const products = await db.query(`SELECT title, category, type, meetingPlace,
     coverImg, p.createTime, atLeast, p.productId, p.userId, img, name, slogan, identified, price
     FROM product p, user u
     WHERE p.userId = u.userId ${req.query.limit ? `limit ${req.query.limit}` : ''}`);

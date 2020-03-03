@@ -271,8 +271,6 @@ export default {
         coverImg: '',
         type: [],
         meetingPlace: '',
-        tag: '',
-        NGDate: '',
         atLeast: '',
         price: '',
       },

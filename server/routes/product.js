@@ -44,6 +44,7 @@ router.post('/', async (req, res, next) => {
     ...req.body,
     description: htmlEncode.htmlEncode(req.body.description),
     userId: req.session.user.userId,
+    type: req.body.type.join(),
   };
   try {
     await db.query('INSERT INTO product SET ?', sqlData);

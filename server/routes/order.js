@@ -35,18 +35,16 @@ router.post('/', async (req, res, next) => {
     // point check
     const [product] = await db.query(`SELECT price, atLeast, userId sellerId
     FROM product WHERE productId = "${req.body.productId}"`);
-    const [{ buyerPoint }] = await db.query(`SELECT point FROM user WHERE userId = "${req.session.user.userId}"`);
-    const [{ sellerPoint }] = await db.query(`SELECT point FROM user WHERE userId = "${product.sellerId}"`);
+    const [{ buyerPoint }] = await db.query(`SELECT point buyerPoint FROM user
+    WHERE userId = "${req.session.user.userId}"`);
+
     if (buyerPoint < product.price * req.body.qty) {
       return next(new Error().message = '點數餘額不足，請至會員頁面儲值點數');
     }
-    // NG Date check ?
 
-    // update point ( seller & buyer )
+    // update buyer point
     await db.query(`UPDATE user SET point = "${buyerPoint - product.price * req.body.qty}"
     WHERE userId = "${req.session.user.userId}"`);
-    await db.query(`UPDATE user SET point = "${sellerPoint + product.price * req.body.qty}"
-    WHERE userId = "${product.sellerId}"`);
 
     // add new order list
     const config = {
@@ -55,31 +53,35 @@ router.post('/', async (req, res, next) => {
       sellerId: product.sellerId,
       productId: req.body.productId,
       qty: Number(req.body.qty),
-      status: 'pending', // pending => process => finish / cancel
+      type: req.body.type,
+      status: 'pending', // pending => success => finish / cancel
       startTime: timeConverter(Number(req.body.startTime)),
     };
 
     await db.query('INSERT INTO orderList SET ?', config);
     res.send({
       success: true,
-      message: '購買成功',
+      message: '已送出訂單',
     });
   } catch (err) {
     next(err.sqlMessage || err);
   }
 });
 
-// 活動開始進行
-router.post('/start', async (req, res, next) => {
+// 審核
+router.post('/access', async (req, res, next) => {
+  // orderId
   const { error } = validate.editOrderValidate(req.body);
   if (error) {
     return next(error.message);
   }
   try {
-    const [order] = await db.query(`SELECT status, startTime, o.type, qty, p.atLeast, p.title,
-    u.name sellerName, u.email sellerEmail
+    const [order] = await db.query(`SELECT status, startTime, o.type, qty,
+    p.atLeast, p.title, p.price
+    u.name sellerName, u.email sellerEmail, u.point sellerPoint
     FROM orderList o, product p, user u
     WHERE orderId = "${req.body.orderId}"
+    && o.productId = p.productId
     && o.sellerId = u.userId
     && o.sellerId = "${req.session.user.userId}"`);
 
@@ -95,60 +97,57 @@ router.post('/start', async (req, res, next) => {
     if (order.status !== 'pending') {
       return next(new Error().message = '無法更改狀態');
     }
-    const now = new Date();
-    const startTime = new Date(order.startTime);
-    if (+startTime - +now > 1000 * 60 * 10) {
-      return next(new Error().message = '請十分鐘前再開啟聊天室');
+    if (+new Date(order.startTime) - +new Date() < 0) {
+      return next(new Error().message = '已逾時');
     }
-    await db.query(`UPDATE order SET status = "process" WHERE orderId = "${req.body.orderId}"`);
 
-    // 寄送 && 回傳 聊天室連結
+    // update order status
+    await db.query(`UPDATE order SET status = "access" WHERE orderId = "${req.body.orderId}"`);
+
+    // update seller point
+    await db.query(`UPDATE user SET point = "${order.sellerPoint + order.price * order.qty}"
+    WHERE userId = "${req.session.user.userId}"`);
+
+    // send chat link
     if (order.type !== 'meeting') {
-      const token = await jwt.sign({
-        exp: Math.floor(Date.now() / 1000) + (60 * order.atLeast * order.qty) + (60 * 60), // 寬裕一小時
-        room: randombytes(8).toString('hex'),
-        orderId: req.body.orderId,
-      }, 'rental_time_chat');
-      console.log('token => ', token);
-
-      await nodeMailer.sendChatEmail({
-        email: order.sellerEmail,
-        name: order.sellerName,
-        title: order.title,
-        url: `${process.env.BASE_URL}/chat/${token}`,
-      });
-      await nodeMailer.sendChatEmail({
-        email: buyer.buyerEmail,
-        name: buyer.buyerName,
-        title: order.title,
-        url: `${process.env.BASE_URL}/chat/${token}`,
-      });
+      await Promise.all([
+        nodeMailer.sendChatEmail({
+          email: order.sellerEmail,
+          name: order.sellerName,
+          title: order.title,
+          url: `${process.env.BASE_URL}/chat/?roomId="${req.body.orderId}"`,
+        }),
+        nodeMailer.sendChatEmail({
+          email: buyer.buyerEmail,
+          name: buyer.buyerName,
+          title: order.title,
+          url: `${process.env.BASE_URL}/chat/?roomId="${req.body.orderId}"`,
+        }),
+      ]);
     }
-    res.send({
-      success: true,
-      message: '販物開始進行',
-    });
   } catch (err) {
     next(err.sqlMessage || err);
   }
 });
 
+// 開始前排程
+
 router.post('/finish', async (req, res, next) => {
-  // token || orderId
+  // orderId
   const { error } = validate.editOrderValidate(req.body);
   if (error) {
     return next(error.message);
   }
   try {
-    const { orderId } = req.body || jwt.verify(req.body.token, 'rental_time_chat');
-    console.log(orderId);
+    const { orderId } = req.body;
+
     const [order] = await db.query(`SELECT * FROM orderList WHERE orderId = "${orderId}"
     && sellerId = "${req.session.user.userId}"`);
 
     if (!order) {
-      return next(new Error().message = '請由販物主結束會議');
+      return next(new Error().message = '請由販物主來完成訂單');
     }
-    if (order.status !== 'process') {
+    if (order.status !== 'access') {
       return next(new Error().message = '無法更改狀態');
     }
 
@@ -156,7 +155,7 @@ router.post('/finish', async (req, res, next) => {
 
     res.send({
       success: true,
-      message: '販物結束',
+      message: '販物完成',
     });
   } catch (err) {
     next(err.sqlMessage || err);
@@ -169,31 +168,55 @@ router.post('/cancel', async (req, res, next) => {
     return next(error.message);
   }
   try {
-    const { orderId } = req.body || jwt.verify(req.body.token, 'rental_time_chat');
-    const [order] = await db.query(`SELECT status, startTime, o.type, qty, p.atLeast,
-    p.title, p.price, u.point sellerPoint
+    const { orderId } = req.body;
+    let isSeller;
+
+    const check = await db.query(`SELECT * FROM orderList
+    WHERE sellerId = "${req.session.user.userId}"
+    && orderId = "${req.body.orderId}"`);
+    if (check.length) {
+      isSeller = true;
+    }
+    const [order] = await db.query(`SELECT status, startTime, o.type, qty,
+    p.atLeast, p.title, p.price,
+    u.point
     FROM orderList o, product p, user u
     WHERE orderId = "${orderId}"
-    && o.sellerId = u.userId
-    && o.sellerId = "${req.session.user.userId}"`);
+    && o.productId = p.productId
+    && o.${isSeller ? 'sellerId' : 'buyerId'} = u.userId
+    && o.${isSeller ? 'sellerId' : 'buyerId'} = "${req.session.user.userId}"`); // 需判斷 session 為買方還賣方
 
-    const [{ buyerPoint, buyerId }] = await db.query(`SELECT u.point buyerPoint, o.buyerId
+    const [anotherUser] = await db.query(`SELECT u.point
     FROM orderList o, user u
     WHERE o.orderId = "${orderId}"
-    && o.buyerId = u.userId
-    && o.sellerId = "${req.session.user.userId}"`);
+    && o.${isSeller ? 'buyerId' : 'sellerId'} = u.userId
+    && o.${isSeller ? 'buyerId' : 'sellerId'} = "${req.session.user.userId}"`); // 需判斷 session 為買方還賣方
 
-    if (!order) {
-      return next(new Error().message = '請由販物主結束會議');
-    }
-    if (order.status !== 'pending') {
-      return next(new Error().message = '無法更改狀態');
+    if (order.status === 'finish' || order.status === 'cancel') {
+      return next(new Error().message = '無法更改訂單狀態');
     }
 
-    await db.query(`UPDATE user SET point = ${buyerPoint + order.qty * order.price}
-    WHERE userId = "${req.session.user.userId}"`);
-    await db.query(`UPDATE user SET point = ${order.sellerPoint - order.qty * order.price}
-    WHERE userId = "${buyerId}"`);
+    // 未審核狀態雙方可直接取消訂單
+    if (order.status === 'pending') {
+      // update another point
+      await db.query(`UPDATE user SET
+      point = ${(isSeller ? anotherUser.point : order.point) + order.qty * order.price}
+      WHERE userId = "${isSeller ? anotherUser.point : order.point}"`);
+    }
+
+    // 懲罰機制
+    if (order.status === 'success') {
+      // update user point
+      await db.query(`UPDATE user SET
+      point = ${(isSeller ? order.point : anotherUser.point) - order.qty * order.price}
+      WHERE userId = "${isSeller ? order.point : anotherUser.point}"`);
+      // update another point
+      await db.query(`UPDATE user SET
+      point = ${(isSeller ? anotherUser.point : order.point) + order.qty * order.price * 0.75}
+      WHERE userId = "${isSeller ? anotherUser.point : order.point}"`);
+    }
+
+    // update order status
     await db.query(`UPDATE orderList SET status = "cancel" WHERE orderId = "${orderId}"`);
 
     res.send({

@@ -40,7 +40,7 @@ function productValidate(data) {
     title: Joi.string().max(50).required(),
     description: Joi.any(),
     coverImg: Joi.any(),
-    type: Joi.string().valid('meeting', 'video', 'phone', 'chat').required(),
+    type: Joi.array().required(), // 需更改
     meetingPlace: Joi.any().when('type', { is: 'meeting', then: Joi.string().required() }),
     atLeast: Joi.number().integer().multiple(30),
     category: Joi.string().valid('entrepreneurship',
@@ -109,6 +109,7 @@ function orderValidate(data) {
     qty: Joi.number().min(1).max(10).integer()
       .required(),
     startTime: Joi.date().timestamp().greater('now').required(),
+    type: Joi.string().valid('meeting', 'video', 'phone', 'chat').required(),
   });
 
   return schema.validate(data);
@@ -116,8 +117,7 @@ function orderValidate(data) {
 
 function editOrderValidate(data) {
   const schema = Joi.object({
-    orderId: Joi.string().max(100),
-    token: Joi.string().token(),
+    orderId: Joi.string().max(100).required(),
   });
 
   return schema.validate(data);

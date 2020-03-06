@@ -23,6 +23,7 @@ router.get('/', async (req, res, next) => {
     await products.forEach((item) => {
       item.coverImg = covertToBase64(item.coverImg);
       item.img = covertToBase64(item.img);
+      item.type = item.type.split(',');
     });
 
     res.send({

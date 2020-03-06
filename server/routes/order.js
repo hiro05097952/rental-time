@@ -3,8 +3,6 @@ const express = require('express');
 
 const router = express.Router();
 const uuidv1 = require('uuid/v1');
-const jwt = require('jsonwebtoken');
-const randombytes = require('randombytes');
 
 const db = require('../model/pool');
 const validate = require('../config/validate');

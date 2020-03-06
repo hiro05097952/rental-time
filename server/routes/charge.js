@@ -61,7 +61,7 @@ router.post('/', async (req, res, next) => {
     return next(error.message);
   }
   try {
-    const [{ price }] = await db.query(`SELECT price FROM point WHERE pointId = "${req.body.pointId}"`);
+    const [{ price, name }] = await db.query(`SELECT price, name FROM point WHERE pointId = "${req.body.pointId}"`);
     if (!price) {
       return next(new Error().message = '不明的錯誤');
     }
@@ -75,7 +75,7 @@ router.post('/', async (req, res, next) => {
       EncryptType: '1', // 加密類型 => SHA256
       MerchantTradeDate: getNow(),
       TotalAmount: String(price), // 轉成字串
-      ItemName: req.body.itemName,
+      ItemName: name,
       TradeDesc: 'Rental Time Point Charge',
     };
 

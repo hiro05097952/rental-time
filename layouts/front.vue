@@ -31,6 +31,11 @@
         @click="$store.commit('CHANGE_LOGIN_BOX', 'login')">
         登入
       </button>
+      <button
+        class="btn-outline text-white"
+        @click="logout">
+        登出
+      </button>
     </nav>
 
     <div class="main pt-16" style="min-height: 19rem">
@@ -111,7 +116,21 @@ export default {
     return {
     };
   },
-  computed: {
+  methods: {
+    async logout() {
+      try {
+        const { data } = await this.$axios.get('/api/logout');
+        this.$swal.fire({
+          icon: 'success',
+          title: data.message,
+        });
+      } catch ({ response }) {
+        this.$swal.fire({
+          icon: 'error',
+          title: response.data.message,
+        });
+      }
+    },
   },
 };
 </script>

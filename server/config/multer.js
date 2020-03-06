@@ -1,10 +1,9 @@
-/* eslint-disable unicorn/prefer-starts-ends-with */
 const multer = require('multer');
 
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: {
-    fileSize: 5 * 1024 * 1024, // 5 MB
+    fileSize: 2 * 1024 * 1024, // 2 MB
   },
   fileFilter(req, file, callback) {
     if (!file.mimetype.match(/^image/)) {

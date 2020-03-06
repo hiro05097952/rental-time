@@ -1,8 +1,9 @@
 <template>
   <div class="lg:px-8 py-8 text-gray-800">
-    <div
+    <ValidationObserver
       class="bg-white shadow-md rounded px-2 lg:px-8 pt-6 pb-8 mb-4 flex flex-col
-      w-11/12 lg:w-5/6 mx-auto border mt-5">
+      w-11/12 lg:w-5/6 mx-auto border mt-5"
+      ref="userDataForm">
       <div class="flex items-center justify-around mb-10 mx-auto w-full md:w-2/3 lg:w-1/2">
         <img
           :src="user.img ? `data:image/png;base64,${user.img}` : 'http://alpha.backer.id//assets/images/bg/avatar-default3.jpg'"
@@ -173,7 +174,7 @@
           身份驗證
         </nuxt-link>
       </div>
-    </div>
+    </ValidationObserver>
     <changePassword v-if="editPassword" @pass-evt="editPassword = !editPassword" />
     <editImg
       v-if="editImg"
@@ -193,12 +194,15 @@ export default {
     changePassword,
     editImg,
   },
-  async asyncData({ $axios }) {
+  async asyncData({
+    $axios, redirect,
+  }) {
     try {
       const { data } = await $axios.get('/api/user');
       return { user: data.user };
     } catch ({ response }) {
-      console.log(response);
+      redirect('/');
+      // error({ statusCode: response.status, message: response.data.message });
     }
   },
   data() {
@@ -209,25 +213,32 @@ export default {
     };
   },
   methods: {
-    confirmation() {
-      this.$swal.fire({
-        title: '<h2 class="text-xl">確定要更改資料嗎?</h2>',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: '確認',
-        cancelButtonText: '取消',
-        toast: false,
-        position: 'center',
-        showConfirmButton: true,
-        timer: false,
-      }).then(({ value }) => {
-        // success
-        if (value) {
-          this.editUserData();
+    async confirmation() {
+      try {
+        const { value } = await this.$swal.fire({
+          title: '<h2 class="text-xl">確定要更改資料嗎?</h2>',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: '確認',
+          cancelButtonText: '取消',
+          toast: false,
+          position: 'center',
+          showConfirmButton: true,
+          timer: false,
+        });
+        if (!value) {
+          return;
         }
-      });
+        await this.validate();
+        this.editUserData();
+      } catch ({ message }) {
+        this.$swal.fire({
+          icon: 'error',
+          title: message,
+        });
+      }
     },
     async editUserData() {
       try {
@@ -250,6 +261,17 @@ export default {
     },
     changeImg(value) {
       this.user.img = value;
+    },
+    validate() {
+      return new Promise((resolve, reject) => {
+        this.$refs.userDataForm.validate().then((success) => {
+          if (success) {
+            resolve();
+          } else {
+            reject(new Error('請填寫正確'));
+          }
+        });
+      });
     },
   },
   computed: {

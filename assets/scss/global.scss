@@ -1,6 +1,6 @@
 .is-invalid{
   @apply relative;
-  input{
+  input, select{
     @apply border-red-500;
   }
   span{

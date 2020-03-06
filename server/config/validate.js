@@ -40,7 +40,7 @@ function productValidate(data) {
     title: Joi.string().max(50).required(),
     description: Joi.any(),
     coverImg: Joi.any(),
-    type: Joi.array().required(), // 需更改
+    type: Joi.string().required(), // 需更改
     meetingPlace: Joi.any().when('type', { is: 'meeting', then: Joi.string().required() }),
     atLeast: Joi.number().integer().multiple(30),
     category: Joi.string().valid('entrepreneurship',
@@ -96,7 +96,6 @@ function addNewPointValidate(data) {
 
 function chargePointValidate(data) {
   const schema = Joi.object({
-    itemName: Joi.string().max(10).required(),
     pointId: Joi.string().max(100).required(),
   });
 

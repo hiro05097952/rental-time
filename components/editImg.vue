@@ -19,7 +19,7 @@
       <client-only>
         <div
           style="height: 16rem;"
-          :style="{ width: `${$route.name === 'products-edit' ? 28 : 16 }rem` }">
+          :style="{ width: `${isProduct ? 28 : 16 }rem` }">
           <vue-croppie
             ref="croppieRef"
             :enable-orientation="true"
@@ -82,12 +82,14 @@ export default {
         height: 200,
         type: 'circle',
       },
+      isProduct: false,
     };
   },
   mounted() {
-    if (this.$route.name === 'products-edit') {
+    if (this.$route.path.includes('products')) {
       this.viewport.width = 400;
       this.viewport.type = 'square';
+      this.isProduct = true;
     }
   },
   methods: {
@@ -108,7 +110,7 @@ export default {
       converter.readAsDataURL(files[0]);
     },
     checkRouter(blob) {
-      if (this.$route.name === 'products-edit') {
+      if (this.isProduct) {
         this.passCoverImg(blob);
         return;
       }
@@ -137,12 +139,8 @@ export default {
       }
     },
     async passCoverImg(blob) {
-      const converter = new FileReader();
-      converter.onloadend = () => {
-        this.$emit('pass-change-img', converter.result);
-        this.close();
-      };
-      converter.readAsDataURL(blob);
+      this.$emit('pass-change-img', blob);
+      this.close();
     },
     cropViaEvent() {
       this.$refs.croppieRef.result({

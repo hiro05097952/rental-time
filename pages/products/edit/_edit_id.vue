@@ -1,14 +1,15 @@
 <template>
   <div class="lg:px-8 py-8 text-gray-800">
-    <div
+    <ValidationObserver
       class="bg-white shadow-md rounded px-2 lg:px-8 pt-6 pb-8 mb-4 flex flex-col
-      w-11/12 lg:w-5/6 mx-auto border mt-5">
+      w-11/12 lg:w-5/6 mx-auto border mt-5"
+      ref="productForm">
       <div class="flex flex-col items-center justify-around mb-10 mx-auto w-full md:w-2/3">
         <img
-          :src="product.coverImg"
+          :src="cacheImg.includes('base64') ? cacheImg : `data:image/png;base64,${cacheImg}`"
           class="border-2 object-center object-cover border-gray-300 w-full h-48
           shadow-lg rounded"
-          v-if="product.coverImg">
+          v-if="cacheImg">
         <div
           class="border-2 border-gray-300 w-full h-48
           shadow-lg text-center text-2xl font-bold py-20 text-gray-500
@@ -26,7 +27,7 @@
         </label>
       </div>
 
-      <div class="md:flex mb-6">
+      <div class="md:flex mb-8">
         <div class="w-full px-3">
           <label
             class="block tracking-wide font-bold mb-2"
@@ -48,7 +49,7 @@
         </div>
       </div>
 
-      <div class="w-full px-3 mb-6">
+      <div class="w-full px-3 mb-8">
         <label
           class="block tracking-wide font-bold mb-2"
           for="category">
@@ -62,7 +63,7 @@
               id="category"
               v-model="product.category"
               :class="{'text-gray-500' : !product.category}">
-              <option value="undefined" disabled>
+              <option value="null" disabled>
                 請選擇
               </option>
               <option value="entrepreneurship">
@@ -124,30 +125,33 @@
         </ValidationProvider>
       </div>
 
-      <div class="md:flex mb-6">
+      <div class="md:flex mb-8">
         <div class="md:w-full px-3">
           <label
             class="block tracking-wide font-bold mb-2">
             可接受類型
           </label>
-          <div class="flex items-center">
-            <label class="mx-2" for="meeting">
-              <input type="checkbox" v-model="product.type" value="meeting" id="meeting">
-              現場面談
-            </label>
-            <label class="mx-2" for="video">
-              <input type="checkbox" v-model="product.type" value="video" id="video">
-              視訊
-            </label>
-            <label class="mx-2" for="phone">
-              <input type="checkbox" v-model="product.type" value="phone" id="phone">
-              電話
-            </label>
-            <label class="mx-2" for="chat">
-              <input type="checkbox" v-model="product.type" value="chat" id="chat">
-              聊天室
-            </label>
-          </div>
+          <ValidationProvider rules="required" v-slot="{errors, classes}" name="接受類型">
+            <div class="flex items-center" :class="classes">
+              <label class="mx-2" for="meeting">
+                <input type="checkbox" v-model="product.type" value="meeting" id="meeting">
+                現場面談
+              </label>
+              <label class="mx-2" for="video">
+                <input type="checkbox" v-model="product.type" value="video" id="video">
+                視訊
+              </label>
+              <label class="mx-2" for="phone">
+                <input type="checkbox" v-model="product.type" value="phone" id="phone">
+                電話
+              </label>
+              <label class="mx-2" for="chat">
+                <input type="checkbox" v-model="product.type" value="chat" id="chat">
+                聊天室
+              </label>
+              <span style="top: -10px;">{{ errors[0] }}</span>
+            </div>
+          </ValidationProvider>
         </div>
       </div>
 
@@ -173,39 +177,58 @@
         <div class="w-full md:w-1/2 md:mr-4">
           <label
             class="block tracking-wide font-bold mb-2"
-            for="email">
-            會面地點
+            for="price">
+            價格
           </label>
-          <div class="flex items-center">
-            <input
-              class="appearance-none inline-block w-full
-             border border-grey-lighter rounded py-3 px-4"
-              id="email"
-              type="email"
-              placeholder="Email">
-          </div>
+          <ValidationProvider
+            rules="required|integer|max_value:10000|min_value:0|"
+            name="價格"
+            v-slot="{errors, classes}">
+            <div class="flex items-center" :class="classes">
+              <input
+                class="appearance-none inline-block w-full
+                border border-grey-lighter rounded py-3 px-4"
+                id="price"
+                type="number"
+                inputmode="numeric"
+                placeholder="請輸入價格"
+                v-model="product.price">
+              <span>{{ errors[0] }}</span>
+            </div>
+          </ValidationProvider>
         </div>
         <div class="w-full md:w-1/2 mt-6 md:mt-0">
           <label
             class="block tracking-wide font-bold mb-2"
-            for="category">
-            最低限數
+            for="atLeast">
+            最低限制
           </label>
-          <div class="relative">
-            <select
-              class="block appearance-none w-full border bg-white
+          <ValidationProvider
+            rules="required"
+            v-slot="{errors, classes}"
+            name="最低限制">
+            <div class="relative" :class="classes">
+              <select
+                class="block appearance-none w-full border bg-white
             border-grey-lighter py-3 px-4 pr-8 rounded"
-              id="category">
-              <option value="30">
-                30
-              </option>
-            </select>
-            <div
-              class="pointer-events-none absolute top-0 right-0 flex items-center bottom-0
+                id="atLeast"
+                v-model="product.atLeast"
+                :class="{'text-gray-500':!product.atLeast}">
+                <option value="null" disabled selected>
+                  請選擇
+                </option>
+                <option :value="30 * item" v-for="(item, index) in 5" :key="index">
+                  {{ 30 * item }}
+                </option>
+              </select>
+              <div
+                class="pointer-events-none absolute top-0 right-0 flex items-center bottom-0
             px-4">
-              <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
+                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
+              </div>
+              <span>{{ errors[0] }}</span>
             </div>
-          </div>
+          </ValidationProvider>
         </div>
       </div>
 
@@ -228,17 +251,10 @@
           font-semibold w-1/3 md:w-1/6 rounded-sm tracking-wider text-lg h-12
           ml-6"
           @click="confirmation">
-          儲存
+          新增販物
         </button>
-        <nuxt-link
-          class="bg-green-500 hover:bg-green-700 text-white
-          font-semibold w-1/3 md:w-1/6 rounded-sm tracking-wider text-lg h-12
-          ml-6 inline-block py-3"
-          to="/account/identify">
-          身份驗證
-        </nuxt-link>
       </div>
-    </div>
+    </ValidationObserver>
     <editImg
       v-if="editImg"
       @pass-evt="editImg = !editImg"
@@ -266,15 +282,16 @@ export default {
     return {
       product: {
         title: '',
-        category: '',
+        category: null,
         description: '',
-        coverImg: '',
+        coverImg: null,
         type: [],
         meetingPlace: '',
-        atLeast: '',
-        price: '',
+        atLeast: null,
+        price: null,
       },
       editImg: false,
+      cacheImg: '',
       editorOption: {
         placeholder: '請輸入販物簡介',
         modules: {
@@ -290,46 +307,109 @@ export default {
           ],
         },
       },
+      isEditMode: false,
     };
   },
+  async asyncData({
+    route, $axios, error,
+  }) {
+    try {
+      if (route.params.edit_id) {
+        const { data } = await $axios.get(`/api/product/${route.params.edit_id}`);
+        return {
+          product: data.product,
+          cacheImg: data.product.coverImg,
+          isEditMode: true,
+        };
+      }
+    } catch ({ response }) {
+      error({ statusCode: response.status, message: response.data.message });
+    }
+  },
   methods: {
-    confirmation() {
-      this.$swal.fire({
-        title: `<h2 class="text-xl">確定要${this.$route.name ? '新增' : '修改'}
-        販物嗎?</h2>`,
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: '確認',
-        cancelButtonText: '取消',
-        toast: false,
-        position: 'center',
-        showConfirmButton: true,
-        timer: false,
-      }).then(({ value }) => {
-        // success
-        if (value) {
-          this.updateProduct();
-        }
-      });
-    },
-    async updateProduct(method) {
+    async confirmation() {
       try {
-        const { data } = await this.$axios[method === 'post' ? 'POST' : 'PUT']('/api/product', this.product);
+        const { value } = await this.$swal.fire({
+          title: `<h2 class="text-xl">確定要${!this.isEditMode ? '新增' : '修改'}
+          販物嗎?</h2>`,
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: '確認',
+          cancelButtonText: '取消',
+          toast: false,
+          position: 'center',
+          showConfirmButton: true,
+          timer: false,
+        });
+        if (!value) {
+          return;
+        }
+        await this.validate();
+        this.updateProduct();
+      } catch ({ message }) {
+        this.$swal.fire({
+          icon: 'error',
+          title: message,
+        });
+      }
+    },
+    async updateProduct() {
+      try {
+        const {
+          title, category, description, type, meetingPlace, atLeast, price, coverImg,
+        } = this.product;
+        const form = new FormData();
+        if (typeof this.product.coverImg !== 'string') {
+          form.append('coverImg', coverImg);
+        }
+        form.append('title', title);
+        form.append('category', category);
+        form.append('description', description);
+        form.append('type', type);
+        form.append('meetingPlace', meetingPlace);
+        form.append('atLeast', atLeast);
+        form.append('price', price);
+
+        const { data } = await this.$axios[!this.isEditMode ? 'post' : 'put'](`/api/product${this.isEditMode ? `/${this.$route.params.edit_id}` : ''}`, form, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+
         this.$swal.fire({
           icon: 'success',
           title: data.message,
         });
+        this.$router.push('/products');
       } catch ({ response }) {
+        const title = response.data.message;
         this.$swal.fire({
           icon: 'error',
-          title: response.data.message,
+          title,
         });
       }
     },
     changeImg(value) {
       this.product.coverImg = value;
+
+      const converter = new FileReader();
+      converter.onloadend = () => {
+        this.cacheImg = converter.result;
+      };
+      converter.readAsDataURL(value);
+    },
+    validate() {
+      return new Promise((resolve, reject) => {
+        this.$refs.productForm.validate().then((success) => {
+          if (success) {
+            resolve();
+          } else {
+            reject(new Error('請完整填寫表單'));
+          }
+        });
+      });
     },
   },
 };

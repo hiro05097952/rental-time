@@ -5,6 +5,7 @@ const htmlEncode = require('js-htmlencode');
 
 const validate = require('../config/validate');
 const db = require('../model/pool');
+const upload = require('../config/multer');
 
 function covertToBase64(buf) {
   if (Buffer.isBuffer(buf)) {
@@ -27,7 +28,8 @@ router.get('/:productId', async (req, res, next) => {
     // convert blob to base64
     product[0].coverImg = covertToBase64(product[0].coverImg);
     product[0].img = covertToBase64(product[0].img);
-    product[0].description = htmlEncode.htmlDecode(product[0].description);
+    product[0].productDescription = htmlEncode.htmlDecode(product[0].productDescription);
+    product[0].type = product[0].type.split(',');
 
     res.send({
       success: true,
@@ -37,40 +39,47 @@ router.get('/:productId', async (req, res, next) => {
     next(err.sqlMessage || err);
   }
 });
-router.post('/', async (req, res, next) => {
+router.post('/', upload.single('coverImg'), async (req, res, next) => {
   const { error } = validate.productValidate(req.body);
   if (error) { return next(error.message); }
-  const sqlData = {
-    ...req.body,
-    description: htmlEncode.htmlEncode(req.body.description),
-    userId: req.session.user.userId,
-    type: req.body.type.join(),
-  };
   try {
+    const sqlData = {
+      ...req.body,
+      description: htmlEncode.htmlEncode(req.body.description),
+      userId: req.session.user.userId,
+    };
+    if (req.file) {
+      sqlData.coverImg = req.file.buffer;
+    }
+
     await db.query('INSERT INTO product SET ?', sqlData);
     res.send({
       success: true,
       message: '新增服務成功',
     });
   } catch (err) {
-    next(err.sqlMessage);
+    next(err.sqlMessage || err);
   }
 });
 
-router.put('/:productId', async (req, res, next) => {
+router.put('/:productId', upload.single('coverImg'), async (req, res, next) => {
   const { error } = validate.productValidate(req.body);
   if (error) { return next(error.message); }
 
   try {
-    const result = await db.query(`SELECT * FROM product WHERE productId = "${req.params.productId}" && userId = "${req.session.user.userId}"`);
-    if (!result.length) { return next(new Error().message = '查無此服務'); }
+    const [result] = await db.query(`SELECT * FROM product WHERE productId = "${req.params.productId}"
+    && userId = "${req.session.user.userId}"`);
+
+    if (!result) {
+      return next(new Error().message = '查無此服務');
+    }
 
     const description = htmlEncode.htmlEncode(req.body.description);
 
-    await db.query(`UPDATE product SET title = "${req.body.title}", description = "${description}", 
-    type = "${req.body.type}", meetingPlace = "${req.body.meetingPlace}", category = "${req.body.category}", 
-    atLeast = "${req.body.atLeast}", price = "${req.body.price}"
-    WHERE productId = "${req.params.productId}" && userId = "${req.session.user.userId}"`);
+    await db.query(`UPDATE product SET title = "${req.body.title}", description = "${description}",
+    type = "${req.body.type}", meetingPlace = "${req.body.meetingPlace}", category = "${req.body.category}",
+    atLeast = "${req.body.atLeast}", price = "${req.body.price}" ${req.file ? ', coverImg = ?' : ''}
+    WHERE productId = "${req.params.productId}" && userId = "${req.session.user.userId}"`, req.file ? [req.file.buffer] : '');
     res.send({
       success: true,
       message: '編輯服務成功',

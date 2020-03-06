@@ -1,3 +1,4 @@
+<!--  eslint-disable  -->
 <template>
   <div class="px-8 py-8 flex">
     <div class="main w-3/4">
@@ -48,25 +49,25 @@
             <li class="flex items-center my-2">
               <div
                 class="h-4 w-4 border border-gray-500 rounded-sm"
-                :class="{'bg-green-400': product.type === 'meeting'}" />
+                :class="{'bg-green-400': product.type.includes('meeting')}" />
               <p class="mx-2">
                 面談
               </p>
               <div
                 class="h-4 w-4 border border-gray-500 rounded-sm"
-                :class="{'bg-green-400': product.type === 'video'}" />
+                :class="{'bg-green-400': product.type.includes('video')}" />
               <p class="mx-2">
                 視訊
               </p>
               <div
                 class="h-4 w-4 border border-gray-500 rounded-sm"
-                :class="{'bg-green-400': product.type === 'phone'}" />
+                :class="{'bg-green-400': product.type.includes('phone')}" />
               <p class="mx-2">
                 電話
               </p>
               <div
                 class="h-4 w-4 border border-gray-500 rounded-sm"
-                :class="{'bg-green-400': product.type === 'chat'}" />
+                :class="{'bg-green-400': product.type.includes('chat')}" />
               <p class="mx-2">
                 聊天室
               </p>
@@ -85,9 +86,14 @@
             販物介紹
           </h2>
           <div
+            class="px-2 py-2 rounded-sm tracking-wider border border-gray-500"
+            v-html="product.productDescription"
+            v-if="product.productDescription" />
+          <div
+            v-else
             class="px-2 py-2 rounded-sm tracking-wider text-lg
           border border-gray-500 text-gray-800">
-            {{ product.productDescription || '尚無販物描述' }}
+            尚無販物描述
           </div>
         </div>
       </div>
@@ -127,7 +133,8 @@
           {{ product.slogan }}
         </div>
 
-        <div class="bg-white my-4 rounded-md py-2 px-2 text-sm">
+        <div
+          class="bg-white my-4 rounded-md py-2 px-2 text-sm">
           {{ product.userdescription || '此人尚無自我介紹' }}
         </div>
       </div>
@@ -138,15 +145,12 @@
 <script>
 export default {
   name: 'ProductInfo',
-  async asyncData({ $axios, route, $swal }) {
+  async asyncData({ $axios, route, error }) {
     try {
       const { data } = await $axios.get(`/api/product/${route.params.product_id}`);
       return { product: data.product };
     } catch ({ response }) {
-      $swal.fire({
-        icon: 'error',
-        title: response.data.message,
-      });
+      error({ statusCode: response.status, message: response.data.message });
     }
   },
   layout: 'front',

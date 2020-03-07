@@ -85,4 +85,7 @@ module.exports = {
     // extend(config, { isDev, isClient }) {
     // },
   },
+  router: {
+    middleware: 'auth',
+  },
 };

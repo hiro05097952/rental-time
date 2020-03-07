@@ -14,19 +14,35 @@ export const mutations = {
 
 export const actions = {
   async nuxtServerInit({ commit }, { req }) {
-    console.log('nuxtServerInit Session => ', req.session);
+    // console.log('nuxtServerInit Session => ', req.session.user);
     if (req.session && req.session.user) {
       commit('UPDATE_USER', req.session.user);
-      return;
+      // return;
     }
+    // try {
+    //   console.log('取登入狀態 API !!');
+    //   const { data } = await this.$axios.get('/api/login', {
+    //     withCredentials: true,
+    //   });
+    //   console.log('update_user => ', data.userInfo);
+    //   commit('UPDATE_USER', data.userInfo);
+    // } catch ({ response }) {
+    //   console.log('error => ', response.data.message);
+    // }
+  },
+  async logout({ commit }) {
     try {
-      console.log('取登入狀態 API !!');
-      const { data } = await this.$axios.get('/api/login', {
-        withCredentials: true,
+      const { data } = await this.$axios.get('/api/logout');
+      commit('UPDATE_USER', {});
+      this.$swal.fire({
+        icon: 'success',
+        title: data.message,
       });
-      commit('UPDATE_USER', data.userInfo);
     } catch ({ response }) {
-      console.log(response.data.message);
+      this.$swal.fire({
+        icon: 'error',
+        title: response.data.message,
+      });
     }
   },
 };

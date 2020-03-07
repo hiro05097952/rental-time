@@ -33,7 +33,7 @@
       </button>
       <button
         class="btn-outline text-white"
-        @click="logout">
+        @click="$store.dispatch('logout')">
         登出
       </button>
     </nav>
@@ -117,20 +117,6 @@ export default {
     };
   },
   methods: {
-    async logout() {
-      try {
-        const { data } = await this.$axios.get('/api/logout');
-        this.$swal.fire({
-          icon: 'success',
-          title: data.message,
-        });
-      } catch ({ response }) {
-        this.$swal.fire({
-          icon: 'error',
-          title: response.data.message,
-        });
-      }
-    },
   },
 };
 </script>

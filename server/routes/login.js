@@ -32,7 +32,7 @@ router.post('/', async (req, res, next) => {
 });
 
 router.get('/', (req, res, next) => {
-  console.log('session => ', req.session);
+  // console.log('session => ', req.session);
   if (!req.session.user) {
     return next(new Error().message = '尚未登入');
   }

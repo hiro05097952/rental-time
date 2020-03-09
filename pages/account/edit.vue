@@ -6,7 +6,9 @@
       ref="userDataForm">
       <div class="flex items-center justify-around mb-10 mx-auto w-full md:w-2/3 lg:w-1/2">
         <img
-          :src="user.img ? `data:image/png;base64,${user.img}` : 'http://alpha.backer.id//assets/images/bg/avatar-default3.jpg'"
+          :src="user.img && !user.img.includes('http') ?
+            `data:image/png;base64,${user.img}`: user.img ? user.img :
+              'https://image.flaticon.com/icons/svg/149/149072.svg'"
           class="rounded-full border-2 object-center object-cover border-gray-300 h-40 w-40
           shadow-lg">
         <label
@@ -72,7 +74,7 @@
         </div>
       </div>
 
-      <div class="md:flex mb-6">
+      <div class="md:flex mb-6" v-if="user.signInType !== 'third'">
         <div class="md:w-full px-3">
           <label
             class="block tracking-wide text-grey-darker font-bold mb-2"
@@ -195,13 +197,14 @@ export default {
     editImg,
   },
   async asyncData({
-    $axios, redirect,
+    $axios,
   }) {
     try {
       const { data } = await $axios.get('/api/user');
       return { user: data.user };
     } catch ({ response }) {
-      redirect('/');
+      console.log(response.data);
+      // redirect('/');
       // error({ statusCode: response.status, message: response.data.message });
     }
   },
@@ -273,8 +276,6 @@ export default {
         });
       });
     },
-  },
-  computed: {
   },
 };
 </script>

@@ -1,4 +1,6 @@
 const whitelister = require('purgecss-whitelister');
+const fs = require('fs');
+const path = require('path');
 
 require('dotenv').config();
 
@@ -38,7 +40,9 @@ module.exports = {
     '~/plugins/sweetalert2',
     '~/plugins/vee-validate',
     '~/plugins/g-filter.js',
+    '~/plugins/axios.js',
     { mode: 'client', src: '~plugins/v-calendar.js' },
+    { mode: 'client', src: '~plugins/google-oauth.js' },
     // { mode: 'client', src: '~/plugins/vue-socket.js' },
   ],
   /*
@@ -72,7 +76,8 @@ module.exports = {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    baseURL: process.env.NODE_ENV === 'production' ? process.env.BASE_URL : 'http://localhost:3000',
+    baseURL: process.env.NODE_ENV === 'production' ? process.env.BASE_URL : 'https://localhost:3000',
+    https: true,
   },
   /*
   ** Build configuration
@@ -87,5 +92,11 @@ module.exports = {
   },
   router: {
     middleware: 'auth',
+  },
+  server: {
+    https: {
+      key: fs.readFileSync(path.resolve(__dirname, 'localhost+2-key.pem')),
+      cert: fs.readFileSync(path.resolve(__dirname, 'localhost+2.pem')),
+    },
   },
 };

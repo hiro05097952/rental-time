@@ -6,6 +6,7 @@ const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
 const cors = require('cors');
 require('dotenv').config();
+const https = require('https');
 
 const middlewareRouter = require('./config/middleware');
 const userRouter = require('./routes/user');
@@ -119,8 +120,8 @@ async function start() {
   app.use(nuxt.render);
 
   // Listen the server
-  const server = app.listen(port, host);
-
+  // const server = app.listen(port, host);
+  const server = https.createServer(nuxt.options.server.https, app).listen(port, host);
   // socket
   socketStart(server);
 

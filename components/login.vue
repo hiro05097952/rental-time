@@ -73,8 +73,15 @@
               class="w-full px-4 py-2 font-bold text-white bg-blue-500 rounded-full
                 hover:bg-blue-700 focus:outline-none focus:shadow-outline"
               type="button"
-              @click="signIn">
+              @click="emailSignIn">
               Sign In
+            </button>
+            <button
+              class="w-full px-4 py-2 font-bold text-white bg-blue-500 rounded-full
+                hover:bg-blue-700 focus:outline-none focus:shadow-outline mt-4"
+              type="button"
+              @click="gSignIn">
+              Google Sign In
             </button>
           </div>
           <hr class="mb-6 border-t">
@@ -93,6 +100,14 @@
               Forgot Password?
             </a>
           </div>
+          <div class="text-center">
+            <a
+              class="inline-block text-sm text-blue-500 align-baseline hover:text-blue-800"
+              href="./forgot-password.html"
+              @click.prevent="fbSignIn">
+              FB test
+            </a>
+          </div>
         </ValidationObserver>
       </div>
     </div>
@@ -106,28 +121,71 @@ export default {
     return {
       email: '',
       password: '',
+      isSignIn: '',
     };
   },
+  mounted() {
+    window.fbAsyncInit = function init() {
+      window.FB.init({
+        appId: process.env.fb_appId,
+        cookie: true,
+        xfbml: true,
+        version: 'v6.0',
+      });
+
+      window.FB.AppEvents.logPageView();
+    };
+    this.fbInit(document, 'script', 'facebook-jssdk');
+  },
   methods: {
-    async signIn() {
+    async emailSignIn() {
       try {
         await this.validate();
-        const { data } = await this.$axios.post('/api/login', {
+
+        this.serverSignIn({
           email: this.email,
           password: this.password,
         });
-        this.$swal.fire({
-          icon: 'success',
-          title: data.message,
-        });
-        this.$store.commit('CHANGE_LOGIN_BOX', false);
-      } catch ({ response, message }) {
-        const title = response ? response.data.message : message;
+      } catch ({ message }) {
         this.$swal.fire({
           icon: 'error',
-          title,
+          title: message,
         });
       }
+    },
+    async gSignIn() {
+      try {
+        const GoogleUser = await this.$gAuth.signIn();
+        // console.log('user => ', GoogleUser);
+        const token = GoogleUser.getAuthResponse().id_token;
+
+        this.serverSignIn({
+          token,
+        });
+      } catch (err) {
+        console.log('google sign in err => ', err);
+      }
+    },
+    fbInit(d, s, id) {
+      let js = null;
+      const fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) { return; }
+      js = d.createElement(s);
+      js.id = id;
+      js.src = 'https://connect.facebook.net/en_US/sdk.js';
+      fjs.parentNode.insertBefore(js, fjs);
+    },
+    fbSignIn() {
+      window.FB.login(({ status, authResponse }) => {
+        if (status === 'connected') {
+          this.serverSignIn({
+            accessToken: authResponse.accessToken,
+            userID: authResponse.userID,
+          });
+        }
+      }, {
+        scope: 'public_profile,email',
+      });
     },
     validate() {
       return new Promise((resolve, reject) => {
@@ -139,6 +197,21 @@ export default {
           }
         });
       });
+    },
+    async serverSignIn(config) {
+      try {
+        const { data } = await this.$axios.post('/api/login', config);
+        this.$swal.fire({
+          icon: 'success',
+          title: data.message,
+        });
+        this.$store.commit('CHANGE_LOGIN_BOX', false);
+      } catch ({ response }) {
+        this.$swal.fire({
+          icon: 'error',
+          title: response.data.message,
+        });
+      }
     },
   },
 };

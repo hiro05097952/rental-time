@@ -13,9 +13,16 @@ const nodeMailer = require('../config/nodemailer');
 router.get('/', async (req, res, next) => {
   try {
     const [user] = await db.query(`SELECT img, name, address, slogan, email, description,
-    emailVerified, identified, point FROM user WHERE userId = "${req.session.user.userId}"`);
+    emailVerified, identified, point, password FROM user WHERE userId = "${req.session.user.userId}"`);
     // convert buffer to base64
-    user.img = Buffer.from(user.img).toString('base64');
+    if (Buffer.isBuffer(user.img)) {
+      const buf = Buffer.from(user.img);
+      user.img = !buf.includes('http') ? buf.toString('base64') : buf.toString();
+    }
+    if (req.session.user.userId === user.password) {
+      user.signInType = 'third';
+    }
+    delete user.password;
 
     res.send({
       success: true,
@@ -103,6 +110,9 @@ router.post('/password', async (req, res, next) => {
     if (hash.sha256().update(req.body.currentPassword).digest('hex') !== currentData.password) {
       return next(new Error().message = '密碼錯誤');
     }
+    if (currentData.password === req.body.currentPassword) {
+      return next(new Error().message = '第三方登入不能更改密碼');
+    }
     await db.query(`UPDATE user SET password = "${hash.sha256().update(req.body.newPassword).digest('hex')}"
     WHERE userId = "${req.session.user.userId}"`);
     res.send({
@@ -124,9 +134,12 @@ router.post('/password/reset', async (req, res, next) => {
     return next(error.message);
   }
   try {
-    const checkUser = await db.query(`SELECT * FROM user WHERE email = "${req.body.email}"`);
-    if (!checkUser.length) {
+    const [checkUser] = await db.query(`SELECT * FROM user WHERE email = "${req.body.email}"`);
+    if (!checkUser) {
       return next(new Error().message = '此 Email 未註冊過');
+    }
+    if (checkUser.userId === checkUser.password) {
+      return next(new Error().message = '請使用第三方登入');
     }
     const token = await jwt.sign({
       exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24), // 1 days
@@ -135,7 +148,7 @@ router.post('/password/reset', async (req, res, next) => {
     console.log('token => ', token);
     await nodeMailer.sendForgotPasswordEmail({
       email: req.body.email,
-      name: checkUser[0].name,
+      name: checkUser.name,
       // 轉址到前端輸入更改密碼頁面
       url: `${process.env.BASE_URL}/account/forgot_password/${token}`,
     });

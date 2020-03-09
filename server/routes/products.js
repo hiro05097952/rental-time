@@ -4,11 +4,12 @@ const router = express.Router();
 
 const db = require('../model/pool');
 
-function covertToBase64(buf) {
-  if (Buffer.isBuffer(buf)) {
-    return Buffer.from(buf).toString('base64');
+function covertToBase64(passBuf) {
+  if (Buffer.isBuffer(passBuf)) {
+    const buf = Buffer.from(passBuf);
+    return buf.includes('http') ? buf.toString() : buf.toString('base64');
   }
-  return buf;
+  return passBuf;
 }
 
 // exclude u.id, u.uuid eamil password emailVerified u.createTime

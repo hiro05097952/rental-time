@@ -189,7 +189,9 @@
               class="h-32 rounded-lg w-full object-cover">
             <div class="flex justify-center">
               <img
-                :src="item.img ? `data:image/png;base64,${item.img}`: 'http://alpha.backer.id/assets/images/bg/avatar-default2.jpg'"
+                :src="item.img && !item.img.includes('http') ?
+                  `data:image/png;base64,${item.img}`: item.img ? item.img :
+                    'https://image.flaticon.com/icons/svg/149/149072.svg'"
                 class="rounded-full -mt-6 border-4 object-center object-cover
                 border-white mr-2 h-16 w-16">
             </div>

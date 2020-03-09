@@ -7,33 +7,34 @@ const validate = require('../config/validate');
 const db = require('../model/pool');
 const upload = require('../config/multer');
 
-function covertToBase64(buf) {
-  if (Buffer.isBuffer(buf)) {
-    return Buffer.from(buf).toString('base64');
+function covertToBase64(passBuf) {
+  if (Buffer.isBuffer(passBuf)) {
+    const buf = Buffer.from(passBuf);
+    return buf.includes('http') ? buf.toString() : buf.toString('base64');
   }
-  return buf;
+  return passBuf;
 }
 
 // exclude u.id, u.uuid eamil password emailVerified u.createTime
 router.get('/:productId', async (req, res, next) => {
   try {
-    const product = await db.query(`SELECT title, category, type, meetingPlace,
+    const [product] = await db.query(`SELECT title, category, type, meetingPlace,
     p.description productDescription, u.description userdescription, coverImg, p.createTime,
     atLeast, p.productId, p.userId, img, name, address, slogan, identified, price
     FROM product p, user u WHERE p.userId = u.userId && productId = ${req.params.productId}`);
 
-    if (!product.length) {
+    if (!product) {
       return next(new Error().message = '查無此商品');
     }
     // convert blob to base64
-    product[0].coverImg = covertToBase64(product[0].coverImg);
-    product[0].img = covertToBase64(product[0].img);
-    product[0].productDescription = htmlEncode.htmlDecode(product[0].productDescription);
-    product[0].type = product[0].type.split(',');
+    product.coverImg = covertToBase64(product.coverImg);
+    product.img = covertToBase64(product.img);
+    product.productDescription = htmlEncode.htmlDecode(product.productDescription);
+    product.type = product.type.split(',');
 
     res.send({
       success: true,
-      product: product[0],
+      product,
     });
   } catch (err) {
     next(err.sqlMessage || err);

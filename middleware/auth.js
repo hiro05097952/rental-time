@@ -1,7 +1,7 @@
 export default function ({
   store, redirect, route,
 }) {
-  // 登入但為驗證 Email
+  // 登入但未驗證 Email
   if (route.path.includes('account/edit') && (!store.state.userInfo.emailVerified
     && store.state.userInfo.emailVerified !== undefined)) {
     return;

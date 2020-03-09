@@ -120,7 +120,9 @@
       <div class="hr border-t-2 border-gray-400 my-6" />
       <div class="bg-gray-400 text-center px-2 pt-4 pb-1 rounded-md">
         <img
-          :src="product.img ? `data:image/png;base64,${product.img}`: 'http://alpha.backer.id/assets/images/bg/avatar-default2.jpg'"
+          :src="product.img && !product.img.includes('http') ?
+          `data:image/png;base64,${product.img}`: product.img ? product.img :
+          'https://image.flaticon.com/icons/svg/149/149072.svg'"
           class="rounded-full border-4 object-center object-cover border-white h-20 w-20 mx-auto">
         <div class="text-xl font-bold text-center my-2">
           {{ product.name }}

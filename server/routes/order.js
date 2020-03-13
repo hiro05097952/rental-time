@@ -75,7 +75,7 @@ router.post('/access', async (req, res, next) => {
   }
   try {
     const [order] = await db.query(`SELECT status, startTime, o.type, qty,
-    p.atLeast, p.title, p.price
+    p.atLeast, p.title, p.price,
     u.name sellerName, u.email sellerEmail, u.point sellerPoint
     FROM orderList o, product p, user u
     WHERE orderId = "${req.body.orderId}"
@@ -100,7 +100,7 @@ router.post('/access', async (req, res, next) => {
     }
 
     // update order status
-    await db.query(`UPDATE order SET status = "access" WHERE orderId = "${req.body.orderId}"`);
+    await db.query(`UPDATE orderList SET status = "access" WHERE orderId = "${req.body.orderId}"`);
 
     // update seller point
     await db.query(`UPDATE user SET point = "${order.sellerPoint + order.price * order.qty}"
@@ -113,16 +113,20 @@ router.post('/access', async (req, res, next) => {
           email: order.sellerEmail,
           name: order.sellerName,
           title: order.title,
-          url: `${process.env.BASE_URL}/chat/?roomId="${req.body.orderId}"`,
+          url: `${process.env.BASE_URL}/chat/${req.body.orderId}`,
         }),
         nodeMailer.sendChatEmail({
           email: buyer.buyerEmail,
           name: buyer.buyerName,
           title: order.title,
-          url: `${process.env.BASE_URL}/chat/?roomId="${req.body.orderId}"`,
+          url: `${process.env.BASE_URL}/chat/${req.body.orderId}`,
         }),
       ]);
     }
+    res.send({
+      success: true,
+      message: '已確認訂單',
+    });
   } catch (err) {
     next(err.sqlMessage || err);
   }
@@ -182,13 +186,13 @@ router.post('/cancel', async (req, res, next) => {
     WHERE orderId = "${orderId}"
     && o.productId = p.productId
     && o.${isSeller ? 'sellerId' : 'buyerId'} = u.userId
-    && o.${isSeller ? 'sellerId' : 'buyerId'} = "${req.session.user.userId}"`); // 需判斷 session 為買方還賣方
+    && o.${isSeller ? 'sellerId' : 'buyerId'} = "${req.session.user.userId}"`); // 取消方
 
-    const [anotherUser] = await db.query(`SELECT u.point
+    const [anotherUser] = await db.query(`SELECT u.point, u.userId
     FROM orderList o, user u
     WHERE o.orderId = "${orderId}"
     && o.${isSeller ? 'buyerId' : 'sellerId'} = u.userId
-    && o.${isSeller ? 'buyerId' : 'sellerId'} = "${req.session.user.userId}"`); // 需判斷 session 為買方還賣方
+    && o.${isSeller ? 'sellerId' : 'buyerId'} = "${req.session.user.userId}"`); // 被取消方
 
     if (order.status === 'finish' || order.status === 'cancel') {
       return next(new Error().message = '無法更改訂單狀態');
@@ -199,19 +203,20 @@ router.post('/cancel', async (req, res, next) => {
       // update another point
       await db.query(`UPDATE user SET
       point = ${(isSeller ? anotherUser.point : order.point) + order.qty * order.price}
-      WHERE userId = "${isSeller ? anotherUser.point : order.point}"`);
+      WHERE userId = "${isSeller ? anotherUser.userId : req.session.user.userId}"`);
     }
 
     // 懲罰機制
-    if (order.status === 'success') {
+    // 如果是賣家取消的話，則扣除原本點數 * 1.25 | 買家則歸還原本點數 * 0.75
+    if (order.status === 'access') {
       // update user point
       await db.query(`UPDATE user SET
-      point = ${(isSeller ? order.point : anotherUser.point) - order.qty * order.price}
-      WHERE userId = "${isSeller ? order.point : anotherUser.point}"`);
+      point = ${isSeller ? order.point - order.qty * order.price * 1.25 : anotherUser.point - order.qty * order.price}
+      WHERE userId = "${isSeller ? req.session.user.userId : anotherUser.userId}"`);
       // update another point
       await db.query(`UPDATE user SET
-      point = ${(isSeller ? anotherUser.point : order.point) + order.qty * order.price * 0.75}
-      WHERE userId = "${isSeller ? anotherUser.point : order.point}"`);
+      point = ${isSeller ? anotherUser.point + order.qty * order.price : order.point + order.qty * order.price * 0.75}
+      WHERE userId = "${isSeller ? anotherUser.userId : req.session.user.userId}"`);
     }
 
     // update order status
@@ -223,6 +228,24 @@ router.post('/cancel', async (req, res, next) => {
     });
   } catch (err) {
     next(err.sqlMessage || err);
+  }
+});
+
+router.get('/:orderId', async (req, res, next) => {
+  try {
+    const [order] = await db.query(`SELECT sellerId, buyerId, status FROM orderList WHERE orderId = "${req.params.orderId}"`);
+    const { userId } = req.session.user;
+
+    if (!order || order.status !== 'access' || (userId !== order.sellerId && userId !== order.buyerId)) {
+      return next(new Error().message = '請獲取進入聊天室權限');
+    }
+
+    res.send({
+      success: true,
+      message: '驗證通過，請盡情聊天',
+    });
+  } catch (err) {
+    next(err.sqlMessage || err.message);
   }
 });
 

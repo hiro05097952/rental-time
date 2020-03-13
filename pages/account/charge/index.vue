@@ -89,7 +89,7 @@ export default {
   },
   methods: {
     charge() {
-      const valid = this.points.some((item) => item.pointId === this.selected.pointId);
+      const [valid] = this.points.filter((item) => item.pointId === this.selected.pointId);
       if (!valid) {
         this.$swal.fire({
           icon: 'error',

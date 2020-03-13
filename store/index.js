@@ -16,19 +16,12 @@ export const actions = {
   async nuxtServerInit({ commit }, { req }) {
     // console.log('nuxtServerInit Session => ', req.session.user);
     if (req.session && req.session.user) {
-      commit('UPDATE_USER', req.session.user);
-      // return;
+      commit('UPDATE_USER', {
+        emailVerified: req.session.user.emailVerified,
+        point: req.session.user.point,
+        userId: req.session.user.userId,
+      });
     }
-    // try {
-    //   console.log('取登入狀態 API !!');
-    //   const { data } = await this.$axios.get('/api/login', {
-    //     withCredentials: true,
-    //   });
-    //   console.log('update_user => ', data.userInfo);
-    //   commit('UPDATE_USER', data.userInfo);
-    // } catch ({ response }) {
-    //   console.log('error => ', response.data.message);
-    // }
   },
   async logout({ commit }) {
     try {

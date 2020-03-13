@@ -7,7 +7,18 @@ const swalmix = swal.mixin({
   timer: 3000,
 });
 
+const confirm = swal.mixin({
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: '確認',
+  cancelButtonText: '取消',
+  showConfirmButton: true,
+  showCancelButton: true,
+});
+
 export default function (ctx, inject) {
   ctx.$swal = swalmix;
+  ctx.$swalConfirm = confirm;
   inject('swal', swalmix);
+  inject('swalConfirm', confirm);
 }

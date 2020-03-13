@@ -103,7 +103,14 @@
       class="side w-1/4 px-3 pb-4 text-gray-800"
       style="min-width: 300px">
       <client-only>
-        <v-calendar is-expanded />
+        <v-date-picker mode="single"
+        v-model="selectedDate"
+        is-inline
+        is-expanded
+        color="blue"
+        :min-date="new Date()"
+        :max-date="+new Date() + 1000*60*60*24*30"
+        :attributes='attributes'/>
       </client-only>
       <div
         class="bg-gray-200 my-4 px-2 py-4 rounded-md">
@@ -113,7 +120,8 @@
         <button class="bg-green-500 hover:bg-green-700 text-white rounded leading-9 mt-3 w-full">
           寄信詢問
         </button>
-        <button class="bg-red-500 hover:bg-red-700 text-white rounded leading-9 mt-3 w-full">
+        <button class="bg-red-500 hover:bg-red-700 text-white rounded leading-9 mt-3 w-full"
+        @click="order">
           預約
         </button>
       </div>
@@ -147,19 +155,56 @@
 <script>
 export default {
   name: 'ProductInfo',
-  async asyncData({ $axios, route, error }) {
+  async asyncData({ $axios, route }) {
     try {
       const { data } = await $axios.get(`/api/product/${route.params.product_id}`);
       return { product: data.product };
     } catch ({ response }) {
-      error({ statusCode: response.status, message: response.data.message });
+      console.log(response);
+      // error({ statusCode: response.status, message: response.data.message });
     }
   },
   layout: 'front',
   data() {
     return {
       product: '',
+      attributes: [
+        {
+          key: 'today',
+          dot: 'red',
+          dates: new Date(),
+        },
+      ],
+      selectedDate: null,
+      qty: 1,
+      type: 'video',
     };
+  },
+  methods: {
+    async order() {
+      try {
+        if (this.$store.state.userInfo.emailVerified == null) {
+          this.$store.commit('CHANGE_LOGIN_BOX', 'login');
+          return;
+        }
+        if (!this.$store.state.userInfo.emailVerified) {
+          throw new Error('請至信箱驗證');
+        }
+        if (!this.selectedDate) {
+          throw new Error('請填寫日期');
+        }
+        if (this.$store.state.userInfo.point - this.qty * this.product.price < 0) {
+          throw new Error('點數不足，請至會員頁面儲值');
+        }
+        this.$router.push(`/order/${this.$route.params.product_id}?startTime=${+new Date(this.selectedDate)
+        }&qty=${this.qty}&&type=${this.type}`);
+      } catch (err) {
+        this.$swal.fire({
+          icon: 'error',
+          title: err.message,
+        });
+      }
+    },
   },
   filters: {
     dateDisplay(value) {

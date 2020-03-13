@@ -18,20 +18,25 @@ router.post('/', async (req, res, next) => {
   if (error) { return next(error.message); }
 
   try {
-    const result = await db.query(`SELECT userId, emailVerified, point FROM user WHERE email = "${req.body.email}"
+    const [user] = await db.query(`SELECT userId, emailVerified, point FROM user WHERE email = "${req.body.email}"
     && password = "${hash.sha256().update(req.body.password).digest('hex')}"`);
     // console.log('result =>', result);
-    if (!result.length) {
+    if (!user) {
       return next(new Error().message = '查無使用者');
     }
     req.session.user = {
-      emailVerified: result[0].emailVerified,
-      userId: result[0].userId,
-      point: result[0].point,
+      emailVerified: user.emailVerified,
+      userId: user.userId,
+      point: user.point,
     };
     res.send({
       success: true,
       message: '登入成功',
+      userInfo: {
+        userId: user.userId,
+        emailVerified: user.emailVerified,
+        point: user.point,
+      },
     });
   } catch (err) {
     next(err.sqlMessage);
@@ -101,26 +106,38 @@ router.post('/', async (req, res, next) => {
     res.send({
       success: true,
       message: '登入成功',
+      userInfo: {
+        userId: req.session.user.userId,
+        emailVerified: req.session.user.emailVerified,
+        point: req.session.user.point,
+      },
     });
   } catch (err) {
     next(err.sqlMessage || err);
   }
 });
 
-router.get('/', (req, res, next) => {
+router.get('/', async (req, res, next) => {
   // console.log('session => ', req.session);
   if (!req.session.user) {
     return next(new Error().message = '尚未登入');
   }
-  if (req.session.user && !req.session.user.emailVerified) {
+  const [user] = await db.query(`SELECT * FROM user WHERE userId = "${req.session.user.userId}"`);
+  req.session.user = {
+    userId: user.userId,
+    point: user.point,
+    emailVerified: user.emailVerified,
+  };
+  if (!user) {
     return next(new Error().message = '尚未通過驗證');
   }
   res.send({
     success: true,
     message: '登入中',
     userInfo: {
-      emailVerified: req.session.user.emailVerified,
-      point: req.session.user.point,
+      userId: user.userId,
+      emailVerified: user.emailVerified,
+      point: user.point,
     },
   });
 });

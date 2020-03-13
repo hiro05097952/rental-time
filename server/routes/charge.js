@@ -61,8 +61,8 @@ router.post('/', async (req, res, next) => {
     return next(error.message);
   }
   try {
-    const [{ price, name }] = await db.query(`SELECT price, name FROM point WHERE pointId = "${req.body.pointId}"`);
-    if (!price) {
+    const [point] = await db.query(`SELECT price, name FROM point WHERE pointId = "${req.body.pointId}"`);
+    if (!point) {
       return next(new Error().message = '不明的錯誤');
     }
 
@@ -74,8 +74,8 @@ router.post('/', async (req, res, next) => {
       CustomField2: req.body.pointId, // pointId
       EncryptType: '1', // 加密類型 => SHA256
       MerchantTradeDate: getNow(),
-      TotalAmount: String(price), // 轉成字串
-      ItemName: name,
+      TotalAmount: String(point.price), // 轉成字串
+      ItemName: point.name,
       TradeDesc: 'Rental Time Point Charge',
     };
 
@@ -134,8 +134,8 @@ router.post('/server', async (req, res, next) => {
       userId,
       pointId,
     });
-    const [{ point }] = await db.query(`SELECT point FROM user WHERE userId = "${userId}"`);
-    await db.query(`UPDATE user SET point = "${+req.body.TotalAmount + +point}" WHERE userId = "${userId}"`);
+    const [point] = await db.query(`SELECT point FROM user WHERE userId = "${userId}"`);
+    await db.query(`UPDATE user SET point = "${+req.body.TotalAmount + +point.point}" WHERE userId = "${userId}"`);
 
     res.send('1');
   } catch (err) {

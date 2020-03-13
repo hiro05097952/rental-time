@@ -205,6 +205,7 @@ export default {
           icon: 'success',
           title: data.message,
         });
+        this.$store.commit('UPDATE_USER', data.userInfo);
         this.$store.commit('CHANGE_LOGIN_BOX', false);
       } catch ({ response }) {
         this.$swal.fire({

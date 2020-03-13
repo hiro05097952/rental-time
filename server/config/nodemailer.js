@@ -69,15 +69,15 @@ function sendChatEmail(data) {
     transporter.sendMail({
       from: `'Rental Time' ${data.email}`,
       to: data.email,
-      subject: '密碼重置請求',
+      subject: '販時機 | 販時訂單通知',
       html: `<div>
       <p>${data.name} 您好：</p>
       
-      <p>您的販物「${data.title}」已開始進行，點選以下按鈕進入聊天室。</p>
+      <p>您的買/販時「${data.title}」已通過審核，請在開始前十分鐘，點選以下按鈕進入聊天室。</p>
       
       <button style="background: teal;border: none;padding: 5px 15px;border-radius: 5px;">
         <a href="${data.url}" style=" text-decoration: none;color: white;font-size: 14px;">
-          變更密碼
+          進入聊天室
         </a>
       </button>
       

@@ -218,18 +218,9 @@ export default {
   methods: {
     async confirmation() {
       try {
-        const { value } = await this.$swal.fire({
+        const { value } = await this.$swalConfirm.fire({
           title: '<h2 class="text-xl">確定要更改資料嗎?</h2>',
           icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: '確認',
-          cancelButtonText: '取消',
-          toast: false,
-          position: 'center',
-          showConfirmButton: true,
-          timer: false,
         });
         if (!value) {
           return;

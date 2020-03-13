@@ -33,8 +33,8 @@ router.post('/:toUserId', async (req, res, next) => {
 router.get('/:userId', async (req, res, next) => {
   try {
     const mail = await db.query(`SELECT m.toUserId, u.name toUserName, u.img toUserImg, 
-    m.fromUserId, m.fromUserName, m.fromUserImg, m.content, m.createTime
-    FROM (SELECT u.name fromUserName, u.img fromUserImg, m.content, m.createTime, m.touserId, m.fromUserId
+    m.fromUserId, m.fromUserName, m.content, m.createTime
+    FROM (SELECT u.name fromUserName, m.content, m.createTime, m.touserId, m.fromUserId
     FROM mail m, user u
     WHERE m.fromUserId = u.userId) m, user u
     WHERE m.toUserId = u.userId &&

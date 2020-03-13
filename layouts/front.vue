@@ -121,7 +121,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .btn-outline{
   @apply bg-transparent
   font-semibold px-8 border border-gray-500

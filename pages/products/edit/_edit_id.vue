@@ -329,19 +329,10 @@ export default {
   methods: {
     async confirmation() {
       try {
-        const { value } = await this.$swal.fire({
+        const { value } = await this.$swalConfirm.fire({
           title: `<h2 class="text-xl">確定要${!this.isEditMode ? '新增' : '修改'}
           販物嗎?</h2>`,
           icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: '確認',
-          cancelButtonText: '取消',
-          toast: false,
-          position: 'center',
-          showConfirmButton: true,
-          timer: false,
         });
         if (!value) {
           return;
@@ -361,7 +352,7 @@ export default {
           title, category, description, type, meetingPlace, atLeast, price, coverImg,
         } = this.product;
         const form = new FormData();
-        if (typeof this.product.coverImg !== 'string') {
+        if (typeof coverImg !== 'string') {
           form.append('coverImg', coverImg);
         }
         form.append('title', title);

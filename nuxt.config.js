@@ -43,7 +43,7 @@ module.exports = {
     '~/plugins/axios.js',
     { mode: 'client', src: '~plugins/v-calendar.js' },
     { mode: 'client', src: '~plugins/google-oauth.js' },
-    // { mode: 'client', src: '~/plugins/vue-socket.js' },
+    { mode: 'client', src: '~/plugins/vue-socket.js' },
   ],
   /*
   ** Nuxt.js dev-modules

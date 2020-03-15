@@ -23,13 +23,13 @@ module.exports = function socketStart(server) {
 
         client.join(room, () => {
           io.sockets.in(room).emit('message', {
-            type: 'notice',
+            fromUserId: 'admin',
             content: '已有新人加入聊天室！',
           });
         });
       } catch (err) {
         client.emit('message', {
-          type: 'notice',
+          fromUserId: 'admin',
           content: '加入聊天室失敗',
         });
       }
@@ -43,36 +43,53 @@ module.exports = function socketStart(server) {
         client.to(nowRoom).emit('peerconnectSignaling', item);
       } else {
         client.emit('message', {
-          type: 'notice',
+          fromUserId: 'admin',
           content: '視訊傳送失敗，請重新整理網頁',
         });
       }
     });
 
     // chat
-    client.on('message', ({ content, userId, createTime }) => {
+    client.on('message', ({ content, fromUserId, createTime }) => {
       const nowRoom = findNowRoom(client);
       if (nowRoom) {
         io.sockets.in(nowRoom).emit('message', {
-          type: 'message',
           content: htmlEncode.htmlEncode(content).trim().replace(/\n/g, '<br />'),
-          userId,
+          fromUserId,
           createTime,
         });
       } else {
         client.emit('message', {
-          type: 'notice',
+          fromUserId: 'admin',
           content: '尚未加入房間，請重新整理',
         });
       }
     });
 
-    client.on('mail', async ({ userId, content, toUserId }) => {
-      await db.query('INSERT INTO mail SET ?', {
-        content,
-        toUserId,
-        fromUserId: userId,
-      });
+    client.on('mail', async ({
+      fromUserId, content, toUserId, createTime,
+    }) => {
+      try {
+        const textCovert = htmlEncode.htmlEncode(content).trim().replace(/\n/g, '<br />');
+        await db.query('INSERT INTO mail SET ?', {
+          content: textCovert,
+          toUserId,
+          fromUserId,
+        });
+        const room = [fromUserId, toUserId].sort().join('');
+        io.sockets.emit(room, {
+          content: textCovert,
+          toUserId,
+          fromUserId,
+          createTime,
+        });
+      } catch (err) {
+        client.emit('message', {
+          fromUserId: 'admin',
+          content: '未知的錯誤，請重新整理頁面',
+          err,
+        });
+      }
     });
 
     client.on('disconnect', () => {
@@ -80,7 +97,7 @@ module.exports = function socketStart(server) {
       const nowRoom = findNowRoom(client);
       if (nowRoom) {
         io.sockets.in(nowRoom).emit('message', {
-          type: 'notice',
+          fromUserId: 'admin',
           content: '對方已離開聊天室',
         });
       }

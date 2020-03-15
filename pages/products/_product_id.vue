@@ -184,7 +184,7 @@ export default {
     async order() {
       try {
         if (this.$store.state.userInfo.emailVerified == null) {
-          this.$store.commit('CHANGE_LOGIN_BOX', 'login');
+          this.$router.push('/login');
           return;
         }
         if (!this.$store.state.userInfo.emailVerified) {
@@ -216,12 +216,12 @@ export default {
 </script>
 
 <style>
-.icon_location{
+/* .icon_location{
   background: url('~assets/icon_location.svg') center center / contain no-repeat;
   transform: translateY(3px);
 }
 .icon_error{
   background: url('~assets/icon_error.svg') center center / contain no-repeat;
   transform: translateY(3px);
-}
+} */
 </style>

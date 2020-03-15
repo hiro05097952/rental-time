@@ -27,7 +27,8 @@
         </li>
       </ul>
       <ul
-        class="flex justify-between items-center my-4 text-center px-2"
+        class="flex justify-between items-center py-2 my-2 text-center px-2 cursor-pointer
+        hover:bg-gray-100 hover:shadow-md"
         v-for="(item, index) in mailList"
         :key="index"
         @click="$router.push(`/mail/${item.anotherUserId}`)">
@@ -48,11 +49,11 @@
         <li class="w-1/6">
           {{ item.anotherUserName }}
         </li>
-        <li class="w-1/5">
+        <li class="w-1/5 tracking-wider text-sm">
           {{ item.createTime | timeConverter }}
         </li>
         <li class="w-1/3 text-center">
-          {{ item.content }}
+          {{ item.content | contentFilter }}
         </li>
       </ul>
 
@@ -121,10 +122,13 @@ export default {
   },
   filters: {
     timeConverter(val) {
-      const splitArr = String(val).split('T');
-      const date = splitArr[0].replace(/-/g, ' / ');
-      const time = splitArr[1].split('.')[0].substring(0, 5);
+      const splitArr = new Date(val).toLocaleString('zh-TW', { hour12: false }).split(' ');
+      const date = splitArr[0];
+      const time = splitArr[1].substring(0, 5);
       return `${date} ${time}`;
+    },
+    contentFilter(str) {
+      return str.replace(/<br \/>/g, '  ').substring(0, 10);
     },
   },
   computed: {

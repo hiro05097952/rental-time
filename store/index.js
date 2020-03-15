@@ -4,9 +4,6 @@ import Vuex from 'vuex';
 Vue.use(Vuex);
 
 export const mutations = {
-  CHANGE_LOGIN_BOX(state, isOpen) {
-    state.loginBox = isOpen;
-  },
   UPDATE_USER(state, userInfo) {
     state.userInfo = userInfo;
   },

@@ -267,7 +267,7 @@ export default {
 </script>
 
 <style>
-.icon_location{
+/* .icon_location{
   background: url('~assets/icon_location.svg') center center / contain no-repeat;
-}
+} */
 </style>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="61" height="51.98" viewBox="0 0 61 51.98">
+  <g id="icon_header_message_new" transform="translate(-1823 -42)">
+    <path id="Path_167" data-name="Path 167" d="M888.181,1073.767a1.591,1.591,0,0,1-1.59-1.591v-6.818h-4.083a5.415,5.415,0,0,1-5.409-5.409V1042.2a5.415,5.415,0,0,1,5.409-5.409h36.675a5.415,5.415,0,0,1,5.409,5.409v17.753a5.415,5.415,0,0,1-5.409,5.409H897.248l-7.943,7.942A1.589,1.589,0,0,1,888.181,1073.767Zm-5.673-33.8a2.23,2.23,0,0,0-2.227,2.227v17.753a2.23,2.23,0,0,0,2.227,2.227h5.674a1.591,1.591,0,0,1,1.591,1.591v4.568l5.692-5.692a1.589,1.589,0,0,1,1.125-.466h22.593a2.23,2.23,0,0,0,2.227-2.227V1042.2a2.23,2.23,0,0,0-2.227-2.227Z" transform="translate(945.902 -979.786)" fill="#fff"/>
+    <g id="Ellipse_71" data-name="Ellipse 71" transform="translate(1851 42)" fill="#f6bf59" stroke="#fff" stroke-width="2.5">
+      <circle cx="16.5" cy="16.5" r="16.5" stroke="none"/>
+      <circle cx="16.5" cy="16.5" r="15.25" fill="none"/>
+    </g>
+    <text id="_" data-name="!" transform="translate(1868 66)" fill="#fff" font-size="20" font-family="SourceHanSansTW-Bold, Source Han Sans TW" font-weight="700" letter-spacing="0.1em"><tspan x="-3.7" y="0">!</tspan></text>
+  </g>
+</svg>

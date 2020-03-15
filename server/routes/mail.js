@@ -5,6 +5,13 @@ const router = express.Router();
 const db = require('../model/pool');
 const validate = require('../config/validate');
 
+function covertToBase64(passBuf) {
+  if (Buffer.isBuffer(passBuf)) {
+    const buf = Buffer.from(passBuf);
+    return buf.includes('http') ? buf.toString() : buf.toString('base64');
+  }
+  return passBuf;
+}
 router.post('/:toUserId', async (req, res, next) => {
   const { error } = validate.mailValidate(req.body);
   if (error) {
@@ -32,20 +39,20 @@ router.post('/:toUserId', async (req, res, next) => {
 
 router.get('/:userId', async (req, res, next) => {
   try {
-    const mail = await db.query(`SELECT m.toUserId, u.name toUserName, u.img toUserImg, 
-    m.fromUserId, m.fromUserName, m.content, m.createTime
-    FROM (SELECT u.name fromUserName, m.content, m.createTime, m.touserId, m.fromUserId
-    FROM mail m, user u
-    WHERE m.fromUserId = u.userId) m, user u
-    WHERE m.toUserId = u.userId &&
-    (m.toUserId = "${req.session.user.userId}" || m.fromUserId = "${req.session.user.userId}") &&
-    (m.fromUserId = "${req.params.userId}" || m.toUserId = "${req.params.userId}")`);
+    const mail = await db.query(`SELECT * FROM mail WHERE
+    (toUserId = "${req.session.user.userId}" && fromUserId = "${req.params.userId}")
+    || (fromUserId = "${req.session.user.userId}" && toUserId = "${req.params.userId}")`);
+
+    const [userInfo] = await db.query(`SELECT name, userId, img FROM user WHERE userId = "${req.params.userId}"`);
+    userInfo.img = covertToBase64(userInfo.img);
+
     res.send({
       success: true,
       mail,
+      userInfo,
     });
   } catch (err) {
-    next(err.sqlMessage);
+    next(err.sqlMessage || err);
   }
 });
 

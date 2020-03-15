@@ -172,7 +172,7 @@ export default {
 .container {
   @apply min-h-screen flex justify-center items-center text-center mx-auto;
 } */
-.icon_simple{
+/* .icon_simple{
   background: url('~assets/icon_simple.svg') center center / contain no-repeat;
 }
 .icon_safety{
@@ -183,5 +183,5 @@ export default {
 }
 .icon_location{
   background: url('~assets/icon_location.svg') center center / contain no-repeat;
-}
+} */
 </style>

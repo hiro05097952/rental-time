@@ -4,7 +4,7 @@
     bg-blue-600 flex py-10 pt-16 justify-center box-border"
     style="height: 100vh;">
     <div class="absolute text-white text-sm" style="top: 25px; left: 100px;">
-      <nuxt-link to="/" class=" link mr-1">
+      <nuxt-link to="/" class="link mr-1">
         首頁
       </nuxt-link>
       >
@@ -72,7 +72,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .link:hover{
   border-bottom: 1px solid white;
 }

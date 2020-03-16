@@ -60,20 +60,22 @@
           <span class="text-xs">我的點數</span>
         </button>
         <div class="bg-blue-3 h-full relative">
-          <button class="h-full px-3 accountBtn">
+          <button
+            class="h-full px-3 accountBtn"
+            @click="$router.push('/account/edit')">
             <i
               class="icon_user w-5 h-5 inline-block"
-              style="transform: translateY(3px);"
-              @click="$router.push('/account/edit')" />
+              style="transform: translateY(3px);" />
             會員資料
           </button>
           <div
             class="absolute left-0 right-0 m-auto toggleNavbar rounded-b hidden">
-            <button class="px-3 py-4">
+            <button
+              class="px-3 py-4"
+              @click="$router.push('/account/charge')">
               <i
                 class="icon_coin inline-block w-5 h-5"
-                style="transform: translateY(4px);"
-                @click="$router.push('/account/charge')" />
+                style="transform: translateY(4px);" />
               儲值點數
             </button>
             <button class="px-3 py-4">

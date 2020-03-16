@@ -1,6 +1,15 @@
 <template>
-  <div class="px-8 py-8 flex flex-col bg-blue-1">
-    <div class="search border-b border-gray-600 w-full px-3 py-4 pb-6 text-gray-700">
+  <div class="px-8 py-8 pt-12 flex flex-col bg-blue-1 relative">
+    <div class="absolute text-gray-700 text-sm" style="top: 20px; left: 60px;">
+      <nuxt-link to="/" class="link mr-1">
+        首頁
+      </nuxt-link>
+      >
+      <nuxt-link :to="$route.path" class="link mx-1">
+        尋找販時者
+      </nuxt-link>
+    </div>
+    <div class="search border-b border-gray-600 w-full px-3 py-4 pb-6 text-gray-700  font-huninn">
       <div
         class="search__header flex justify-around items-start
         flex-wrap lg:justify-between lg:flex-no-wrap">
@@ -253,7 +262,7 @@
       </div>
       <ul
         class="search__typeWrap flex mt-4 text-gray-800 text-sm font-medium pl-4 select-none
-        flex items-center">
+        flex items-center font-sans">
         <li>
           <h3 class="text-base tracking-wider mr-6">
             接受類型
@@ -392,7 +401,7 @@
             <div class="flex justify-around">
               <button
                 class="bg-orange-400 hover:bg-orange-500 text-white mt-4 w-5/6 mx-1 py-1 font-medium
-                tracking-wider"
+                tracking-wider font-huninn"
                 style="border-radius: 20px;">
                 立即聯繫
               </button>
@@ -573,5 +582,8 @@ export default {
   overflow: hidden;
   word-break: break-all;
   min-height: 54px
+}
+.link:hover{
+  border-bottom: 1px solid gray;
 }
 </style>

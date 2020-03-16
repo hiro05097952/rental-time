@@ -63,7 +63,8 @@
           <button class="h-full px-3 accountBtn">
             <i
               class="icon_user w-5 h-5 inline-block"
-              style="transform: translateY(3px);" />
+              style="transform: translateY(3px);"
+              @click="$router.push('/account/edit')" />
             會員資料
           </button>
           <div
@@ -71,7 +72,8 @@
             <button class="px-3 py-4">
               <i
                 class="icon_coin inline-block w-5 h-5"
-                style="transform: translateY(4px);" />
+                style="transform: translateY(4px);"
+                @click="$router.push('/account/charge')" />
               儲值點數
             </button>
             <button class="px-3 py-4">
@@ -80,7 +82,9 @@
                 style="transform: translateY(4px);" />
               我的商品
             </button>
-            <button class="px-3 py-4">
+            <button
+              class="px-3 py-4"
+              @click="$router.push('/account/myorder')">
               <i
                 class="icon_list inline-block w-5 h-5"
                 style="transform: translateY(4px);" />
@@ -97,6 +101,7 @@
         <button class="bg-blue-3 h-full px-4">
           <i
             class="icon_notify w-6 h-6 inline-block"
+            @click="$router.push('/mail')"
             style="transform: translateY(3px);" />
         </button>
       </div>
@@ -120,7 +125,7 @@
           <span class="text-xl">じはんき</span>
         </h2>
       </div>
-      <ul class="flex flex-col mt-12 md:mt-0 py-1">
+      <ul class="flex flex-col mt-6 md:mt-0 py-1">
         <li class="text-2xl mb-5 font-huninn">
           服務須知
         </li>
@@ -162,7 +167,7 @@
       </ul>
       <button
         class="messageBtn border-2 border-white text-lg px-4 py-1 pl-10
-        hover:text-blue-3 hover:bg-white font-huninn relative"
+        hover:text-blue-3 hover:bg-white font-huninn relative mt-10 md:mt-0"
         style="border-radius: 32px;">
         <i
           class="h-5 w-5 inline-block icon_message absolute
@@ -171,7 +176,7 @@
         24 小時線上客服
       </button>
       <div
-        class="flex justify-between w-1/6
+        class="flex justify-between w-1/3 md:w-1/6 mt-6 md:mt-0
         mr-10 py-1">
         <nuxt-link
           to="/"
@@ -270,5 +275,8 @@ export default {
 }
 .messageBtn:hover i {
   filter: invert(44%) sepia(82%) saturate(7078%) hue-rotate(193deg) brightness(88%) contrast(101%);
+}
+nav button{
+  outline: none;
 }
 </style>

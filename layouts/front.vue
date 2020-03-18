@@ -97,7 +97,7 @@
             <button
               class="py-4 pb-5 rounded-b
               w-full"
-              @click="$store.dispatch('logout')">
+              @click="logout">
               登出
             </button>
           </div>
@@ -207,6 +207,10 @@ export default {
     };
   },
   methods: {
+    logout() {
+      this.$store.dispatch('logout');
+      this.$router.push('/');
+    },
   },
 };
 </script>

@@ -88,98 +88,42 @@
       </ul>
     </div>
 
-    <div class="recommend px-3 sm:px-12 py-8 bg-blue-1">
+    <div
+      class="recommend px-3 sm:px-12 pt-8 pb-16"
+      style="background: #6ec5ff;">
       <h2
         class="recommend__title text-2xl font-medium font-huninn text-center py-3
         tracking-wider text-gray-800">
         精選販時者
       </h2>
 
-      <div class="recommend__container flex flex-col sm:flex-row flex-wrap">
-        <div
-          class="recommend__container__item md:w-1/2 lg:w-1/4 py-4 px-4 cursor-pointer"
-          v-for="(item, index) in products"
-          :key="index">
-          <div
-            class="bg-white relative shadow p-2 rounded-lg text-gray-800 hover:shadow-lg">
-            <div
-              class="right-0 mt-4 rounded-l-full absolute text-center
-              font-bold text-xs text-white px-2 py-1 bg-orange-500
-              tracking-wider"
-              v-if="item.identified">
-              真人認證
-            </div>
-            <img
-              :src="item.coverImg ? `data:image/png;base64,${item.coverImg}`: 'http://alpha.backer.id/assets/images/bg/kucingmalas.jpeg'"
-              class="h-32 rounded-lg w-full object-cover">
-            <div class="flex justify-center">
-              <img
-                :src="item.img && !item.img.includes('http') ?
-                  `data:image/png;base64,${item.img}`: item.img ? item.img :
-                    'https://image.flaticon.com/icons/svg/545/545272.svg'"
-                class="rounded-full -mt-6 border-4 object-center object-cover
-                border-white mr-2 h-16 w-16">
-            </div>
-            <div
-              class="py-2 px-2 text-center"
-              style="height: 72px">
-              <div class="font-bold text-center">
-                {{ item.name }}
-              </div>
+      <card :products="products" />
 
-              <div
-                class="text-sm font-light text-center my-1 bg-orange-300 inline-block
-                px-4 leading-6 rounded-sm">
-                {{ item.slogan }}
-              </div>
-            </div>
-            <div class="px-2">
-              <h3
-                class="text-lg font-bold tracking-wider text-center"
-                style="-webkit-line-clamp: 2; -webkit-box-orient: vertical;
-                display: -webkit-box; overflow: hidden; word-break: break-all;
-                min-height: 54px">
-                {{ item.title }}
-              </h3>
-              <div class="flex items-center justify-center mt-2">
-                <p class="font-bold text-sm text-gray-700">
-                  <i
-                    class="w-4 h-4 inline-block icon_location"
-                    style="filter: opacity(0.6); transform: translateY(2px);" />
-                  {{ item.meetingPlace }}
-                </p>
-                <p class="text-sm text-white bg-green-600 mx-2 px-2">
-                  {{ item.category }}
-                </p>
-              </div>
-              <p class="font-bold text-sm text-gray-700 mt-2 text-center">
-                NT$ {{ item.price }} / 30 分
-              </p>
-            </div>
-            <div class="flex justify-around">
-              <button
-                class="bg-red-500 hover:bg-red-700 text-white rounded
-              leading-9 mt-3 w-1/2 mx-1">
-                預約
-              </button>
-              <button
-                class="bg-green-500 hover:bg-green-700 text-white
-              rounded leading-9 mt-3 w-1/2 mx-1">
-                事先詢問
-              </button>
-            </div>
-          </div>
-        </div>
+      <div class="flex flex-col items-center mt-12">
+        <i
+          class="icon_dot inline-block w-8 mb-10"
+          style="border-top: 5px dotted white; height: 1px; transform: rotate(90deg);" />
+        <button
+          class="px-8 py-1 text-blue-2 bg-white shadow-lg font-medium font-huninn
+          tracking-wider border hover:border-gray-500 focus:outline-none select-none"
+          style="border-radius: 20px;">
+          尋找更多
+        </button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import card from '~/components/card.vue';
+
 export default {
   name: 'Homepage',
+  components: {
+    card,
+  },
   async asyncData({ $axios }) {
-    const { data } = await $axios.get('/api/products?limit=4');
+    const { data } = await $axios.get('/api/products?limit=6');
     return { products: data.products };
   },
   layout: 'front',
@@ -193,22 +137,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-/* Sample `apply` at-rules with Tailwind CSS
-.container {
-  @apply min-h-screen flex justify-center items-center text-center mx-auto;
-} */
-/* .icon_simple{
-  background: url('~assets/icon_simple.svg') center center / contain no-repeat;
-}
-.icon_safety{
-  background: url('~assets/icon_safety.svg') center center / contain no-repeat;
-}
-.icon_enjoy{
-  background: url('~assets/icon_enjoy.svg') center center / contain no-repeat;
-}
-.icon_location{
-  background: url('~assets/icon_location.svg') center center / contain no-repeat;
-} */
 .banner {
   background: url('~assets/img_home.png') center center / cover no-repeat;
   width: 100vw;

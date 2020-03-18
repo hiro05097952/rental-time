@@ -120,8 +120,9 @@ async function start() {
   app.use(nuxt.render);
 
   // Listen the server
-  // const server = app.listen(port, host);
-  const server = https.createServer(nuxt.options.server.https, app).listen(port, host);
+  const server = process.env.NODE_ENV !== 'production'
+    ? https.createServer(nuxt.options.server.https, app).listen(port, host)
+    : app.listen(port, host);
   // socket
   socketStart(server);
 

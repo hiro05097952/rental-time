@@ -147,9 +147,12 @@
           </div>
         </div>
         <div class="mb-6">
-          <label class="block mb-2 text-sm font-bold text-gray-700 font-huninn" for="email">
-            帳號
-          </label>
+          <div class="flex justify-between items-center">
+            <label class="block mb-2 text-sm font-bold text-gray-700 font-huninn" for="email">
+              帳號
+            </label>
+            <span class="text-xs text-red-500 mr-2 font-huninn">日後無法更改 Email</span>
+          </div>
           <ValidationProvider
             rules="required|email"
             v-slot="{ errors, classes }"
@@ -218,7 +221,7 @@
           <button
             class="w-1/3 md:w-1/4 px-4 py-1 font-bold text-white bg-blue-3 rounded-lg
                 hover:bg-blue-600 focus:outline-none shadow-lg font-huninn
-                tracking-wider"
+                tracking-wider focus:outline-none select-none"
             type="button"
             @click.prevent="signUp">
             註冊

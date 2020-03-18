@@ -1,28 +1,40 @@
 <template>
-  <div class="bg-blue-600 flex py-16 justify-center">
-    <div class="rounded-lg bg-white w-5/6 px-4 py-4">
-      <h2 class="text-2xl text-center mb-6 text-gray-800 font-medium tracking-wider">
+  <div class="bg-blue-600 flex py-16 justify-center relative">
+    <div class="absolute text-white text-sm" style="top: 20px; left: 9%;">
+      <nuxt-link to="/" class="link mr-1">
+        首頁
+      </nuxt-link>
+      >
+      <nuxt-link :to="$route.path" class="link mx-1">
+        信箱
+      </nuxt-link>
+    </div>
+
+    <div class="rounded-lg bg-white md:w-5/6 w-11/12 px-2 md:px-4 py-4">
+      <h2
+        class="text-2xl text-center mb-6 text-gray-800 font-medium tracking-wider
+        font-huninn">
         信箱
       </h2>
       <ul
         class="border-b border-gray-600 flex justify-between px-2 pb-1
-        text-center">
-        <li class="w-1/12">
+        text-center font-huninn">
+        <li class="w-1/12 hidden md:block">
           選取
         </li>
-        <li class="w-1/12">
+        <li class="w-1/12 hidden md:block">
           標記
         </li>
-        <li class="w-1/6">
+        <li class="w-1/4 md:w-1/6">
           照片
         </li>
-        <li class="w-1/6">
+        <li class="w-1/4 md:w-1/6">
           名稱
         </li>
-        <li class="w-1/5">
+        <li class="w-1/4 md:w-1/5">
           時間
         </li>
-        <li class="w-1/3">
+        <li class="w-1/4 md:w-1/3">
           主旨
         </li>
       </ul>
@@ -32,27 +44,37 @@
         v-for="(item, index) in mailList"
         :key="index"
         @click="$router.push(`/mail/${item.anotherUserId}`)">
-        <li class="w-1/12">
-          <input type="checkbox" name="" id="">
+        <li
+          class="w-1/12 hidden md:block"
+          @click.stop>
+          <input type="checkbox" name="selectMail" id="selectMail" class="hidden">
+          <label
+            for="selectMail"
+            class="checkbox h-5 w-5 rounded-sm border
+            border-gray-600 block shadow-sm text-center mx-auto
+            hover:border-gray-700 hover:bg-blue-1" />
         </li>
-        <li class="w-1/12">
-          星
+        <li class="w-1/12 hidden md:block">
+          <button
+            @click.stop
+            class="w-5 h-5 icon_star_normal opacity-50 focus:outline-none"
+            style="transform: translateY(3px);" />
         </li>
-        <li class="w-1/6">
+        <li class="w-1/4 md:w-1/6">
           <img
             :src="item.anotherUserImg && !item.anotherUserImg.includes('http') ?
               `data:image/png;base64,${item.anotherUserImg}` :
               item.anotherUserImg ? item.anotherUserImg :
-              'https://image.flaticon.com/icons/svg/149/149072.svg'"
+              'https://image.flaticon.com/icons/svg/545/545272.svg'"
             class="bg-indigo-200 w-20 h-20 rounded mx-auto">
         </li>
-        <li class="w-1/6">
+        <li class="w-1/4 md:w-1/6">
           {{ item.anotherUserName }}
         </li>
-        <li class="w-1/5 tracking-wider text-sm">
+        <li class="w-1/4 md:w-1/5 tracking-wider text-sm">
           {{ item.createTime | timeConverter }}
         </li>
-        <li class="w-1/3 text-center">
+        <li class="w-1/4 md:w-1/3 text-center">
           {{ item.content | contentFilter }}
         </li>
       </ul>
@@ -128,7 +150,7 @@ export default {
       return `${date} ${time}`;
     },
     contentFilter(str) {
-      return str.replace(/<br \/>/g, '  ').substring(0, 10);
+      return str.replace(/<br \/>/g, '  ').substring(0, 20);
     },
   },
   computed: {
@@ -154,6 +176,18 @@ export default {
 };
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+.icon_star_normal{
+  background: url(~assets/icon_star_black.svg) center center / contain no-repeat;
+  &:hover{
+    background: url(~assets/icon_star_yellow.svg) center center / contain no-repeat;
+    opacity: 1;
+  }
+}
+.icon_star_fill{
+  background: url(~assets/icon_star_yellow.svg) center center / contain no-repeat;
+}
+.link:hover{
+  border-bottom: 1px solid white;
+}
 </style>

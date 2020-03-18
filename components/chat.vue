@@ -1,27 +1,33 @@
 <template>
-  <div class="flex flex-col justify-between h-full">
+  <div
+    class="flex flex-col justify-between h-full relative"
+    :class="{'mailChat' : $route.path.includes('mail')}">
     <div
       style="height: 78%;"
-      class="overflow-auto flex"
+      class="overflow-auto flex mt-24 md:mt-0 mb-2 md:mb-0"
       ref="content">
-      <div class="w-1/3 border border-red-500" v-if="$route.path.includes('mail')">
+      <div
+        class="w-full md:w-1/4 absolute flex flex-row md:flex-col
+        items-center mailImgWrap"
+        v-if="$route.path.includes('mail')">
         <img
           :src="userInfo.img && !userInfo.img.includes('http') ?
             `data:image/png;base64,${userInfo.img}`: userInfo.img ? userInfo.img :
-              'https://image.flaticon.com/icons/svg/149/149072.svg'"
-          class="bg-teal-200">
-        <p class="text-center my-1 tracking-wider">
+              'https://image.flaticon.com/icons/svg/545/545272.svg'"
+          class="bg-teal-200 w-20 h-20 md:w-32 md:h-32 lg:w-40 lg:h-40 rounded mr-4 md:mr-0">
+        <p
+          class="text-center my-1 tracking-wider text-gray-900">
           {{ userInfo.name }}
         </p>
       </div>
       <ul
         class="px-2 pr-4 tracking-wider w-full"
-        :class="{'w-2/3 border border-teal-500': $route.path.includes('mail')}">
+        :class="{'mailContent': $route.path.includes('mail')}">
         <li
           class="relative flex flex-col my-2"
           v-for="(item, index) in msg"
           :key="index">
-          <!-- eslint-disable-next-line vue/no-v-html vue/max-attributes-per-line -->
+          <!-- eslint-disable-next-line -->
           <p v-html="item.content"
              class="px-2 rounded-lg break-all"
              :class="{
@@ -32,7 +38,7 @@
             class="self-center"
             style="font-size: 8px"
             v-if="item.createTime">
-            {{ item.createTime | dateConverter }}
+            {{ time(item.createTime) }}
           </span>
         </li>
       </ul>
@@ -41,11 +47,11 @@
       class="relative flex w-full items-center"
       style="height: 20%;">
       <div
-        class="w-1/4 flex items-end h-full"
+        class="w-1/5 items-end h-full hidden md:flex"
         v-if="$route.path.includes('mail')">
         <button
           class="px-6 py-1 bg-blue-500 rounded
-          text-white font-medium hover:bg-blue-600 ml-2 mb-1"
+          text-white font-medium hover:bg-blue-600 ml-2"
           @click="$router.go(-1)">
           回前頁
         </button>
@@ -54,13 +60,13 @@
         class="h-full border-gray-500 border-2 px-2 py-1
             text-sm tracking-wider"
         style="outline: none; resize: none;"
-        :class="[$route.path.includes('mail')? 'w-3/4' : 'w-full']"
+        :class="[$route.path.includes('mail')? 'w-full md:w-4/5' : 'w-full']"
         v-model="text"
         placeholder="請輸入訊息..."
         @keypress.enter="sendText" />
       <button
         class="px-2 bg-blue-500 rounded text-white
-            absolute my-auto"
+        absolute my-auto hover:bg-blue-400 select-none focus:outline-none font-huninn"
         style="height: 90%; top: 0; bottom: 0; right: 5px;"
         @click="sendText">
         送出
@@ -116,15 +122,23 @@ export default {
       });
     },
   },
-  filters: {
-    dateConverter(val) {
-      return new Date(val).toLocaleString('zh-TW', { hour12: false }).split(' ')[1].substr(0, 5);
+  computed: {
+    time() {
+      return (val) => {
+        const dtArr = new Date(val).toLocaleString('zh-TW', { hour12: false }).split(' ');
+        const date = dtArr[0];
+        const time = dtArr[1].substr(0, 5);
+        if (this.$route.path.includes('mail')) {
+          return `${date} ${time}`;
+        }
+        return time;
+      };
     },
   },
 };
 </script>
 
-<style>
+<style scoped lang="scss">
 .myMessage + span {
   margin-left: 55px;
   margin-right: 0;
@@ -132,5 +146,28 @@ export default {
 li span{
   margin-right: 55px;
   margin-top: 2px;
+}
+.mailChat{
+  .myMessage + span {
+    margin-left: 105px;
+    margin-right: 0;
+  }
+  li span{
+    margin-right: 105px;
+    margin-top: 2px;
+  }
+}
+.mailContent.mailContent{
+  @apply w-4/5 ml-auto;
+}
+.mailImgWrap.mailImgWrap{
+  top: -5px;
+  left: 10px;
+}
+@media (min-width: 767px) {
+  .mailImgWrap.mailImgWrap{
+    top: 0;
+    left: -4%;
+  }
 }
 </style>

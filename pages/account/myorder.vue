@@ -3,16 +3,16 @@
     <div
       class="shadow-xl
         rounded-lg w-full sm:w-11/12 lg:w-5/6 mx-auto bg-white px-2 lg:px-10 pt-12 pb-8 relative">
-      <div class="btnWrap absolute flex" style="top: -40px; left: 40px;">
+      <div class="btnWrap absolute flex font-huninn" style="top: -40px; left: 40px;">
         <button
-          class="px-6 py-2 text-gray-900 font-bold tracking-wider"
+          class="px-6 py-2 text-gray-800 font-bold tracking-wider"
           :class="[isSeller ? 'activeBtn': 'navBtn']"
           style="border-radius: 23px 23px 0 0; outline: none;"
           @click="isSeller = true">
           我的販時
         </button>
         <button
-          class="px-6 py-2 text-gray-900 font-bold tracking-wider"
+          class="px-6 py-2 text-gray-800 font-bold tracking-wider"
           :class="[!isSeller ? 'activeBtn': 'navBtn']"
           style="border-radius: 23px 23px 0 0; outline: none;"
           @click="isSeller = false">

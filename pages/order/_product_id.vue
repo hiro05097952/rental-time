@@ -2,67 +2,111 @@
   <div class="bg-blue-300 flex py-16 justify-center">
     <div
       class="border-2 border-gray-600 shadow-xl
-        rounded-lg w-11/12 md:w-5/6 lg:w-2/3 mx-auto bg-white px-4 lg:px-12 py-12">
-      <ul class="tracking-wider">
+        rounded-lg w-11/12 md:w-5/6 lg:w-2/3 mx-auto bg-white px-4 lg:px-12 py-12
+        relative pb-8">
+      <div class="absolute mt-10 mr-10 md:mr-24 top-0 right-0">
+        <img
+          :src="product.img && !product.img.includes('http') ?
+            `data:image/png;base64,${product.img}`: product.img ? product.img :
+              'https://image.flaticon.com/icons/svg/545/545272.svg'"
+          class="rounded-lg shadow object-center object-cover md:h-32 md:w-32
+          w-24 h-24 lg:h-48 lg:w-48">
+        <p class="text-center mt-2 text-gray-800">
+          {{ product.name }}
+        </p>
+      </div>
+      <ul class="tracking-wider text-gray-800">
         <li class="flex mb-6 items-center">
-          <h2 class="text-lg w-1/4 md:w-1/6 text-right">
+          <h2 class="md:text-xl w-1/4 md:w-1/6 text-right font-medium font-huninn">
             服務名稱
           </h2>
-          <p class="text-xl ml-10">
+          <p class="text-base md:text-lg ml-10 text-gray-900 w-1/3 md:w-2/5">
             {{ product.title }}
           </p>
         </li>
         <li class="flex mb-6 items-center">
-          <h2 class="text-lg w-1/4 md:w-1/6 text-right">
+          <h2 class="md:text-xl w-1/4 md:w-1/6 text-right font-medium font-huninn">
             時間價格
           </h2>
-          <p class="text-xl ml-10">
-            NT$ {{ product.price }} / {{ product.atLeast }} 分
+          <p class="md:text-xl ml-10 text-gray-900 font-huninn">
+            {{ product.price }}
+            <span
+              class="text-sm font-medium inline-block"
+              style="transform: translateY(-7px)">點數</span>
+            /
+            30
+            <span
+              class="text-sm font-medium inline-block"
+              style="transform: translateY(-7px)">分</span>
           </p>
         </li>
         <li class="flex mb-6 items-center">
-          <h2 class="text-lg w-1/4 md:w-1/6 text-right">
+          <h2 class="md:text-xl w-1/4 md:w-1/6 text-right font-medium font-huninn">
             日期
           </h2>
-          <p class="text-xl ml-10">
-            {{ $route.query.startTime | timeDisplay }}
+          <p class="text-base md:text-lg ml-10 text-gray-900 font-huninn">
+            {{ time($route.query.startTime, true) }}
           </p>
         </li>
         <li class="flex mb-6 items-center">
-          <h2 class="text-lg w-1/4 md:w-1/6 text-right">
+          <h2 class="md:text-xl w-1/4 md:w-1/6 text-right font-medium font-huninn">
             時段
           </h2>
-          <p class="text-xl ml-10">
-            test
+          <p class="text-base md:text-lg ml-10 text-gray-900">
+            {{ time($route.query.startTime, false) }}
           </p>
         </li>
         <li class="flex mb-8 items-center">
-          <h2 class="text-lg w-1/4 md:w-1/6 text-right">
+          <h2 class="md:text-xl w-1/4 md:w-1/6 text-right font-medium font-huninn">
             交談方式
           </h2>
-          <p class="text-xl ml-10">
+          <p class="text-base md:text-lg ml-10 text-gray-900">
             {{ $route.query.type | typeDisplay }}
           </p>
         </li>
         <li class="flex mb-6 items-center">
-          <h2 class="text-lg w-1/4 md:w-1/6 text-right">
+          <h2 class="md:text-xl w-1/4 md:w-1/6 text-right font-medium font-huninn">
             備註留言
           </h2>
           <textarea
             rows="5"
-            class="border-2 rounded text-lg px-2 py-1 w-1/2 ml-10 md:w-4/6"
+            class="border-2 rounded text-base md:text-lg px-2 py-1 w-1/2 ml-10 md:w-4/6"
+            style="min-height: 5rem; max-height: 20rem;"
             v-model="remark" />
         </li>
       </ul>
-      <div class="flex justify-around mt-12">
+
+      <div
+        class="text-xl border-b border-gray-500 mt-12 pb-1 flex justify-end
+        text-gray-800">
+        <div class="font-huninn">
+          <span class="text-base mr-2">本次扣除</span>
+          {{ product.price * $route.query.qty }}
+          <span
+            class="text-sm font-medium inline-block ml-2"
+            style="transform: translateY(-7px)">點數
+          </span>
+        </div>
+        <div class="ml-10 font-huninn">
+          <span class="text-base mr-2">購買後剩餘</span>
+          {{ $store.state.userInfo.point - product.price * $route.query.qty }}
+          <span
+            class="text-sm font-medium inline-block ml-2"
+            style="transform: translateY(-7px)">點數
+          </span>
+        </div>
+      </div>
+
+      <div class="flex justify-center mt-16 font-huninn md:text-lg">
         <button
-          class="border-2 border-blue-700 py-1 px-4 rounded
-          font-bold text-blue-700 hover:bg-blue-700 hover:text-white">
+          class="bg-teal-500 py-2 px-8 rounded
+          font-medium text-white hover:bg-teal-600 mr-10"
+          @click="$router.go(-1)">
           上一步
         </button>
         <button
-          class="rounded bg-yellow-500 px-4 py-1
-          text-bold text-white hover:bg-yellow-600"
+          class="rounded bg-blue-3 px-8 py-2
+          font-medium text-white hover:bg-blue-2"
           @click="order">
           確認送出
         </button>
@@ -113,6 +157,19 @@ export default {
           title: response.data.message,
         });
       }
+    },
+  },
+  computed: {
+    time() {
+      return (val, isDate) => {
+        const dt = new Date(Number(val));
+        const dueDt = new Date(Number(val) + 30 * 60000 * this.$route.query.qty);
+        return isDate ? `${dt.getFullYear()} / ${dt.getMonth() + 1} / ${dt.getDate()}`
+          : `${dt.getHours() < 10 ? `0${dt.getHours()}` : dt.getHours()}
+          : ${dt.getSeconds() < 10 ? `0${dt.getSeconds()}` : dt.getSeconds()} ~ 
+          ${dueDt.getHours() < 10 ? `0${dueDt.getHours()}` : dueDt.getHours()}
+          : ${dueDt.getSeconds() < 10 ? `0${dueDt.getSeconds()}` : dueDt.getSeconds()}`;
+      };
     },
   },
   filters: {

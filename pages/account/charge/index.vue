@@ -1,20 +1,20 @@
 <template>
   <div>
-    <div class="w-full py-12 flex items-center border-b-2 border-gray-500">
-      <h2 class="w-5/12">
+    <div class="w-full py-12 flex items-center border-b-2 border-gray-500 font-huninn">
+      <h2 class="w-5/12 text-lg">
         剩餘點數
       </h2>
       <p class="text-3xl font-bold tracking-widest">
-        1000
+        {{ $store.state.userInfo.point }}
       </p>
       <span class="text-sm mb-4 ml-2 font-bold">點數</span>
     </div>
 
-    <div class="py-8 pb-4">
-      <h2 class="inline-block">
+    <div class="py-8 pb-4 font-huninn">
+      <h2 class="inline-block text-lg">
         點數選購
       </h2>
-      <p class="text-sm inline-block ml-4 font-light">
+      <p class="text-sm inline-block ml-4 font-light font-sans">
         選擇要購買的方案
       </p>
       <ul class="flex flex-wrap mt-6 justify-between px-8">
@@ -40,8 +40,10 @@
       </ul>
     </div>
 
-    <div class="mb-10">
-      <h2>付款方式</h2>
+    <div class="mb-10 font-huninn">
+      <h2 class="text-lg">
+        付款方式
+      </h2>
       <ul class="mt-4 px-8">
         <li
           class="h-12 border border-gray-400 rounded-lg mb-4
@@ -54,9 +56,9 @@
     </div>
 
     <button
-      class="border-blue-700 rounded w-1/3
-        py-1 text-blue-700 font-bold tracking-wider block mx-auto
-        hover:bg-blue-700 hover:text-white"
+      class="border-blue-700 rounded-lg w-1/3 text-lg
+        py-2 text-blue-700 font-bold tracking-wider block mx-auto
+        hover:bg-blue-700 hover:text-white focus:outline-none select-none font-huninn"
       style="border: 3px solid"
       @click="charge">
       前往結帳

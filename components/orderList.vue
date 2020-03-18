@@ -2,7 +2,7 @@
   <div>
     <ul
       class="flex justify-around items-center border-b border-gray-400
-      pb-2 tracking-wider mb-4 text-center">
+      pb-2 tracking-wider mb-4 text-center font-medium font-huninn text-gray-800 text-lg">
       <li class="w-2/12 lg:w-1/12">
         {{ isSeller? '購時者' : '販時者' }}
       </li>
@@ -27,13 +27,13 @@
     </ul>
     <ul
       class="flex justify-around items-center text-sm sm:text-base text-center py-2
-        tracking-wider font-medium text-gray-900"
+        tracking-wider text-gray-900 font-huninn"
       v-for="(item, index) in orders"
       :key="index">
-      <li class="w-2/12 lg:w-1/12">
+      <li class="w-2/12 lg:w-1/12 font-sans">
         {{ item.name }}
       </li>
-      <li class="w-3/12">
+      <li class="w-3/12 font-sans">
         {{ item.title }}
       </li>
       <li class="w-3/12 lg:w-2/12">
@@ -42,16 +42,16 @@
       <li class="w-2/12 hidden lg:inline-block">
         {{ period(item) }}
       </li>
-      <li class="w-2/12 hidden md:inline-block">
+      <li class="w-2/12 hidden md:inline-block font-sans">
         {{ item.type | typeDisplay }}
       </li>
-      <li class="w-2/12">
+      <li class="w-2/12 font-sans">
         {{ item.status | statusDisplay }}
       </li>
       <li class="w-2/12 lg:w-1/12">
         <button
-          class="px-4 py-1 bg-indigo-500 rounded-md text-white text-sm
-            hover:bg-indigo-600"
+          class="px-4 py-1 bg-blue-2 rounded-md text-white text-sm
+            hover:bg-blue-3"
           @click="checkInfo(item)">
           查看
         </button>
@@ -59,7 +59,7 @@
     </ul>
     <div
       v-if="!orders.length"
-      class="text-2xl text-gray-800 font-bold ml-10 mt-8">
+      class="text-2xl text-gray-800 font-medium ml-10 mt-8 font-huninn tracking-wide">
       目前暫無訂單資料
     </div>
   </div>
@@ -117,8 +117,8 @@ export default {
     },
   },
   filters: {
-    dateDisplay(value) {
-      return String(value).split('T')[0].replace(/-/g, ' / ');
+    dateDisplay(val) {
+      return new Date(val).toLocaleString('zh-TW', { hour12: false }).split(' ')[0];
     },
     typeDisplay(value) {
       switch (value) {

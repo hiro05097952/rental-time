@@ -80,7 +80,6 @@ export default {
       viewport: {
         width: 200,
         height: 200,
-        type: 'circle',
       },
       isProduct: false,
     };

@@ -27,11 +27,11 @@
         </li>
         <li>
           <nuxt-link
-            to="/"
+            to="/products/edit"
             class="text-white border-2 border-white font-medium
             hover:bg-white hover:text-blue-3 px-4 py-2"
             style="border-radius: 32px">
-            我要販物
+            我要販時
           </nuxt-link>
         </li>
       </ul>
@@ -78,7 +78,9 @@
                 style="transform: translateY(4px);" />
               儲值點數
             </button>
-            <button class="px-3 py-4">
+            <button
+              class="px-3 py-4"
+              @click="$router.push('/products?myProducts=true')">
               <i
                 class="icon_time inline-block w-5 h-5"
                 style="transform: translateY(4px);" />
@@ -100,10 +102,11 @@
             </button>
           </div>
         </div>
-        <button class="bg-blue-3 h-full px-4">
+        <button
+          class="bg-blue-3 h-full px-4"
+          @click="$router.push('/mail')">
           <i
             class="icon_notify w-6 h-6 inline-block"
-            @click="$router.push('/mail')"
             style="transform: translateY(3px);" />
         </button>
       </div>

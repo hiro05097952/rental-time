@@ -95,7 +95,7 @@
             <img
               :src="product.img && !product.img.includes('http') ?
                 `data:image/png;base64,${product.img}`: product.img ? product.img :
-                  'https://image.flaticon.com/icons/svg/149/149072.svg'"
+                  'https://image.flaticon.com/icons/svg/545/545272.svg'"
               class="rounded-lg shadow object-center object-cover h-48 w-48">
             <div class="ml-8 w-full tracking-wider">
               <h3 class="text-xl font-medium text-gray-900 tracking-widest">
@@ -240,18 +240,28 @@
           </div>
         </div>
 
-        <button
-          class="bg-blue-500 hover:bg-blue-700 text-white rounded-lg mt-3 w-full
+        <div v-if="!($store.state.userInfo && $store.state.userInfo.userId === product.userId)">
+          <button
+            class="bg-blue-500 hover:bg-blue-700 text-white rounded-lg mt-3 w-full
           py-2 font-medium text-lg tracking-wider shadow font-huninn"
-          @click="$router.push(`/mail/${product.userId}`)">
-          事先諮詢
-        </button>
-        <button
-          class="bg-orange-400 hover:bg-orange-500 text-white rounded-lg mt-3 w-full
+            @click="$router.push(`/mail/${product.userId}`)">
+            事先諮詢
+          </button>
+          <button
+            class="bg-orange-400 hover:bg-orange-500 text-white rounded-lg mt-3 w-full
           py-2 font-medium text-lg tracking-wider shadow font-huninn"
-          @click="order">
-          申請預約
-        </button>
+            @click="order">
+            申請預約
+          </button>
+        </div>
+        <div v-else>
+          <button
+            class="bg-blue-500 hover:bg-blue-700 text-white rounded-lg mt-3 w-full
+          py-2 font-medium text-lg tracking-wider shadow font-huninn"
+            @click="$router.push(`/products/edit/${product.productId}`)">
+            編輯
+          </button>
+        </div>
       </div>
     </div>
   </div>

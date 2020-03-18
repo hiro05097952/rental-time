@@ -1,70 +1,166 @@
 <template>
-  <div class="lg:px-8 py-8 text-gray-800">
+  <div
+    class="lg:px-8 pt-12 pb-8 text-gray-800 relative"
+    style="background: #61c5ff">
+    <div class="linkWrap absolute text-white text-sm font-sans" style="top: 20px;">
+      <nuxt-link to="/" class="link mr-1">
+        首頁
+      </nuxt-link>
+      >
+      <nuxt-link to="/products/edit" class="link mx-1" v-if="!$route.params.edit_id">
+        我要販時
+      </nuxt-link>
+
+      <div v-else class="inline-block">
+        <nuxt-link to="/products" class="link mx-1">
+          尋找販時
+        </nuxt-link>
+        >
+        <nuxt-link :to="`/products/${$route.params.edit_id}`" class="link mx-1">
+          {{ product.title }}
+        </nuxt-link>
+        >
+        <nuxt-link :to="$route.path" class="link mx-1">
+          編輯
+        </nuxt-link>
+      </div>
+    </div>
+
     <ValidationObserver
-      class="bg-white shadow-md rounded px-2 lg:px-8 pt-6 pb-8 mb-4 flex flex-col
-      w-11/12 lg:w-5/6 mx-auto border mt-5"
+      class="bg-white shadow-md px-2 lg:px-8 pt-12 pb-8 mb-4 flex flex-col
+      w-11/12 lg:w-5/6 mx-auto border border-gray-600 mt-5 font-huninn"
+      style="border-radius: 20px;"
       ref="productForm">
-      <div class="flex flex-col items-center justify-around mb-10 mx-auto w-full md:w-2/3">
+      <div class="flex items-center mb-6 mx-auto w-full md:w-4/5 justify-around">
         <img
           :src="cacheImg.includes('base64') ? cacheImg : `data:image/png;base64,${cacheImg}`"
-          class="border-2 object-center object-cover border-gray-300 w-full h-48
-          shadow-lg rounded"
+          class="border object-center object-cover border-gray-300 w-3/5 h-56
+          shadow rounded-lg"
           v-if="cacheImg">
         <div
-          class="border-2 border-gray-300 w-full h-48
-          shadow-lg text-center text-2xl font-bold py-20 text-gray-500
-          tracking-wider"
+          class="border border-gray-300 w-3/5 h-56
+          shadow text-center text-2xl font-bold text-gray-500 rounded-lg
+          tracking-wider select-none"
+          style="line-height: 14rem;"
           v-else>
           請上傳圖片
         </div>
         <label
-          class="bg-blue-500 hover:bg-blue-700 text-white
-          font-semibold px-12 h-10 rounded-sm mt-6 tracking-wider
-          text-lg inline-block py-2"
+          class="bg-blue-3 hover:bg-blue-2 text-white
+          font-semibold px-12 h-10 rounded mt-6 tracking-wider
+          text-lg inline-block py-2 select-none"
           for="coverImg">
           更換
           <button id="coverImg" class="hidden" @click="editImg = true" />
         </label>
       </div>
 
-      <div class="md:flex mb-8">
-        <div class="w-full px-3">
-          <label
-            class="block tracking-wide font-bold mb-2"
-            for="title">
-            標題
-          </label>
-          <ValidationProvider rules="required|max:50" name="標題" v-slot="{errors, classes}">
-            <div :class="classes">
-              <input
-                class="appearance-none block w-full
-                border border-grey-lighter rounded py-3 px-4"
-                id="title"
-                type="text"
-                placeholder="請輸入標題"
-                v-model="product.title">
-              <span>{{ errors[0] }}</span>
-            </div>
-          </ValidationProvider>
+      <div class="w-full px-3 mb-12 flex justify-center">
+        <div class="relative inline-block w-40 mr-5 md:mr-10 md:-ml-24 lg:-ml-56">
+          <select
+            style="border-radius: 25px;"
+            class="block appearance-none w-full bg-white border h-10
+            border-gray-500 hover:border-gray-600 px-4 pl-12
+            shadow leading-tight focus:outline-none focus:shadow-outline font-medium
+            cursor-pointer text-gray-600"
+            v-model="product.meetingPlace">
+            <option :value="null">
+              地點
+            </option>
+            <option value="keelung">
+              基隆市
+            </option>
+            <option value="taipei">
+              台北市
+            </option>
+            <option value="newTaipei">
+              新北市
+            </option>
+            <option value="taoyuan">
+              桃園縣
+            </option>
+            <option value="hsinchuCity">
+              新竹市
+            </option>
+            <option value="hsinchuCountry">
+              新竹縣
+            </option>
+            <option value="miaoli">
+              苗栗縣
+            </option>
+            <option value="taichung">
+              台中市
+            </option>
+            <option value="changhua">
+              彰化縣
+            </option>
+            <option value="nantou">
+              南投縣
+            </option>
+            <option value="yunlin">
+              雲林縣
+            </option>
+            <option value="chiayiCity">
+              嘉義市
+            </option>
+            <option value="chiayiCountry">
+              嘉義縣
+            </option>
+            <option value="tainan">
+              台南市
+            </option>
+            <option value="kaohsiung">
+              高雄市
+            </option>
+            <option value="pingtung">
+              屏東縣
+            </option>
+            <option value="taitung">
+              台東縣
+            </option>
+            <option value="hualien">
+              花蓮縣
+            </option>
+            <option value="yilan">
+              宜蘭縣
+            </option>
+            <option value="penghu">
+              澎湖縣
+            </option>
+            <option value="kinmen">
+              金門縣
+            </option>
+            <option value="lienchiang">
+              連江縣
+            </option>
+          </select>
+          <div
+            class="pointer-events-none absolute inset-y-0 flex items-center px-2 text-gray-700"
+            style="right: 5px;">
+            <svg class="fill-current h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+              <path
+                d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+            </svg>
+          </div>
+          <i
+            class="icon_location absolute h-4 w-4 m-auto top-0 bottom-0 pointer-events-none
+            opacity-50"
+            style="left: 20px;" />
         </div>
-      </div>
 
-      <div class="w-full px-3 mb-8">
-        <label
-          class="block tracking-wide font-bold mb-2"
-          for="category">
-          分類
-        </label>
         <ValidationProvider rules="required" name="分類" v-slot="{errors, classes}">
-          <div class="relative" :class="classes">
+          <div class="relative inline-block w-64" :class="classes">
             <select
-              class="block appearance-none w-full border bg-white
-              border-grey-lighter py-3 px-4 pr-8 rounded"
+              style="border-radius: 25px;"
+              class="block appearance-none w-full bg-white border h-10
+              border-gray-500 hover:border-gray-600 px-4 pl-16
+              shadow leading-tight focus:outline-none focus:shadow-outline font-medium
+              cursor-pointer text-gray-600"
               id="category"
               v-model="product.category"
               :class="{'text-gray-500' : !product.category}">
-              <option value="null" disabled>
-                請選擇
+              <option :value="null" disabled>
+                標籤分類
               </option>
               <option value="entrepreneurship">
                 創業 / 副業
@@ -116,125 +212,162 @@
               </option>
             </select>
             <div
-              class="pointer-events-none absolute top-0 right-0 flex items-center bottom-0
-            px-4">
-              <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
+              class="pointer-events-none absolute inset-y-0 flex items-center px-2 text-gray-700"
+              style="right: 5px;">
+              <svg class="fill-current h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                <path
+                  d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+              </svg>
             </div>
-            <span>{{ errors[0] }}</span>
+            <i
+              class="icon_tag absolute h-4 w-4 m-auto top-0 bottom-0 pointer-events-none
+              opacity-75"
+              style="left: 20px;" />
+            <span class="selectInvalid">{{ errors[0] }}</span>
           </div>
         </ValidationProvider>
       </div>
 
-      <div class="md:flex mb-8">
-        <div class="md:w-full px-3">
+      <div class="mb-8">
+        <div class="flex pr-10 md:pl-4 items-center">
           <label
-            class="block tracking-wide font-bold mb-2">
-            可接受類型
+            class="block tracking-wide font-medium md:w-1/5 w-1/3 text-center text-lg"
+            for="title">
+            販時名稱
           </label>
-          <ValidationProvider rules="required" v-slot="{errors, classes}" name="接受類型">
-            <div class="flex items-center" :class="classes">
-              <label class="mx-2" for="meeting">
-                <input type="checkbox" v-model="product.type" value="meeting" id="meeting">
-                現場面談
-              </label>
-              <label class="mx-2" for="video">
-                <input type="checkbox" v-model="product.type" value="video" id="video">
-                視訊
-              </label>
-              <label class="mx-2" for="phone">
-                <input type="checkbox" v-model="product.type" value="phone" id="phone">
-                電話
-              </label>
-              <label class="mx-2" for="chat">
-                <input type="checkbox" v-model="product.type" value="chat" id="chat">
-                聊天室
-              </label>
-              <span style="top: -10px;">{{ errors[0] }}</span>
+          <ValidationProvider
+            rules="required|max:50"
+            name="標題"
+            v-slot="{errors, classes}"
+            class="md:w-4/5 w-2/3">
+            <div :class="classes">
+              <input
+                class="appearance-none block w-full
+                border border-blue-1 py-3 px-4 h-12 font-sans"
+                id="title"
+                type="text"
+                placeholder="請輸入販時名稱"
+                v-model="product.title">
+              <span>{{ errors[0] }}</span>
             </div>
           </ValidationProvider>
         </div>
       </div>
 
-      <div class="md:flex mb-6">
-        <div class="md:w-full px-3">
+      <div class="mb-8">
+        <div class="flex pr-10 md:pl-4 items-center">
           <label
-            class="block tracking-wide font-bold mb-2"
-            for="meetingPlace">
-            會面地點
+            class="block tracking-wide font-medium text-lg md:w-1/5 w-1/3 text-center">
+            交談方式
           </label>
-          <div class="flex items-center">
-            <input
-              class="appearance-none inline-block w-full
-             border border-grey-lighter rounded py-3 px-4"
-              id="meetingPlace"
-              type="text"
-              placeholder="請輸入會面地點">
-          </div>
+          <ValidationProvider
+            rules="required"
+            v-slot="{errors, classes}"
+            name="接受類型"
+            class="w-2/3 md:w-4/5">
+            <ul :class="classes" class="flex flex-wrap select-none typeWrap pl-2">
+              <li class="mr-8">
+                <input
+                  class="hidden"
+                  type="checkbox"
+                  id="meeting"
+                  value="meeting"
+                  v-model="product.type">
+                <label
+                  class="inline-block h-4 w-4 border border-gray-600 rounded-sm"
+                  style="transform: translate(-2px, 2px);"
+                  for="meeting" />
+                <label for="meeting">面談</label>
+              </li>
+              <li class="mr-8">
+                <input
+                  class="hidden"
+                  type="checkbox"
+                  id="video"
+                  value="video"
+                  v-model="product.type">
+                <label
+                  class="inline-block h-4 w-4 border border-gray-600 rounded-sm"
+                  style="transform: translate(-2px, 2px);"
+                  for="video" />
+                <label for="video">視訊</label>
+              </li>
+              <li class="mr-8">
+                <input
+                  class="hidden"
+                  type="checkbox"
+                  id="phone"
+                  value="phone"
+                  v-model="product.type">
+                <label
+                  class="inline-block h-4 w-4 border border-gray-600 rounded-sm"
+                  style="transform: translate(-2px, 2px);"
+                  for="phone" />
+                <label for="phone">電話</label>
+              </li>
+              <li>
+                <input
+                  class="hidden"
+                  type="checkbox"
+                  id="chat"
+                  value="chat"
+                  v-model="product.type">
+                <label
+                  class="inline-block h-4 w-4 border border-gray-600 rounded-sm"
+                  style="transform: translate(-2px, 2px);"
+                  for="chat" />
+                <label for="chat">聊天室
+                </label>
+              </li>
+              <li>
+                <span>{{ errors[0] }}</span>
+              </li>
+            </ul>
+          </ValidationProvider>
         </div>
       </div>
 
-      <div class="w-full px-3 mb-6 flex flex-col md:flex-row">
-        <div class="w-full md:w-1/2 md:mr-4">
+      <div class="mb-6">
+        <div class="flex pr-10 md:pl-4 items-center">
           <label
-            class="block tracking-wide font-bold mb-2"
+            class="block tracking-wide font-medium text-center md:w-1/5 w-1/3 text-lg"
             for="price">
-            價格
+            販時價格
           </label>
           <ValidationProvider
             rules="required|integer|max_value:10000|min_value:0|"
             name="價格"
-            v-slot="{errors, classes}">
+            v-slot="{errors, classes}"
+            class="w-1/3 md:w-1/5">
             <div class="flex items-center" :class="classes">
               <input
-                class="appearance-none inline-block w-full
-                border border-grey-lighter rounded py-3 px-4"
+                class="appearance-none inline-block w-full h-12
+                border border-blue-1 px-4 font-sans"
                 id="price"
                 type="number"
                 inputmode="numeric"
                 placeholder="請輸入價格"
                 v-model="product.price">
-              <span>{{ errors[0] }}</span>
+              <span class="priceInvalid">{{ errors[0] }}</span>
             </div>
           </ValidationProvider>
+          <p class="text-xl font-medium tracking-wider ml-4">
+            / 30
+            <span
+              class="text-xs inline-block"
+              style="transform: translateY(-6px);">分</span>
+          </p>
         </div>
-        <div class="w-full md:w-1/2 mt-6 md:mt-0">
-          <label
-            class="block tracking-wide font-bold mb-2"
-            for="atLeast">
-            最低限制
-          </label>
-          <ValidationProvider
-            rules="required"
-            v-slot="{errors, classes}"
-            name="最低限制">
-            <div class="relative" :class="classes">
-              <select
-                class="block appearance-none w-full border bg-white
-            border-grey-lighter py-3 px-4 pr-8 rounded"
-                id="atLeast"
-                v-model="product.atLeast"
-                :class="{'text-gray-500':!product.atLeast}">
-                <option value="null" disabled selected>
-                  請選擇
-                </option>
-                <option :value="30 * item" v-for="(item, index) in 5" :key="index">
-                  {{ 30 * item }}
-                </option>
-              </select>
-              <div
-                class="pointer-events-none absolute top-0 right-0 flex items-center bottom-0
-            px-4">
-                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
-              </div>
-              <span>{{ errors[0] }}</span>
-            </div>
-          </ValidationProvider>
-        </div>
+        <span
+          class="text-xs text-gray-600 mt-2 inline-block priceNotify font-sans">
+          ＊購時者購買時間將以30分鐘為一單位，購時者可依需求選購時間單位量
+        </span>
       </div>
 
-      <div class="md:flex mb-2 mt-10">
-        <div class="w-full px-3 mb-6 md:mb-0">
-          <label class="block tracking-wide font-bold mb-2">
+      <div class="mb-2 mt-4">
+        <div
+          class="px-3 md:pr-10 px-6 editorWrap">
+          <label class="block tracking-wide font-medium mb-3 text-lg">
             販物簡介
           </label>
           <client-only>
@@ -245,13 +378,20 @@
         </div>
       </div>
 
-      <div class="mt-6 text-center flex items-center justify-center">
+      <div class="mt-12 text-center flex items-center justify-center">
         <button
-          class="bg-blue-500 hover:bg-blue-700 text-white
-          font-semibold w-1/3 md:w-1/6 rounded-sm tracking-wider text-lg h-12
-          ml-6"
+          class="bg-teal-500 hover:bg-teal-600 text-white py-2 px-10
+          font-medium rounded tracking-wider text-lg focus:outline-none
+          ml-6 shadow select-none"
+          @click="$router.go(-1)">
+          回上一頁
+        </button>
+        <button
+          class="bg-blue-3 hover:bg-blue-2 text-white py-2 px-10
+          font-medium rounded tracking-wider text-lg focus:outline-none
+          ml-6 shadow select-none"
           @click="confirmation">
-          新增販物
+          {{ $route.params.edit_id ? '儲存變更' : '新增販時' }}
         </button>
       </div>
     </ValidationObserver>
@@ -286,8 +426,7 @@ export default {
         description: '',
         coverImg: null,
         type: [],
-        meetingPlace: '',
-        atLeast: null,
+        meetingPlace: null,
         price: null,
       },
       editImg: false,
@@ -349,7 +488,7 @@ export default {
     async updateProduct() {
       try {
         const {
-          title, category, description, type, meetingPlace, atLeast, price, coverImg,
+          title, category, description, type, meetingPlace, price, coverImg,
         } = this.product;
         const form = new FormData();
         if (typeof coverImg !== 'string') {
@@ -360,7 +499,6 @@ export default {
         form.append('description', description);
         form.append('type', type);
         form.append('meetingPlace', meetingPlace);
-        form.append('atLeast', atLeast);
         form.append('price', price);
 
         const { data } = await this.$axios[!this.isEditMode ? 'post' : 'put'](`/api/product${this.isEditMode ? `/${this.$route.params.edit_id}` : ''}`, form, {
@@ -411,5 +549,55 @@ export default {
   span{
     top: 15px;
   }
+  li span {
+    top: 10px;
+  }
+  .selectInvalid{
+    top: 5px;
+  }
+  .priceInvalid{
+    top: 35px;
+  }
 }
+
+.icon_location{
+  background: url('~assets/icon_product_location.svg') center center / contain no-repeat;
+}
+.icon_tag{
+  background: url('~assets/icon_puton_labelbar.svg') center center / contain no-repeat;
+}
+.typeWrap{
+  input[type="checkbox"]:checked + label {
+    @apply bg-blue-2;
+  }
+  label{
+    @apply cursor-pointer;
+  }
+}
+.link:hover{
+  border-bottom: 1px solid white;
+}
+.priceNotify{
+  margin-left: 2.5rem;
+}
+.linkWrap{
+  left: 30px;
+}
+@media (min-width: 767px) {
+  .priceNotify{
+    margin-left: 13.5rem;
+  }
+  .editorWrap{
+    padding-left: 4.2rem
+  }
+  .is-invalid.is-invalid{
+    li span {
+      top: -7px;
+    }
+  }
+  .linkWrap{
+    left: 140px
+  }
+}
+
 </style>

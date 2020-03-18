@@ -366,7 +366,7 @@
               <img
                 :src="item.img && !item.img.includes('http') ?
                   `data:image/png;base64,${item.img}`: item.img ? item.img :
-                    'https://image.flaticon.com/icons/svg/149/149072.svg'"
+                    'https://image.flaticon.com/icons/svg/545/545272.svg'"
                 class="rounded-full -mt-10 border-4 object-center object-cover
                 border-white mr-2 h-20 w-20">
             </div>
@@ -394,16 +394,18 @@
                   <span
                     class="text-xs font-medium inline-block"
                     style="transform: translateY(-5px);">點數</span>
-                  / {{ item.atLeast }} 分
+                  / 30 分
                 </p>
               </div>
             </div>
             <div class="flex justify-around">
               <button
                 class="bg-orange-400 hover:bg-orange-500 text-white mt-4 w-5/6 mx-1 py-1 font-medium
-                tracking-wider font-huninn"
-                style="border-radius: 20px;">
-                立即聯繫
+                tracking-wider font-huninn focus:outline-none"
+                style="border-radius: 20px;"
+                @click.stop="$route.query.myProducts ? $router.push(`/products/${item.productId}`)
+                  : $router.push(`/mail/${item.userId}`)">
+                {{ $route.query.myProducts ? '檢視' : '立即聯繫' }}
               </button>
             </div>
           </div>
@@ -509,8 +511,14 @@ export default {
         }
         return this.isIdentify === item.identified;
       });
+      const myProductsArr = identifyArr.filter((item) => {
+        if (this.$route.query.myProducts) {
+          return item.userId === this.$store.state.userInfo.userId;
+        }
+        return item;
+      });
 
-      const sortArr = identifyArr.sort((a, b) => {
+      const sortArr = myProductsArr.sort((a, b) => {
         if (this.sort.name === 'hot') {
           return;
         }

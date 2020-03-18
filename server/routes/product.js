@@ -20,7 +20,7 @@ router.get('/:productId', async (req, res, next) => {
   try {
     const [product] = await db.query(`SELECT title, category, type, meetingPlace,
     p.description productDescription, u.description userdescription, coverImg, p.createTime,
-    atLeast, p.productId, p.userId, img, name, address, slogan, identified, price
+    p.productId, p.userId, img, name, address, slogan, identified, price
     FROM product p, user u WHERE p.userId = u.userId && productId = ${req.params.productId}`);
 
     if (!product) {
@@ -79,7 +79,7 @@ router.put('/:productId', upload.single('coverImg'), async (req, res, next) => {
 
     await db.query(`UPDATE product SET title = "${req.body.title}", description = "${description}",
     type = "${req.body.type}", meetingPlace = "${req.body.meetingPlace}", category = "${req.body.category}",
-    atLeast = "${req.body.atLeast}", price = "${req.body.price}" ${req.file ? ', coverImg = ?' : ''}
+    price = "${req.body.price}" ${req.file ? ', coverImg = ?' : ''}
     WHERE productId = "${req.params.productId}" && userId = "${req.session.user.userId}"`, req.file ? [req.file.buffer] : '');
     res.send({
       success: true,

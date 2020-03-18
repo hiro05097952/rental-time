@@ -31,7 +31,7 @@ router.post('/', async (req, res, next) => {
   }
   try {
     // point check
-    const [product] = await db.query(`SELECT price, atLeast, userId sellerId
+    const [product] = await db.query(`SELECT price, userId sellerId
     FROM product WHERE productId = "${req.body.productId}"`);
     const [{ buyerPoint }] = await db.query(`SELECT point buyerPoint FROM user
     WHERE userId = "${req.session.user.userId}"`);
@@ -74,8 +74,8 @@ router.post('/access', async (req, res, next) => {
     return next(error.message);
   }
   try {
-    const [order] = await db.query(`SELECT status, startTime, o.type, qty,
-    p.atLeast, p.title, p.price,
+    const [order] = await db.query(`SELECT status, startTime, o.type, qty
+    , p.title, p.price,
     u.name sellerName, u.email sellerEmail, u.point sellerPoint
     FROM orderList o, product p, user u
     WHERE orderId = "${req.body.orderId}"
@@ -180,7 +180,7 @@ router.post('/cancel', async (req, res, next) => {
       isSeller = true;
     }
     const [order] = await db.query(`SELECT status, startTime, o.type, qty,
-    p.atLeast, p.title, p.price,
+    p.title, p.price,
     u.point
     FROM orderList o, product p, user u
     WHERE orderId = "${orderId}"

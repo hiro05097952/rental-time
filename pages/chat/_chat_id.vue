@@ -1,8 +1,9 @@
 <template>
   <div
-    class="py-4 h-screen px-6 pb-16"
-    style="background: linear-gradient(180deg, rgb(35, 63, 219) 35%, rgb(95, 116, 233) 60%);">
-    <h1 class="text-xl text-white font-medium tracking-wider text-center mb-4">
+    class="py-4 h-screen px-6 pb-16 bg">
+    <h1
+      class="text-xl text-white font-medium tracking-wider text-center mb-4
+      font-huninn">
       線上即時聊天室
     </h1>
     <div
@@ -19,17 +20,17 @@
           playsinline />
         <div class="text-center mt-2">
           <button
-            class="border mr-4 border-gray-800"
-            @click="toggleTrack('video')">
-            {{ videoTracks && videoTracks[0].enabled ? '視訊On': '視訊Off' }}
-          </button>
+            class="mr-4 icon_camera focus:outline-none"
+            @click="toggleTrack('video')"
+            :class="{'icon_close' : !(videoTracks && videoTracks[0].enabled) }" />
           <button
-            class="border border-gray-800"
-            @click="toggleTrack('audio')">
-            {{ audioTracks && audioTracks[0].enabled ? '音訊On': '音訊Off' }}
-          </button>
+            class="icon_mic focus:outline-none"
+            @click="toggleTrack('audio')"
+            :class="{'icon_close' : !(audioTracks && audioTracks[0].enabled) }" />
         </div>
-        <div class="flex flex-wrap mt-auto w-full mx-auto px-5 justify-between">
+        <div
+          class="flex flex-wrap mt-auto w-full mx-auto px-5 justify-between
+          text-gray-800">
           <p>
             進行時間
           </p>
@@ -190,6 +191,9 @@ export default {
     },
     toggleTrack(trackName) {
       // console.log(this.videoTracks);
+      if (!this[`${trackName}Tracks`]) {
+        return;
+      }
       this[`${trackName}Tracks`][0].enabled = !this[`${trackName}Tracks`][0].enabled;
       this[`${trackName}Tracks`] = this.localstream[trackName === 'video' ? 'getVideoTracks' : 'getAudioTracks']();
     },
@@ -226,10 +230,40 @@ export default {
   },
   beforeDestroy() {
     window.clearInterval(this.countId);
+    this.videoTracks[0].stop();
+    this.audioTracks[0].stop();
   },
 };
 </script>
 
 <style lang="scss" scoped>
-
+.bg{
+  background: transparent linear-gradient(180deg,
+  #0068BF 0%, #0068BFFB 29%, #0068BFA0 100%, #0068BF00 100%)
+  0% 0% no-repeat padding-box;
+}
+.icon_camera{
+  width: 28px;
+  height: 28px;
+  background: url('~assets/icon_chat_cam_on.svg') center center / contain no-repeat;
+}
+.icon_mic{
+  width: 28px;
+  height: 28px;
+  background: url('~assets/icon_chat_microphone_on.svg') center center / contain no-repeat;
+}
+.icon_close{
+  position: relative;
+  &::before{
+    content: '';
+    position: absolute;
+    top: 13px;
+    left: -4px;
+    display: inline-block;
+    width: 35px;
+    height: 2px;
+    background: rgba(226, 67, 67, 0.884);
+    transform: rotate(45deg);
+  }
+}
 </style>

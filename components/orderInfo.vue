@@ -7,8 +7,8 @@
     @touchmove.prevent
     @click.self="close">
     <div
-      class="bg-gray-100 w-2/3 shadow-xl rounded-lg border-2
-      border-gray-700 px-12 pt-10 pb-8 relative">
+      class="bg-gray-100 md:w-3/4 lg:w-1/2 sm:w-4/5 w-11/12 shadow-xl rounded-lg border-2
+      border-gray-700 px-4 md:px-12 pt-10 pb-8 relative">
       <button
         class="absolute top-0 rounded-full w-6 h-6 border-2 border-gray-500
         text-gray-500 hover:text-gray-600 hover:border-gray-600"
@@ -19,83 +19,105 @@
         </p>
       </button>
       <div class="flex">
-        <ul
-          class="flex flex-col pb-2 tracking-wider text-lg w-8/12">
+        <ul class="flex flex-col pb-2 tracking-wider text-lg w-8/12">
           <li class="mb-5 text-sm flex items-center">
-            <h3 class="text-gray-800 w-1/3 text-gray-900 mr-10 text-right">
+            <h3
+              class="text-gray-800 w-1/3 text-gray-900 mr-10 text-right
+              font-bold font-huninn text-base">
               服務名稱
             </h3>
-            <p class="font-medium">
+            <p>
               {{ orderInfo.title }}
             </p>
           </li>
           <li class="mb-5 text-sm flex items-center">
-            <h3 class="text-gray-800 w-1/3 text-gray-900 mr-10 text-right">
+            <h3
+              class="text-gray-800 w-1/3 text-gray-900 mr-10 text-right
+              font-bold font-huninn text-base">
               時間價格
             </h3>
-            <p class="font-medium">
-              {{ orderInfo.price }}點數 / {{ orderInfo.atLeast }} 分
+            <p class="font-huninn">
+              {{ orderInfo.price }}
+              <span class="text-xs inline-block" style="transform: translateY(-5px);">點數</span>
+              / 30
+              <span class="text-xs inline-block" style="transform: translateY(-5px);">分</span>
             </p>
           </li>
           <li class="mb-5 text-sm flex items-center">
-            <h3 class="text-gray-800 w-1/3 text-gray-900 mr-10 text-right">
+            <h3
+              class="text-gray-800 w-1/3 text-gray-900 mr-10 text-right
+              font-bold font-huninn text-base">
               開始日期
             </h3>
-            <p class="font-medium">
-              {{ orderInfo.startTime| dateDisplay }}
+            <p class="tracking-widest font-huninn">
+              {{ time(orderInfo.startTime, true) }}
             </p>
           </li>
           <li class="mb-5 text-sm flex items-center">
-            <h3 class="text-gray-800 w-1/3 text-gray-900 mr-10 text-right">
+            <h3
+              class="text-gray-800 w-1/3 text-gray-900 mr-10 text-right
+              font-bold font-huninn text-base">
               時段
             </h3>
-            <p class="font-medium">
+            <p class="font-huninn">
               {{ period }}
             </p>
           </li>
           <li class="mb-5 text-sm flex items-center">
-            <h3 class="text-gray-800 w-1/3 text-gray-900 mr-10 text-right">
+            <h3
+              class="text-gray-800 w-1/3 text-gray-900 mr-10 text-right
+              font-bold font-huninn text-base">
               交談方式
             </h3>
-            <p class="font-medium">
+            <p>
               {{ orderInfo.type | typeDisplay }}
             </p>
           </li>
           <li class="mb-5 text-sm flex items-center">
-            <h3 class="text-gray-800 w-1/3 text-gray-900 mr-10 text-right">
+            <h3
+              class="text-gray-800 w-1/3 text-gray-900 mr-10 text-right
+              font-bold font-huninn text-base">
               訂單狀態
             </h3>
-            <p class="font-medium">
+            <p>
               {{ orderInfo.status | statusDisplay }}
             </p>
           </li>
           <li class="mb-5 text-sm flex items-center">
-            <h3 class="text-gray-800 w-1/3 text-gray-900 mr-10 text-right">
+            <h3
+              class="text-gray-800 w-1/3 text-gray-900 mr-10 text-right
+              font-bold font-huninn text-base">
               訂單建立時間
             </h3>
-            <p class="font-medium">
-              {{ orderInfo.createTime | dateDisplay }}
+            <p class="tracking-widest font-huninn">
+              {{ time(orderInfo.createTime, false) }}
             </p>
           </li>
         </ul>
 
         <div class="w-40">
           <div
-            class="bg-teal-300 rounded relative w-full h-40 border border-red-500">
+            class="w-full">
+            <img
+              :src="orderInfo.img && !orderInfo.img.includes('http') ?
+                `data:image/png;base64,${orderInfo.img}`: orderInfo.img ? orderInfo.img :
+                  'https://image.flaticon.com/icons/svg/545/545272.svg'"
+              class="rounded-lg shadow object-center object-cover h-40 w-40">
             <h3
-              class="absolute text-sm text-center tracking-wider"
-              style="bottom: -25px; left:0; right:0;">
+              class="text-sm text-center tracking-wider mt-1">
               {{ orderInfo.name }}
             </h3>
           </div>
           <button
-            class="py-1 w-full text-xs rounded bg-white border-2 border-gray-500
-          mt-10 hover:bg-gray-500 hover:text-white font-medium tracking-wider">
+            class="py-1 w-full text-sm rounded bg-white border-2 border-gray-500
+          mt-3 hover:bg-gray-500 hover:text-white font-medium tracking-wider text-gray-800
+          font-huninn">
             前往訊息
           </button>
           <button
-            class="py-1 w-full text-xs rounded bg-white border-2 border-gray-500
-          mt-2 hover:bg-gray-500 hover:text-white font-medium tracking-wider"
+            class="py-1 w-full text-sm rounded bg-white border-2 border-gray-500
+          mt-2 hover:bg-gray-500 hover:text-white font-medium tracking-wider text-gray-800
+          font-huninn"
             v-if="orderInfo.status === 'access'"
             @click="$router.push(`/chat/${orderInfo.orderId}`)">
             前往聊天室
@@ -103,45 +125,41 @@
         </div>
       </div>
       <div
-        class="flex justify-around px-8 pt-6 border-t border-gray-500"
+        class="flex justify-center px-8 pt-6 border-t border-gray-500"
         v-if="orderInfo.status === 'pending'">
         <button
-          class="px-4 py-2 rounded bg-yellow-500
-          text-white font-medium tracking-wider hover:bg-yellow-600"
-          style="width: 45%;"
+          class="px-12 py-2 rounded bg-blue-2 mr-6
+          text-white font-medium tracking-wider hover:bg-blue-3 font-huninn"
           v-if="isSeller"
           @click="updateOrder('access')">
           接受預約
         </button>
         <button
-          class="px-4 py-2 rounded bg-red-500
-          text-white font-medium tracking-wider hover:bg-red-600"
-          style="width: 45%;"
+          class="px-12 py-2 rounded bg-red-500
+          text-white font-medium tracking-wider hover:bg-red-600 font-huninn"
           @click="CancelConfirm(false)">
           {{ isSeller ? '婉拒' : '取消送出' }}
         </button>
       </div>
       <div
-        class="flex justify-around px-8 pt-6 border-t border-gray-500"
+        class="flex justify-center px-8 pt-6 border-t border-gray-500"
         v-if="orderInfo.status === 'access'">
         <button
-          class="px-4 py-2 rounded bg-yellow-500
-          text-white font-medium tracking-wider hover:bg-yellow-600"
-          style="width: 45%;"
+          class="px-12 py-2 rounded bg-blue-2 mr-6
+          text-white font-medium tracking-wider hover:bg-blue-3"
           v-if="isSeller"
           @click="updateOrder('finish')">
           完成販時
         </button>
         <button
-          class="px-4 py-2 rounded bg-red-500
+          class="px-12 py-2 rounded bg-red-500
           text-white font-medium tracking-wider hover:bg-red-600"
-          style="width: 45%;"
           @click="CancelConfirm(true)">
           {{ isSeller ? '取消販時' : '取消買時' }}
         </button>
       </div>
       <div
-        class="flex justify-around px-8 pt-6 border-t border-gray-500"
+        class="flex justify-center px-8 pt-6 border-t border-gray-500"
         v-if="orderInfo.status === 'finish'">
         <h4
           class="text-xl font-medium tracking-widest text-gray-800">
@@ -234,11 +252,14 @@ export default {
       return `${this.timeConverter(dt.getHours())}:${this.timeConverter(dt.getMinutes())} ~
       ${this.timeConverter(dueTime.getHours())}:${this.timeConverter(dueTime.getMinutes())}`;
     },
+    time() {
+      return (val, onlyDate) => {
+        const dt = new Date(val).toLocaleString('zh-TW', { hour12: false });
+        return onlyDate ? dt.split(' ')[0] : dt;
+      };
+    },
   },
   filters: {
-    dateDisplay(value) {
-      return String(value).split('T')[0].replace(/-/g, ' / ');
-    },
     typeDisplay(value) {
       switch (value) {
         case 'video':

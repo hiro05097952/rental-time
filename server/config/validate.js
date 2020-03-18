@@ -42,7 +42,6 @@ function productValidate(data) {
     coverImg: Joi.any(),
     type: Joi.string().required(), // 需更改
     meetingPlace: Joi.any().when('type', { is: 'meeting', then: Joi.string().required() }),
-    atLeast: Joi.number().integer().multiple(30),
     category: Joi.string().valid('entrepreneurship',
       'marking', 'chat', 'misic', 'businessCommunication', 'cook', 'picture',
       'lifePlan', 'divination', 'love', 'diet', 'makeup', 'sports', 'family',

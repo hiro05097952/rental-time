@@ -2,21 +2,23 @@
   <div
     class="min-h-screen">
     <nav
-      class="flex items-center justify-end fixed top-0 left-0 w-full tracking-wider h-16
+      class="flex items-center justify-end fixed top-0 left-0 w-full
+      tracking-wider h-12 md:h-16
       bg-blue-2 z-50 font-huninn">
       <nuxt-link
-        class="logo h-12 mr-auto ml-4 text-white px-2 py-3 relative pl-12"
+        class="logo h-12 mr-auto md:ml-4 -ml-2 text-white px-2 py-3 relative pl-10 md:pl-12"
         to="/">
         <i
-          class="inline-block h-8 w-8 absolute top-0 left-0 mt-1 icon_logo"
-          style="top: 3px; left: 23px;" />
+          class="inline-block md:h-8 md:w-8 h-6 w-6 absolute inset-0
+          my-auto ml-6 icon_logo" />
         <h1 class="pl-4 text-lg font-bold tracking-widest inline-block">
           時販機
         </h1>
         <span class="font-bold text-white">じはんき</span>
       </nuxt-link>
-      <ul class="flex items-center mr-6">
-        <li class="mr-6">
+      <!-- find seller (desktop) -->
+      <ul class="items-center md:mr-6 hidden md:flex">
+        <li class="md:mr-6">
           <nuxt-link
             class="text-white border-2 border-white font-medium
             hover:bg-white hover:text-blue-3 px-4 py-2"
@@ -35,9 +37,10 @@
           </nuxt-link>
         </li>
       </ul>
+      <!-- register nav (desktop) -->
       <div
         class="loginBtnWrap h-full flex items-center justify-center
-        cursor-pointer"
+        cursor-pointer hidden md:block"
         v-if="!$store.state.userInfo.userId">
         <button
           class="bg-blue-3 text-white px-12 font-medium h-full"
@@ -45,23 +48,29 @@
           登入 / 註冊
         </button>
       </div>
-      <!-- login nav -->
+      <!-- login nav (desktop && mobile) -->
       <div
         class="loginBtnWrap h-full flex items-center justify-center
         cursor-pointer text-white"
         v-else>
-        <button class="bg-blue-3 h-full flex px-4">
+        <button
+          class="bg-blue-2 md:bg-blue-3 h-full md:px-4 flex absolute md:static"
+          style="top: 0px; right: 100px;"
+          @click="$router.push('/account/charge')">
           <i
             class="icon_coin w-6 h-6"
             style="transform: translateY(2px);" />
           <h3 class="ml-3 mr-1 text-xl tracking-wide">
             {{ $store.state.userInfo.point }}
           </h3>
-          <span class="text-xs">我的點數</span>
+          <span class="text-xs md:block hidden">我的點數</span>
+          <span class="text-xs md:hidden">點數</span>
         </button>
-        <div class="bg-blue-3 h-full relative">
+        <div
+          class="bg-blue-3 h-full relative hidden md:block"
+          style="top: 0px; right: 0;">
           <button
-            class="h-full px-3 accountBtn"
+            class="h-full px-3 accountBtn mt-16 md:mt-0"
             @click="$router.push('/account/edit')">
             <i
               class="icon_user w-5 h-5 inline-block"
@@ -69,7 +78,8 @@
             會員資料
           </button>
           <div
-            class="absolute left-0 right-0 m-auto toggleNavbar rounded-b hidden">
+            class="absolute left-0 right-0 m-auto toggleNavbar rounded-b hidden
+            px-2 md:px-0">
             <button
               class="px-3 py-4"
               @click="$router.push('/account/charge')">
@@ -103,16 +113,45 @@
           </div>
         </div>
         <button
-          class="bg-blue-3 h-full px-4"
+          class="bg-blue-3 h-full px-4 hidden md:block"
           @click="$router.push('/mail')">
           <i
             class="icon_notify w-6 h-6 inline-block"
             style="transform: translateY(3px);" />
         </button>
       </div>
+      <!-- mobile nav -->
+      <div class="md:hidden flex">
+        <div>
+          <nuxt-link
+            to="/products"
+            class="inline-block h-6 w-6 icon_search mt-2"
+            style="transform: translateY(-1px) scale(0.9);" />
+        </div>
+        <div
+          v-if="this.$store.state.userInfo.userId">
+          <button
+            class="mx-4 h-full px-1 inline-block"
+            @click="toggleHamburger">
+            <i
+              class="h-5 w-5 icon_burger inline-block"
+              style="transform: translateY(3px);" />
+          </button>
+        </div>
+        <div
+          v-else>
+          <nuxt-link
+            class="mx-4 h-full px-1 inline-block"
+            to="/login">
+            <i
+              class="h-5 w-5 icon_user inline-block mt-3"
+              style="transform: translateY(-3px);" />
+          </nuxt-link>
+        </div>
+      </div>
     </nav>
 
-    <div class="main pt-16 bg" style="min-height: 23rem">
+    <div class="main pt-12 md:pt-16 bg" style="min-height: 23rem">
       <nuxt />
     </div>
 
@@ -181,8 +220,8 @@
         24 小時線上客服
       </button>
       <div
-        class="flex justify-between w-1/3 md:w-1/6 mt-6 md:mt-0
-        mr-10 py-1">
+        class="justify-between w-1/3 md:w-1/6 mt-6 md:mt-0
+        mr-10 py-1 flex md:hidden lg:flex">
         <nuxt-link
           to="/"
           class="w-8 h-8 inline-block
@@ -204,12 +243,19 @@
 export default {
   data() {
     return {
+      hamburger: false,
     };
   },
   methods: {
     logout() {
       this.$store.dispatch('logout');
       this.$router.push('/');
+    },
+    toggleHamburger() {
+      if (window.clientWidth >= 768) {
+        return;
+      }
+      this.hamburger = !this.hamburger;
     },
   },
 };
@@ -254,6 +300,12 @@ export default {
 .icon_list{
   background: url(~assets/icon_navbar_order.svg) center center / contain no-repeat;
 }
+.icon_search{
+  background: url(~assets/icon_findseller_step2.svg) center center / contain no-repeat;
+}
+.icon_burger{
+  background: url(~assets/header_burger.svg) center center / contain no-repeat;
+}
 .bg{
   background: transparent linear-gradient(180deg,
   #0068BF 0%, #0068BFFB 29%, #0068BFA0 100%, #0068BF00 100%)
@@ -287,5 +339,24 @@ export default {
 }
 nav button{
   outline: none;
+}
+@media (max-width: 767px) {
+  .loginBtnWrap{
+    & > button:hover{
+      background: none;
+    }
+    & > div:hover {
+      background: none;
+      .toggleNavbar{
+        background: none;
+        button:hover{
+          background: none;
+        }
+      }
+    }
+    // & .accountBtn:hover ~ .toggleNavbar {
+    //   display: block;
+    // }
+  }
 }
 </style>

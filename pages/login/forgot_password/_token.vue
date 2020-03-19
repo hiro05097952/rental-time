@@ -8,7 +8,31 @@
       <h2 class="text-2xl text-gray-800 font-medium font-huninn text-center">
         重設密碼
       </h2>
-      <div class="mb-6 mt-4">
+      <div
+        class="mb-6 mt-4"
+        v-if="!$route.params.token">
+        <label
+          class="block mb-2 text-sm font-bold text-gray-700 font-huninn"
+          for="username">
+          帳號
+        </label>
+        <ValidationProvider
+          v-slot="{errors, classes}"
+          rules="required|email"
+          name="E-mail">
+          <div :class="classes">
+            <input
+              class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded
+                shadow appearance-none focus:outline-none focus:shadow-outline"
+              id="username"
+              type="email"
+              placeholder="請輸入註冊時的 Email"
+              v-model="email">
+            <span>{{ errors[0] }}</span>
+          </div>
+        </ValidationProvider>
+      </div>
+      <div class="mb-6 mt-4" v-else>
         <label
           class="block mb-2 text-sm font-bold text-gray-700 font-huninn"
           for="newPassword">
@@ -17,7 +41,8 @@
         <ValidationProvider
           v-slot="{errors, classes}"
           rules="required|min:12|max:16"
-          name="密碼">
+          name="密碼"
+          vid="newPassword">
           <div :class="classes">
             <input
               class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded
@@ -30,7 +55,7 @@
           </div>
         </ValidationProvider>
       </div>
-      <div>
+      <div v-if="$route.params.token">
         <label class="block mb-2 text-sm font-bold text-gray-700 font-huninn" for="passwordConfirm">
           確認密碼
         </label>
@@ -70,24 +95,38 @@ export default {
   layout: 'front',
   data() {
     return {
+      email: '',
       newPassword: '',
-      passwordConfirmation: '',
+      passwordConfirm: '',
     };
   },
   methods: {
     async submit() {
       try {
-        console.log('test');
         await this.validate();
-        const { data } = await this.$axios.post(`/password/reset?token="${this.$route.params.token}"`, {
-          newPassword: '',
-          passwordConfirmation: '',
+
+        const config = this.$route.params.token ? {
+          newPassword: this.newPassword,
+          passwordConfirmation: this.passwordConfirm,
+        } : {
+          email: this.email,
+        };
+        const headers = this.$route.params.token ? {
+          headers: { Authorization: `Bearer ${this.$route.params.token}` },
+        } : {};
+
+        const { data } = await this.$axios.post('/api/user/password/reset', config, headers);
+        this.$swal.fire({
+          icon: 'success',
+          title: data.message,
         });
-        console.log(data);
-      } catch (err) {
+        setTimeout(() => {
+          this.$router.replace('/');
+        }, 1000);
+      } catch ({ response }) {
         this.$swal.fire({
           icon: 'error',
-          title: err.message,
+          title: response.data.message,
         });
       }
     },

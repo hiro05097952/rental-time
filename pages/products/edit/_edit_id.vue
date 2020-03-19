@@ -372,7 +372,7 @@
           </label>
           <client-only>
             <quill-editor
-              v-model="product.description"
+              v-model="product.productDescription"
               :options="editorOption" />
           </client-only>
         </div>
@@ -461,6 +461,11 @@ export default {
           isEditMode: true,
         };
       }
+      return {
+        product: {},
+        cacheImg: '',
+        isEditMode: false,
+      };
     } catch ({ response }) {
       error({ statusCode: response.status, message: response.data.message });
     }
@@ -488,7 +493,7 @@ export default {
     async updateProduct() {
       try {
         const {
-          title, category, description, type, meetingPlace, price, coverImg,
+          title, category, description, type, meetingPlace, price, coverImg, productDescription,
         } = this.product;
         const form = new FormData();
         if (typeof coverImg !== 'string') {
@@ -496,7 +501,7 @@ export default {
         }
         form.append('title', title);
         form.append('category', category);
-        form.append('description', description);
+        form.append('description', this.isEditMode ? productDescription : description);
         form.append('type', type);
         form.append('meetingPlace', meetingPlace);
         form.append('price', price);

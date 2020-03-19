@@ -43,9 +43,9 @@ function sendForgotPasswordEmail(user) {
       html: `<div>
       <p>${user.name} 您好：</p>
       
-      <p>要重新設定您的密碼，請點一下以下的連結。您將會連到一個網頁，讓您設定新的密碼。</p>
+      <p>請點選以下連結並重新設定您的密碼。</p>
       
-      <p>如果您並未嘗試重新設定密碼，請不必擔心，可略過這封電郵。 在您點選連結設定密碼前，您的密碼不會改變。</p>
+      <p>如果您尚未嘗試重新設定密碼，請忽略這封郵件。 在點選連結並設定密碼前，密碼是不會改變的。</p>
 
       <button style="background: teal;border: none;padding: 5px 15px;border-radius: 5px;">
         <a href="${user.url}" style=" text-decoration: none;color: white;font-size: 14px;">變更密碼</a>

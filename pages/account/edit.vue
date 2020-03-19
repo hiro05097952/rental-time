@@ -63,7 +63,7 @@
               <span>{{ errors[0] }}</span>
               <button
                 class="text-white
-              font-semibold w-2/5 md:w-1/5 items-center rounded-lg tracking-wider h-10
+              font-medium w-2/5 md:w-1/5 items-center rounded-lg tracking-wider h-10
               ml-6 shadow"
                 :class="user.identified ? 'bg-gray-200 cursor-not-allowed'
                   : 'bg-blue-3 hover:bg-blue-2'"
@@ -86,7 +86,7 @@
           <div class="flex items-center w-4/5">
             <input
               class="appearance-none w-3/5 md:w-4/5 h-12 border-blue-1
-              border py-3 px-4 cursor-not-allowed bg-gray-200 focus:outline-none"
+              border px-4 cursor-not-allowed bg-gray-200 focus:outline-none"
               id="email"
               type="email"
               inputmode="email"
@@ -96,11 +96,13 @@
               disabled>
             <button
               class="text-white
-              font-semibold w-2/5 md:w-1/5 items-center rounded-lg tracking-wider h-10
-              ml-6 shadow"
-              :class="user.emailVerified ? 'emailValid' : 'emailInValid'"
-              :disabled="user.emailVerified">
-              {{ user.emailVerified ? '已驗證':'重寄驗證信' }}
+              font-medium w-2/5 md:w-1/5 items-center rounded-lg tracking-wider h-10
+              ml-6 shadow focus:outline-none select-none "
+              :class="user.emailVerified !== 0
+                ? 'btnDisabled' : 'btnEnabled'"
+              @click="sendEmailVerified">
+              {{ user.emailVerified === 2 ? `已送出${countDown}`
+                : user.emailVerified ? '已驗證' : '重新驗證' }}
             </button>
           </div>
         </div>
@@ -124,7 +126,7 @@
               disabled>
             <button
               class="bg-blue-3 hover:bg-blue-2 text-white
-              font-semibold w-2/5 md:w-1/5 rounded-lg tracking-wider ml-6 h-10
+              font-medium w-2/5 md:w-1/5 rounded-lg tracking-wider ml-6 h-10
               shadow"
               @click="editPassword = true">
               更改密碼
@@ -260,6 +262,7 @@ export default {
       user: '',
       editPassword: false,
       editImg: false,
+      countDown: 30,
     };
   },
   methods: {
@@ -285,9 +288,9 @@ export default {
       try {
         const { data } = await this.$axios.put('/api/user', {
           name: this.user.name,
-          address: this.user.address,
-          description: this.user.description,
-          slogan: this.user.slogan,
+          address: this.user.address || '',
+          description: this.user.description || '',
+          slogan: this.user.slogan || '',
         });
         this.$swal.fire({
           icon: 'success',
@@ -314,18 +317,46 @@ export default {
         });
       });
     },
+    async sendEmailVerified() {
+      try {
+        if (this.user.emailVerified) {
+          return;
+        }
+        const { data } = await this.$axios.post('/api/user/emailverify');
+        this.$swal.fire({
+          icon: 'success',
+          title: data.message,
+        });
+
+        // countDown
+        this.user.emailVerified = 2;
+        const intervalId = setInterval(() => {
+          this.countDown -= 1;
+          if (this.countDown === 0) {
+            clearInterval(intervalId);
+            this.countDown = 30;
+            this.user.emailVerified = 0;
+          }
+        }, 1000);
+      } catch ({ response }) {
+        this.$swal.fire({
+          icon: 'error',
+          title: response.data.message,
+        });
+      }
+    },
   },
 };
 </script>
 
 <style scoped lang="scss">
-.emailValid{
+.btnDisabled{
   @apply bg-gray-500 cursor-not-allowed;
 }
-.emailInValid{
-  @apply bg-blue-500;
+.btnEnabled{
+  @apply bg-blue-3;
   &:hover{
-    @apply bg-blue-700;
+    @apply bg-blue-2;
   }
 }
 .is-invalid.is-invalid{
@@ -335,5 +366,8 @@ export default {
 }
 .link:hover{
   border-bottom: 1px solid white;
+}
+input{
+  line-height: 3rem;
 }
 </style>

@@ -10,14 +10,16 @@ export const mutations = {
 };
 
 export const actions = {
-  async nuxtServerInit({ commit }, { req }) {
-    // console.log('nuxtServerInit Session => ', req.session.user);
-    if (req.session && req.session.user) {
-      commit('UPDATE_USER', {
-        emailVerified: req.session.user.emailVerified,
-        point: req.session.user.point,
-        userId: req.session.user.userId,
-      });
+  async nuxtServerInit({ commit }, { req, $axios }) {
+    try {
+      if (req.session?.user) {
+        const { data } = await $axios.get('/api/login', {
+          withCredentials: true,
+        });
+        commit('UPDATE_USER', data.userInfo);
+      }
+    } catch ({ response }) {
+      console.log('nuxt init!! =>', response.data.message);
     }
   },
   async logout({ commit }) {

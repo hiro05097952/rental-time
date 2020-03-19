@@ -54,7 +54,7 @@ router.post('/', async (req, res, next) => {
     await nodeMailer.sendSignUpEmail({
       name: sqlData.name,
       email: sqlData.email,
-      url: `${process.env.BASE_URL}/user/emailverify/${sqlData.userId}`,
+      url: `${process.env.BASE_URL}/api/user/emailverify/${sqlData.userId}`,
     });
     res.send({
       success: true,
@@ -99,6 +99,29 @@ router.get('/emailverify/:userId', async (req, res, next) => {
   }
 });
 
+router.post('/emailverify', async (req, res, next) => {
+  try {
+    const [user] = await db.query(`SELECT name, email, userId FROM user WHERE userId = "${req.session.user.userId}"`);
+    if (!user) {
+      return next(new Error().message = '查無使用者');
+    }
+    // console.log(result);
+
+    await nodeMailer.sendSignUpEmail({
+      name: user.name,
+      email: user.email,
+      url: `${process.env.BASE_URL}/api/user/emailverify/${user.userId}`,
+    });
+
+    res.send({
+      success: true,
+      message: '請至信箱驗證',
+    });
+  } catch (err) {
+    return next(err.sqlMessage || err);
+  }
+});
+
 // password change
 router.post('/password', async (req, res, next) => {
   const { error } = validate.changePasswordValidate(req.body);
@@ -126,7 +149,7 @@ router.post('/password', async (req, res, next) => {
 
 // forgot password
 router.post('/password/reset', async (req, res, next) => {
-  if (req.query.token) {
+  if (req.headers.authorization) {
     return next();
   }
   const { error } = validate.forgotPasswordValidate(req.body, 'email');
@@ -150,13 +173,14 @@ router.post('/password/reset', async (req, res, next) => {
       email: req.body.email,
       name: checkUser.name,
       // 轉址到前端輸入更改密碼頁面
-      url: `${process.env.BASE_URL}/account/forgot_password/${token}`,
+      url: `${process.env.BASE_URL}/login/forgot_password/${token}`,
     });
     res.send({
       success: true,
       message: '已寄送至信箱',
     });
   } catch (err) {
+    console.log('test => ', err);
     next(err.sqlMessage || err);
   }
 });
@@ -167,7 +191,8 @@ router.post('/password/reset', async (req, res, next) => {
     return next(error.message);
   }
   try {
-    const decoded = await jwt.verify(req.query.token, 'rental_time_forgot_password');
+    const token = req.headers.authorization.split(' ')[1];
+    const decoded = await jwt.verify(token, 'rental_time_forgot_password');
     const checkUser = await db.query(`SELECT * FROM user WHERE email = "${decoded.email}"`);
     if (!checkUser.length) {
       return next(new Error().message = '此 Email 未註冊過');

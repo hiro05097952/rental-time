@@ -27,7 +27,7 @@ function loginValidate(data) {
 function editUserValidate(data) {
   const schema = Joi.object({
     name: Joi.string().max(10).required(),
-    address: Joi.string().max(50).required(),
+    address: Joi.string().max(50).allow(''),
     slogan: Joi.string().max(50).allow(''),
     description: Joi.any(),
   });

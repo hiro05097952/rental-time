@@ -10,12 +10,10 @@
     <div
       class="bg-white px-12 py-10 relative rounded-md flex flex-col items-center relative">
       <button
-        class="absolute top-0 right-0 mt-2 mr-4 text-xl font-light text-gray-600
-        hover:text-gray-800"
-        style="transform: scale(1.2, 1); outline: none;"
-        @click="close">
-        X
-      </button>
+        class="absolute top-0 right-0 mt-3 mr-4 text-xl font-light text-gray-600
+        hover:text-gray-800 icon_close w-6 h-6 hover:opacity-75"
+        style="outline: none;"
+        @click="close" />
       <client-only>
         <div
           style="height: 16rem;"
@@ -154,5 +152,8 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.icon_close{
+  background: url('~assets/icon_cross.svg') center center / contain no-repeat;
+}
 </style>

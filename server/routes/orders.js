@@ -16,7 +16,7 @@ router.get('/', async (req, res, next) => {
   try {
     const orders = await db.query(`SELECT orderId, qty, o.type, startTime, o.createTime, o.status,
     title, meetingPlace, p.description, price,
-    u.name, slogan, u.img
+    u.name, u.img, u.userId
     FROM orderList o, product p, user u
     WHERE o.${req.query.isSeller ? 'sellerId' : 'buyerId'} = "${req.session.user.userId}"
     && o.productId = p.productId

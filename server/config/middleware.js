@@ -14,6 +14,11 @@ const verificationWhiteList = [
     method: 'POST',
   },
   {
+    // GET User Info
+    path: '/api/user',
+    method: 'GET',
+  },
+  {
     path: '/api/user/emailverify',
     method: 'GET',
   },

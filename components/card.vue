@@ -46,9 +46,11 @@
                 class="w-4 h-4 inline-block icon_location"
                 style="filter: opacity(0.6); transform: translateY(2px);"
                 v-if="item.meetingPlace" />
-              {{ item.meetingPlace }}
+              {{ item.meetingPlace | countryFilter }}
             </p>
-            <p class="font-bold text-sm text-center pl-5">
+            <p
+              class="font-bold text-sm text-center"
+              :class="{'pl-5': item.meetingPlace }">
               {{ item.price }}
               <span
                 class="text-xs font-medium inline-block"
@@ -63,7 +65,7 @@
                 tracking-wider font-huninn focus:outline-none"
             style="border-radius: 20px;"
             @click.stop="$route.query.myProducts ? $router.push(`/products/${item.productId}`)
-              : $router.push(`/mail/${item.userId}`)">
+              : goMail(item.userId)">
             {{ $route.query.myProducts ? '檢視' : '立即聯繫' }}
           </button>
         </div>
@@ -89,7 +91,74 @@ export default {
     };
   },
   methods: {
-
+    goMail(userId) {
+      try {
+        if (!this.$store.state.userInfo.userId) {
+          throw new Error('請登入並繼續');
+        }
+        if (this.$store.state.userInfo.userId === userId) {
+          throw new Error('點到自己的商品摟 >< !');
+        }
+        this.$router.push(`/mail/${userId}`);
+      } catch (err) {
+        this.$swal.fire({
+          icon: 'error',
+          title: err.message,
+        });
+      }
+    },
+  },
+  filters: {
+    countryFilter(str) {
+      switch (str) {
+        case 'keelung':
+          return '基隆市';
+        case 'taipei':
+          return '台北市';
+        case 'newTaipei':
+          return '新北市';
+        case 'taoyuan':
+          return '桃園縣';
+        case 'hsinchuCity':
+          return '新竹市';
+        case 'hsinchuCountry':
+          return '新竹縣';
+        case 'miaoli':
+          return '苗栗縣';
+        case 'taichung':
+          return '台中市';
+        case 'changhua':
+          return '彰化縣';
+        case 'nantou':
+          return '南投縣';
+        case 'yunlin':
+          return '雲林縣';
+        case 'chiayiCity':
+          return '嘉義市';
+        case 'chiayiCountry':
+          return '嘉義縣';
+        case 'tainan':
+          return '台南市';
+        case 'kaohsiung':
+          return '高雄市';
+        case 'pingtung':
+          return '屏東縣';
+        case 'taitung':
+          return '台東縣';
+        case 'hualien':
+          return '花蓮縣';
+        case 'yilan':
+          return '宜蘭縣';
+        case 'penghu':
+          return '澎湖縣';
+        case 'kinmen':
+          return '金門縣';
+        case 'lienchiang':
+          return '連江縣';
+        default:
+          break;
+      }
+    },
   },
 };
 </script>

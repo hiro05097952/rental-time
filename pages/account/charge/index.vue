@@ -8,6 +8,12 @@
         {{ $store.state.userInfo.point }}
       </p>
       <span class="text-sm mb-4 ml-2 font-bold">點數</span>
+      <button
+        class="py-2 px-4 bg-blue-1 hover:bg-blue-2 text-sm
+        rounded ml-auto shadow focus:outline-none select-none"
+        @click="historyOpen = true">
+        查看儲值紀錄
+      </button>
     </div>
 
     <div class="py-8 pb-4 font-huninn">
@@ -63,13 +69,20 @@
       @click="charge">
       前往結帳
     </button>
+
+    <history v-if="historyOpen" @pass-close="closeHistory" />
   </div>
 </template>
 
 <script>
+import history from '~/components/chargeHistory.vue';
+
 export default {
   name: 'ChargeSelect',
   layout: 'front',
+  components: {
+    history,
+  },
   data() {
     return {
       points: '',
@@ -77,16 +90,17 @@ export default {
         pointId: '',
         payment: 'credit',
       },
+      historyOpen: false,
     };
   },
-  async asyncData({ $axios, error }) {
+  async asyncData({ $axios }) {
     try {
       const { data } = await $axios.get('/api/points');
       return {
         points: data.points,
       };
     } catch ({ response }) {
-      error({ statusCode: response.status, message: response.data.message });
+      // error({ statusCode: response.status, message: response.data.message });
     }
   },
   methods: {
@@ -100,6 +114,9 @@ export default {
         return;
       }
       this.$router.push(`/account/charge/${this.selected.pointId}?name=${valid.name}&price=${valid.price}`);
+    },
+    closeHistory(isOpen) {
+      this.historyOpen = isOpen;
     },
   },
 };

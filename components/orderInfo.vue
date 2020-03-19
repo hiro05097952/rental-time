@@ -10,86 +10,82 @@
       class="bg-gray-100 md:w-3/4 lg:w-1/2 sm:w-4/5 w-11/12 shadow-xl rounded-lg border-2
       border-gray-700 px-4 md:px-12 pt-10 pb-8 relative">
       <button
-        class="absolute top-0 rounded-full w-6 h-6 border-2 border-gray-500
-        text-gray-500 hover:text-gray-600 hover:border-gray-600"
-        style="right: 15px; top: 10px; outline: none;"
-        @click="close">
-        <p style="transform: scale(1.2, 1) translate(0, -2px);">
-          X
-        </p>
-      </button>
+        class="absolute top-0 right-0 mt-3 mr-4 text-xl font-light text-gray-600
+        hover:text-gray-800 icon_close w-8 h-8 hover:opacity-75"
+        style="outline: none;"
+        @click="close" />
       <div class="flex">
         <ul class="flex flex-col pb-2 tracking-wider text-lg w-8/12">
-          <li class="mb-5 text-sm flex items-center">
+          <li class="mb-5 text-base flex items-center">
             <h3
-              class="text-gray-800 w-1/3 text-gray-900 mr-10 text-right
-              font-bold font-huninn text-base">
+              class="text-gray-800 w-1/3 text-gray-900 mr-6 ml-2 text-right
+              font-huninn text-base">
               服務名稱
             </h3>
-            <p>
+            <p class="font-medium">
               {{ orderInfo.title }}
             </p>
           </li>
-          <li class="mb-5 text-sm flex items-center">
+          <li class="mb-5 text-base flex items-center">
             <h3
-              class="text-gray-800 w-1/3 text-gray-900 mr-10 text-right
-              font-bold font-huninn text-base">
+              class="text-gray-800 w-1/3 text-gray-900 mr-6 ml-2 text-right
+              font-huninn text-base">
               時間價格
             </h3>
-            <p class="font-huninn">
+            <p class="font-medium font-huninn">
               {{ orderInfo.price }}
               <span class="text-xs inline-block" style="transform: translateY(-5px);">點數</span>
               / 30
               <span class="text-xs inline-block" style="transform: translateY(-5px);">分</span>
             </p>
           </li>
-          <li class="mb-5 text-sm flex items-center">
+          <li class="mb-5 text-base flex items-center">
             <h3
-              class="text-gray-800 w-1/3 text-gray-900 mr-10 text-right
-              font-bold font-huninn text-base">
+              class="text-gray-800 w-1/3 text-gray-900 mr-6 ml-2 text-right
+              font-huninn text-base">
               開始日期
             </h3>
-            <p class="tracking-widest font-huninn">
+            <p class="font-medium tracking-widest font-huninn">
               {{ time(orderInfo.startTime, true) }}
             </p>
           </li>
-          <li class="mb-5 text-sm flex items-center">
+          <li class="mb-5 text-base flex items-center">
             <h3
-              class="text-gray-800 w-1/3 text-gray-900 mr-10 text-right
-              font-bold font-huninn text-base">
+              class="text-gray-800 w-1/3 text-gray-900 mr-6 ml-2 text-right
+              font-huninn text-base">
               時段
             </h3>
-            <p class="font-huninn">
+            <p class="font-medium font-huninn">
               {{ period }}
             </p>
           </li>
-          <li class="mb-5 text-sm flex items-center">
+          <li class="mb-5 text-base flex items-center">
             <h3
-              class="text-gray-800 w-1/3 text-gray-900 mr-10 text-right
-              font-bold font-huninn text-base">
+              class="text-gray-800 w-1/3 text-gray-900 mr-6 ml-2 text-right
+              font-huninn text-base">
               交談方式
             </h3>
-            <p>
+            <p class="font-medium">
               {{ orderInfo.type | typeDisplay }}
             </p>
           </li>
-          <li class="mb-5 text-sm flex items-center">
+          <li class="mb-5 text-base flex items-center">
             <h3
-              class="text-gray-800 w-1/3 text-gray-900 mr-10 text-right
-              font-bold font-huninn text-base">
+              class="text-gray-800 w-1/3 text-gray-900 mr-6 ml-2 text-right
+              font-huninn text-base">
               訂單狀態
             </h3>
-            <p>
+            <p class="font-medium">
               {{ orderInfo.status | statusDisplay }}
             </p>
           </li>
-          <li class="mb-5 text-sm flex items-center">
+          <li class="mb-5 text-base flex items-center">
             <h3
-              class="text-gray-800 w-1/3 text-gray-900 mr-10 text-right
-              font-bold font-huninn text-base">
+              class="text-gray-800 w-1/3 text-gray-900 mr-6 ml-2 text-right
+              font-huninn text-base">
               訂單建立時間
             </h3>
-            <p class="tracking-widest font-huninn">
+            <p class="font-medium tracking-widest font-huninn">
               {{ time(orderInfo.createTime, false) }}
             </p>
           </li>
@@ -110,8 +106,9 @@
           </div>
           <button
             class="py-1 w-full text-sm rounded bg-white border-2 border-gray-500
-          mt-3 hover:bg-gray-500 hover:text-white font-medium tracking-wider text-gray-800
-          font-huninn">
+            mt-3 hover:bg-gray-500 hover:text-white font-medium tracking-wider text-gray-800
+            font-huninn"
+            @click="$router.push(`/mail/${orderInfo.userId}`)">
             前往訊息
           </button>
           <button
@@ -292,6 +289,8 @@ export default {
 };
 </script>
 
-<style>
-
+<style scoped>
+.icon_close{
+  background: url('~assets/icon_cross.svg') center center / contain no-repeat;
+}
 </style>

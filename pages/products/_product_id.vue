@@ -36,7 +36,7 @@
               <i
                 class="w-5 h-5 inline-block icon_location opacity-75"
                 style="transform: translateY(2px);" />
-              {{ product.meetingPlace }}
+              {{ product.meetingPlace | countryFilter }}
             </p>
             <p
               class="text-white bg-blue-700 mx-2 px-4 py-1
@@ -176,7 +176,7 @@
             font-medium tracking-widest"
             v-model="startTime">
             <option :value="null" disabled>
-              00:00
+              請選擇
             </option>
             <option :value="450 + item * 30" v-for="(item, index) in 29" :key="index">
               {{ 450 + item * 30 | timeConverter }}
@@ -202,7 +202,13 @@
         <div class="mb-4 order__typeWrap select-none font-medium pl-2">
           <div class="flex items-center">
             <div class="mr-4">
-              <input class="hidden" type="radio" id="meeting" value="meeting" v-model="startType">
+              <input
+                class="hidden"
+                type="radio"
+                id="meeting"
+                value="meeting"
+                v-model="startType"
+                :disabled="!product.type.includes('meeting')">
               <label
                 class="inline-block h-4 w-4 border border-gray-600 rounded-sm"
                 style="transform: translate(-2px, 2px);"
@@ -210,7 +216,13 @@
               <label for="meeting">面談</label>
             </div>
             <div class="mr-4">
-              <input class="hidden" type="radio" id="video" value="video" v-model="startType">
+              <input
+                class="hidden"
+                type="radio"
+                id="video"
+                value="video"
+                v-model="startType"
+                :disabled="!product.type.includes('video')">
               <label
                 class="inline-block h-4 w-4 border border-gray-600 rounded-sm"
                 style="transform: translate(-2px, 2px);"
@@ -221,7 +233,13 @@
 
           <div class="flex items-center mt-2">
             <div class="mr-4">
-              <input class="hidden" type="radio" id="phone" value="phone" v-model="startType">
+              <input
+                class="hidden"
+                type="radio"
+                id="phone"
+                value="phone"
+                v-model="startType"
+                :disabled="!product.type.includes('phone')">
               <label
                 class="inline-block h-4 w-4 border border-gray-600 rounded-sm"
                 style="transform: translate(-2px, 2px);"
@@ -229,7 +247,13 @@
               <label for="phone">電話</label>
             </div>
             <div>
-              <input class="hidden" type="radio" id="chat" value="chat" v-model="startType">
+              <input
+                class="hidden"
+                type="radio"
+                id="chat"
+                value="chat"
+                v-model="startType"
+                :disabled="!product.type.includes('chat')">
               <label
                 class="inline-block h-4 w-4 border border-gray-600 rounded-sm"
                 style="transform: translate(-2px, 2px);"
@@ -243,13 +267,14 @@
         <div v-if="!($store.state.userInfo && $store.state.userInfo.userId === product.userId)">
           <button
             class="bg-blue-500 hover:bg-blue-700 text-white rounded-lg mt-3 w-full
-          py-2 font-medium text-lg tracking-wider shadow font-huninn"
+          py-2 font-medium text-lg tracking-wider shadow font-huninn focus:outline-none
+          select-none"
             @click="$router.push(`/mail/${product.userId}`)">
             事先諮詢
           </button>
           <button
             class="bg-orange-400 hover:bg-orange-500 text-white rounded-lg mt-3 w-full
-          py-2 font-medium text-lg tracking-wider shadow font-huninn"
+          py-2 font-medium text-lg tracking-wider shadow font-huninn focus:outline-none select-none"
             @click="order">
             申請預約
           </button>
@@ -257,9 +282,15 @@
         <div v-else>
           <button
             class="bg-blue-500 hover:bg-blue-700 text-white rounded-lg mt-3 w-full
-          py-2 font-medium text-lg tracking-wider shadow font-huninn"
+          py-2 font-medium text-lg tracking-wider shadow font-huninn focus:outline-none select-none"
             @click="$router.push(`/products/edit/${product.productId}`)">
             編輯
+          </button>
+          <button
+            class="bg-red-400 hover:bg-red-500 text-white rounded-lg mt-3 w-full
+          py-2 font-medium text-lg tracking-wider shadow font-huninn focus:outline-none select-none"
+            @click="remove">
+            刪除
           </button>
         </div>
       </div>
@@ -321,6 +352,28 @@ export default {
         });
       }
     },
+    async remove() {
+      try {
+        const { value } = await this.$swalConfirm.fire({
+          title: '<h2 class="text-xl">確定要刪除販時嗎?</h2>',
+          icon: 'warning',
+        });
+        if (!value) {
+          return;
+        }
+        const { data } = await this.$axios.delete(`/api/product/${this.product.productId}`);
+        this.$swal.fire({
+          icon: 'success',
+          title: data.message,
+        });
+        this.$router.push('/products');
+      } catch ({ response }) {
+        this.$swal.fire({
+          icon: 'error',
+          title: response.data.message,
+        });
+      }
+    },
   },
   filters: {
     dateDisplay(value) {
@@ -330,6 +383,56 @@ export default {
     timeConverter(val) {
       return `${Math.floor(val / 60) < 10 ? `0${Math.floor(val / 60)}`
         : Math.floor(val / 60)}:${val % 60 === 0 ? '00' : val % 60}`;
+    },
+    countryFilter(str) {
+      switch (str) {
+        case 'keelung':
+          return '基隆市';
+        case 'taipei':
+          return '台北市';
+        case 'newTaipei':
+          return '新北市';
+        case 'taoyuan':
+          return '桃園縣';
+        case 'hsinchuCity':
+          return '新竹市';
+        case 'hsinchuCountry':
+          return '新竹縣';
+        case 'miaoli':
+          return '苗栗縣';
+        case 'taichung':
+          return '台中市';
+        case 'changhua':
+          return '彰化縣';
+        case 'nantou':
+          return '南投縣';
+        case 'yunlin':
+          return '雲林縣';
+        case 'chiayiCity':
+          return '嘉義市';
+        case 'chiayiCountry':
+          return '嘉義縣';
+        case 'tainan':
+          return '台南市';
+        case 'kaohsiung':
+          return '高雄市';
+        case 'pingtung':
+          return '屏東縣';
+        case 'taitung':
+          return '台東縣';
+        case 'hualien':
+          return '花蓮縣';
+        case 'yilan':
+          return '宜蘭縣';
+        case 'penghu':
+          return '澎湖縣';
+        case 'kinmen':
+          return '金門縣';
+        case 'lienchiang':
+          return '連江縣';
+        default:
+          break;
+      }
     },
   },
 };
@@ -342,6 +445,9 @@ export default {
   }
   label{
     @apply cursor-pointer;
+  }
+  input[type="radio"]:disabled + label {
+    @apply bg-gray-400;
   }
 }
 .icon_location{

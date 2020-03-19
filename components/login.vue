@@ -60,7 +60,7 @@
             <nuxt-link
               to="/password/fotgot"
               class="text-xs font-medium ml-auto text-gray-700
-              hover:text-gray-900"
+              hover:text-gray-900 focus:outline-none"
               style="transform: translateY(5px);">
               忘記密碼？
             </nuxt-link>

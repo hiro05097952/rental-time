@@ -46,7 +46,7 @@ router.post('/', upload.single('coverImg'), async (req, res, next) => {
   try {
     const sqlData = {
       ...req.body,
-      description: htmlEncode.htmlEncode(req.body.description),
+      description: htmlEncode.htmlEncode(req.body.description) || '',
       userId: req.session.user.userId,
     };
     if (req.file) {
@@ -75,7 +75,7 @@ router.put('/:productId', upload.single('coverImg'), async (req, res, next) => {
       return next(new Error().message = '查無此服務');
     }
 
-    const description = htmlEncode.htmlEncode(req.body.description);
+    const description = htmlEncode.htmlEncode(req.body.description) || '';
 
     await db.query(`UPDATE product SET title = "${req.body.title}", description = "${description}",
     type = "${req.body.type}", meetingPlace = "${req.body.meetingPlace}", category = "${req.body.category}",

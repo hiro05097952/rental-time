@@ -1,5 +1,5 @@
 export default function ({
-  store, redirect, route,
+  store, redirect, route, $swal,
 }) {
   // 登入但未驗證 Email
   if (route.path.includes('account/edit') && (!store.state.userInfo.emailVerified
@@ -8,8 +8,15 @@ export default function ({
   }
 
   // 未登入下打開登入視窗
-  if (store.state.userInfo.emailVerified == null && (route.path.includes('edit')
-  || route.path.includes('account') || route.path.includes('order'))) {
-    redirect('/');
+  if ((store.state.userInfo.emailVerified == null || !store.state.userInfo.emailVerified)
+  && (route.path.includes('edit')
+  || route.path.includes('account') || route.path.includes('order')
+  || route.path.includes('chat') || route.path.includes('mail')
+  || route.path.includes('account'))) {
+    $swal.fire({
+      icon: 'error',
+      title: '請先至信箱完成驗證',
+    });
+    redirect('/account/edit');
   }
 }

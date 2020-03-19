@@ -22,7 +22,7 @@ router.post('/', async (req, res, next) => {
     && password = "${hash.sha256().update(req.body.password).digest('hex')}"`);
     // console.log('result =>', result);
     if (!user) {
-      return next(new Error().message = '查無使用者');
+      return next(new Error().message = '帳號或密碼錯誤');
     }
     req.session.user = {
       emailVerified: user.emailVerified,

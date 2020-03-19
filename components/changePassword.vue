@@ -8,12 +8,10 @@
     @click.self="close">
     <div class="bg-white w-2/3 px-2 py-4 relative rounded-md">
       <button
-        class="absolute top-0 right-0 mt-2 mr-6 text-xl font-light text-gray-600
-        hover:text-gray-800"
-        style="transform: scale(1.2, 1); outline: none;"
-        @click="close">
-        X
-      </button>
+        class="absolute top-0 right-0 mt-3 mr-4 text-xl font-light text-gray-600
+        hover:text-gray-800 icon_close w-8 h-8 hover:opacity-75"
+        style="outline: none;"
+        @click="close" />
       <h2 class="text-2xl font-bold text-center mb-4">
         更換密碼
       </h2>
@@ -160,5 +158,8 @@ export default {
 <style scoped>
 .is-invalid.is-invalid span{
   top: 15px;
+}
+.icon_close{
+  background: url('~assets/icon_cross.svg') center center / contain no-repeat;
 }
 </style>

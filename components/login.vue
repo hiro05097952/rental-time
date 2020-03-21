@@ -3,22 +3,22 @@
     class="flex items-center justify-center py-12">
     <div
       class="w-11/12 sm:w-2/3 md:w-1/2 xl:w-1/3 bg-white p-5 rounded-b-lg relative
-      pt-4 md:pt-10 mt-8 px-4 xs:px-8 pb-0"
+      pt-4 md:pt-8 mt-8 px-4 xs:px-8 pb-0"
       :class="{'bg-blue-1': isSignIn}">
       <!-- header -->
       <div
-        class="text-xl absolute m-auto flex font-huninn
-        tracking-wider text-gray-800"
+        class="text-lg md:text-xl absolute m-auto flex font-huninn
+        tracking-wider"
         style="top: -30px; left: 0; right: 0;">
         <button
-          class="py-2 md:py-5 text-center w-1/2 bg-blue-1 font-bold"
+          class="py-2 md:py-3 text-center w-1/2 bg-blue-1 font-bold text-gray-800"
           :class="{'shadow-inner' : !isSignIn}"
           style="border-radius: 32px 32px 0 0; outline: none;"
           @click="isSignIn = true">
           登入
         </button>
         <button
-          class="py-2 md:py-5 text-center w-1/2 bg-white font-bold"
+          class="py-2 md:py-3 text-center w-1/2 bg-white font-bold text-gray-800"
           :class="{'shadow-inner' : isSignIn}"
           style="border-radius: 32px 32px 0 0; outline: none;"
           @click="isSignIn = false">
@@ -101,18 +101,18 @@
           </h3>
           <div class="w-full flex justify-center">
             <button
-              class="py-2 px-4 border-blue-3 rounded-lg
+              class="py-1 px-4 border-blue-3 rounded-lg
               hover:bg-blue-3 mr-auto"
               style="border-width: 3px; width: 47%"
               @click.prevent="fbSignIn">
-              <i class="icon_fb h-6 w-6 inline-block align-middle" />
+              <i class="icon_fb h-5 w-5 inline-block align-middle" />
             </button>
             <button
-              class="py-2 px-4 border-blue-3 rounded-lg
+              class="py-1 px-4 border-blue-3 rounded-lg
               hover:bg-blue-3"
               style="border-width: 3px; width: 47%"
               @click.prevent="gSignIn">
-              <i class="icon_google h-6 w-6 inline-block align-middle" />
+              <i class="icon_google h-5 w-5 inline-block align-middle" />
             </button>
           </div>
         </div>
@@ -237,18 +237,18 @@
           </h3>
           <div class="w-full flex justify-center">
             <button
-              class="py-2 px-4 border-blue-3 rounded-lg
+              class="py-1 px-4 border-blue-3 rounded-lg
               hover:bg-blue-3 mr-auto"
               style="border-width: 3px; width: 47%"
               @click.prevent="fbSignIn">
-              <i class="icon_fb h-6 w-6 inline-block align-middle" />
+              <i class="icon_fb h-5 w-5 inline-block align-middle" />
             </button>
             <button
-              class="py-2 px-4 border-blue-3 rounded-lg
+              class="py-1 px-4 border-blue-3 rounded-lg
               hover:bg-blue-3"
               style="border-width: 3px; width: 47%"
               @click.prevent="gSignIn">
-              <i class="icon_google h-6 w-6 inline-block align-middle" />
+              <i class="icon_google h-5 w-5 inline-block align-middle" />
             </button>
           </div>
         </div>
@@ -393,9 +393,11 @@ export default {
 <style scoped lang="scss">
 .icon_fb{
   background: url(~assets/icon_login_fb.svg) center center / contain no-repeat;
+  transform: translateY(-1px);
 }
 .icon_google{
   background: url(~assets/icon_login_google.svg) center center / contain no-repeat;
+  transform: translateY(-1px);
 }
 button:hover{
   .icon_fb, .icon_google{

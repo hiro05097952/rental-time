@@ -170,7 +170,7 @@
           </button>
           <button
             class="px-3 pt-6 pb-2"
-            @click="$router.push('/account/charge')">
+            @click="toggleNavbar('/account/charge')">
             <i
               class="icon_coin inline-block w-5 h-5"
               style="transform: translate(-5px, 4px);" />
@@ -186,7 +186,7 @@
           </button>
           <button
             class="px-3 py-4"
-            @click="$router.push('/account/myorder')">
+            @click="toggleNavbar('/account/myorder')">
             <i
               class="icon_list inline-block w-5 h-5"
               style="transform: translate(-5px, 4px);" />

@@ -31,15 +31,16 @@
       <div class="toggleWrap mt-2 flex justify-around md:px-10">
         <button
           class="text-white font-medium text-lg md:w-1/4 md:pt-2 md:pb-1
-          focus:outline-none select-none
-          bg-blue-2 w-1/2 py-8"
+          focus:outline-none select-none w-1/2 py-8 md:bg-gray-600 bg-blue-2"
+          :class="{'bg-blue-4': isFindRentaler}"
           @click="toggleFindRentaler(true)">
           尋找販時者
         </button>
         <button
           class="text-white font-medium text-lg md:w-1/4 md:pt-2 md:pb-1
           focus:outline-none select-none
-          bg-blue-3 w-1/2 py-8"
+          md:bg-gray-600 bg-blue-3 w-1/2 py-8"
+          :class="{'bg-blue-4': !isFindRentaler}"
           @click="toggleFindRentaler(false)">
           我要販時
         </button>
@@ -47,7 +48,8 @@
       <div class="flex md:block">
         <ul
           class="flex justify-around items-center text-white
-          text-center px-12 md:py-16 pb-10 bg-blue-2 flex-col md:flex-row w-1/2 md:w-auto"
+          text-center px-12 md:py-16 pb-10 flex-col md:flex-row w-1/2 md:w-auto
+          bg-blue-4 bg-blue-2"
           v-if="isFindRentaler || windowWidth < 768">
           <li>
             <i
@@ -89,8 +91,8 @@
           </li>
         </ul>
         <ul
-          class="flex justify-around items-center text-white
-          text-center px-12 md:py-16 pb-10 bg-blue-3 flex-col md:flex-row w-1/2 md:w-auto"
+          class="flex justify-around items-center text-white bg-blue-3 bg-blue-4
+          text-center px-12 md:py-16 pb-10 flex-col md:flex-row w-1/2 md:w-auto"
           v-if="!isFindRentaler || windowWidth < 768">
           <li>
             <i
@@ -379,5 +381,10 @@ export default {
 }
 .icon_blueDot{
   background: url(~assets/dec_home_character.svg) center center / contain no-repeat;
+}
+@media (min-width: 768px) {
+  .bg-blue-4{
+    background: #46a1eb;
+  }
 }
 </style>

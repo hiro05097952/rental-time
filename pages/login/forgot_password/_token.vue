@@ -40,7 +40,7 @@
         </label>
         <ValidationProvider
           v-slot="{errors, classes}"
-          rules="required|min:12|max:16"
+          rules="required|min:8|max:16"
           name="密碼"
           vid="newPassword">
           <div :class="classes">
@@ -77,14 +77,24 @@
         </ValidationProvider>
       </div>
 
-      <button
-        class="w-1/3 md:w-1/4 px-4 py-1 font-bold text-white bg-blue-3 rounded-lg
+      <div class="mt-8 mx-auto flex justify-center">
+        <button
+          class="w-1/3 md:w-1/4 px-4 py-1 font-bold text-white bg-blue-3 rounded-lg
                 hover:bg-blue-600 focus:outline-none shadow-lg font-huninn
-                tracking-wider block mx-auto text-center mt-8"
-        type="button"
-        @click="submit">
-        送出
-      </button>
+                tracking-wider text-center mr-4"
+          type="button"
+          @click="$router.go(-1)">
+          返回
+        </button>
+        <button
+          class="w-1/3 md:w-1/4 px-4 py-1 font-bold text-white bg-blue-3 rounded-lg
+                hover:bg-blue-600 focus:outline-none shadow-lg font-huninn
+                tracking-wider text-center"
+          type="button"
+          @click="submit">
+          送出
+        </button>
+      </div>
     </ValidationObserver>
   </div>
 </template>

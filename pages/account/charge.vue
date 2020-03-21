@@ -11,9 +11,8 @@
     </div>
 
     <div
-      class="bg-white md:w-2/3 w-5/6 md:ml-10 px-10 py-2 pb-8 shadow-xl
-      border-2 border-gray-500"
-      style="border-radius: 50px;">
+      class="bg-white md:w-2/3 w-11/12 sm:w-5/6 md:ml-10 px-4 md:px-10 py-2 pb-8 shadow-xl
+      border-2 border-gray-500 containWrap">
       <nuxt-child />
     </div>
     <div class="hidden" ref="ecpay" />
@@ -34,5 +33,13 @@ export default {
 <style scoped>
 .link:hover{
   border-bottom: 1px solid white;
+}
+.containWrap{
+  border-radius: 50px;
+}
+@media (max-width: 639px) {
+  .containWrap{
+    border-radius: 20px;
+  }
 }
 </style>

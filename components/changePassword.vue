@@ -25,7 +25,7 @@
             </label>
             <ValidationProvider
               v-slot="{ errors, classes }"
-              rules="required|min:12|max:16"
+              rules="required|min:8|max:16"
               name="現在密碼">
               <div :class="classes">
                 <input
@@ -51,7 +51,7 @@
             </label>
             <ValidationProvider
               v-slot="{errors, classes}"
-              rules="required|min:12|max:16"
+              rules="required|min:8|max:16"
               name="新密碼"
               vid="newPassword">
               <div :class="classes">

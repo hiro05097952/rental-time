@@ -58,11 +58,6 @@ export default {
       };
     }
   },
-  // mounted() {
-  //   if (this.$route.query.type === 'buyer') {
-  //     this.isSeller = false;
-  //   }
-  // },
   methods: {
     updateInfo(item, isOpen) {
       this.orderInfo = item;

@@ -4,7 +4,7 @@ function signupValidate(data) {
   const schema = Joi.object({
     name: Joi.string().max(10).required(),
     email: Joi.string().email().required(),
-    password: Joi.string().min(12).max(16).required(),
+    password: Joi.string().min(8).max(16).required(),
     passwordConfirmation: Joi.string().required().valid(Joi.ref('password')),
     address: Joi.string().max(50),
     img: Joi.any(),
@@ -18,7 +18,7 @@ function signupValidate(data) {
 function loginValidate(data) {
   const schema = Joi.object({
     email: Joi.string().email().required(),
-    password: Joi.string().min(12).max(16).required(),
+    password: Joi.string().min(8).max(16).required(),
   });
 
   return schema.validate(data);
@@ -63,8 +63,8 @@ function mailValidate(data) {
 
 function changePasswordValidate(data) {
   const schema = Joi.object({
-    currentPassword: Joi.string().min(12).max(16).required(),
-    newPassword: Joi.string().min(12).max(16).required()
+    currentPassword: Joi.string().min(8).max(16).required(),
+    newPassword: Joi.string().min(8).max(16).required()
       .invalid(Joi.ref('currentPassword')),
     passwordConfirmation: Joi.string().required().valid(Joi.ref('newPassword')),
   });
@@ -78,7 +78,7 @@ function forgotPasswordValidate(data, type) {
   });
 
   const newPasswordSchema = Joi.object({
-    newPassword: Joi.string().min(12).max(16).required(),
+    newPassword: Joi.string().min(8).max(16).required(),
     passwordConfirmation: Joi.string().required().valid(Joi.ref('newPassword')),
   });
   return type === 'email' ? emailSchema.validate(data) : newPasswordSchema.validate(data);

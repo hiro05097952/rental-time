@@ -58,7 +58,7 @@
               密碼
             </label>
             <nuxt-link
-              to="/password/fotgot"
+              to="/login/forgot_password"
               class="text-xs font-medium ml-auto text-gray-700
               hover:text-gray-900 focus:outline-none"
               style="transform: translateY(5px);">
@@ -66,7 +66,7 @@
             </nuxt-link>
           </div>
           <ValidationProvider
-            rules="required|min:12|max:16"
+            rules="required|min:8|max:16"
             v-slot="{ errors, classes }"
             name="密碼">
             <div :class="classes">
@@ -77,7 +77,8 @@
                 id="password"
                 type="password"
                 placeholder="******************"
-                v-model="password">
+                v-model="password"
+                @keypress.enter="emailSignIn">
               <span>{{ errors[0] }}</span>
             </div>
           </ValidationProvider>
@@ -177,7 +178,7 @@
               密碼
             </label>
             <ValidationProvider
-              rules="required|min:12|max:16"
+              rules="required|min:8|max:16"
               v-slot="{ errors, classes }"
               name="密碼"
               vid="password">
@@ -211,7 +212,8 @@
                   id="c_password"
                   type="password"
                   placeholder="******************"
-                  v-model="passwordConfirm">
+                  v-model="passwordConfirm"
+                  @keypress.enter="signUp">
                 <span>{{ errors[0] }}</span>
               </div>
             </ValidationProvider>
@@ -361,9 +363,11 @@ export default {
           icon: 'success',
           title: data.message,
         });
-        this.$router.push('/');
+        this.serverSignIn({
+          email: this.email,
+          password: this.password,
+        });
       } catch (error) {
-        console.log(error.response.data);
         this.$swal.fire({
           icon: 'error',
           title: error.message || error.response.data.message,

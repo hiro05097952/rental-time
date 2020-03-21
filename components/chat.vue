@@ -13,7 +13,7 @@
         <img
           :src="userInfo.img && !userInfo.img.includes('http') ?
             `data:image/png;base64,${userInfo.img}`: userInfo.img ? userInfo.img :
-              'https://image.flaticon.com/icons/svg/545/545272.svg'"
+              'https://fakeimg.pl/192x192/282828/EAE0D0/?text=Icon'"
           class="bg-teal-200 w-20 h-20 md:w-32 md:h-32 lg:w-40 lg:h-40 rounded mr-4 md:mr-0">
         <p
           class="text-center my-1 tracking-wider text-gray-900">
@@ -139,14 +139,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.myMessage + span {
-  margin-left: 55px;
-  margin-right: 0;
-}
-li span{
-  margin-right: 55px;
-  margin-top: 2px;
-}
 .mailChat{
   .myMessage + span {
     margin-left: 105px;
@@ -168,6 +160,11 @@ li span{
   .mailImgWrap.mailImgWrap{
     top: 0;
     left: -4%;
+  }
+}
+@media (max-width: 767px) {
+  .mailContent.mailContent{
+    @apply w-full;
   }
 }
 </style>

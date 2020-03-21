@@ -43,7 +43,7 @@ function productValidate(data) {
     type: Joi.string().required(), // 需更改
     meetingPlace: Joi.any().when('type', { is: 'meeting', then: Joi.string().required() }),
     category: Joi.string().valid('entrepreneurship',
-      'marking', 'chat', 'misic', 'businessCommunication', 'cook', 'picture',
+      'marking', 'chat', 'music', 'businessCommunication', 'cook', 'picture',
       'lifePlan', 'divination', 'love', 'diet', 'makeup', 'sports', 'family',
       'animation', 'other'),
     price: Joi.number().integer().min(0).max(10000)

@@ -8,7 +8,7 @@
         <img
           :src="product.img && !product.img.includes('http') ?
             `data:image/png;base64,${product.img}`: product.img ? product.img :
-              'https://image.flaticon.com/icons/svg/545/545272.svg'"
+              'https://fakeimg.pl/192x192/282828/EAE0D0/?text=Icon'"
           class="rounded-lg shadow object-center object-cover md:h-32 md:w-32
           w-24 h-24 lg:h-48 lg:w-48">
         <p class="text-center mt-2 text-gray-800">
@@ -149,7 +149,7 @@ export default {
           icon: 'success',
           title: data.message,
         });
-        this.$router.replace('/account/myorder');
+        this.$router.replace('/account/myorder?type=buyer');
         // => 導去會員訂單頁面
       } catch ({ response }) {
         this.$swal.fire({

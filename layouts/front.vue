@@ -6,7 +6,7 @@
       tracking-wider h-12 md:h-16
       bg-blue-2 z-50 font-huninn">
       <nuxt-link
-        class="logo h-12 mr-auto md:ml-4 -ml-2 text-white px-2 py-3 relative pl-10 md:pl-12"
+        class="logo h-12 mr-auto md:ml-0 lg:ml-4 -ml-2 text-white px-2 py-3 relative pl-10 md:pl-12"
         to="/">
         <i
           class="inline-block md:h-8 md:w-8 h-6 w-6 absolute inset-0
@@ -14,11 +14,12 @@
         <h1 class="pl-4 text-lg font-bold tracking-widest inline-block">
           時販機
         </h1>
-        <span class="font-bold text-white">じはんき</span>
+        <span class="font-bold text-white hidden xs:inline-block">じはんき</span>
       </nuxt-link>
       <!-- find seller (desktop) -->
-      <ul class="items-center md:mr-6 hidden md:flex">
-        <li class="md:mr-6">
+      <ul
+        class="items-center md:mr-2 lg:mr-6 hidden md:flex">
+        <li class="md:mr-2 lg:mr-6">
           <nuxt-link
             class="text-white border-2 border-white font-medium
             hover:bg-white hover:text-blue-3 px-4 py-2"
@@ -28,13 +29,13 @@
           </nuxt-link>
         </li>
         <li>
-          <nuxt-link
-            to="/products/edit"
+          <button
             class="text-white border-2 border-white font-medium
-            hover:bg-white hover:text-blue-3 px-4 py-2"
-            style="border-radius: 32px">
+            hover:bg-white hover:text-blue-3 px-4 py-1 focus:outline-none"
+            style="border-radius: 32px"
+            @click="routerChange('/products/edit')">
             我要販時
-          </nuxt-link>
+          </button>
         </li>
       </ul>
       <!-- register nav (desktop) -->
@@ -54,12 +55,11 @@
         cursor-pointer text-white"
         v-else>
         <button
-          class="bg-blue-2 md:bg-blue-3 h-full md:px-4 flex absolute md:static"
-          style="top: 0px; right: 100px;"
-          @click="$router.push('/account/charge')">
+          class="bg-blue-2 md:bg-blue-3 h-full md:px-4 flex pr-4"
+          @click="routerChange('/account/charge')">
           <i
-            class="icon_coin w-6 h-6"
-            style="transform: translateY(2px);" />
+            class="icon_coin w-6 h-6 hidden sm:block"
+            style="transform: translateY(3px);" />
           <h3 class="ml-3 mr-1 text-xl tracking-wide">
             {{ $store.state.userInfo.point }}
           </h3>
@@ -67,10 +67,9 @@
           <span class="text-xs md:hidden">點數</span>
         </button>
         <div
-          class="bg-blue-3 h-full relative hidden md:block"
-          style="top: 0px; right: 0;">
+          class="bg-blue-3 h-full relative hidden md:block">
           <button
-            class="h-full px-3 accountBtn mt-16 md:mt-0"
+            class="h-full px-3 accountBtn"
             @click="$router.push('/account/edit')">
             <i
               class="icon_user w-5 h-5 inline-block"
@@ -82,7 +81,7 @@
             px-2 md:px-0">
             <button
               class="px-3 py-4"
-              @click="$router.push('/account/charge')">
+              @click="routerChange('/account/charge')">
               <i
                 class="icon_coin inline-block w-5 h-5"
                 style="transform: translateY(4px);" />
@@ -98,7 +97,7 @@
             </button>
             <button
               class="px-3 py-4"
-              @click="$router.push('/account/myorder')">
+              @click="routerChange('/account/myorder')">
               <i
                 class="icon_list inline-block w-5 h-5"
                 style="transform: translateY(4px);" />
@@ -114,7 +113,7 @@
         </div>
         <button
           class="bg-blue-3 h-full px-4 hidden md:block"
-          @click="$router.push('/mail')">
+          @click="routerChange('/mail')">
           <i
             class="icon_notify w-6 h-6 inline-block"
             style="transform: translateY(3px);" />
@@ -132,7 +131,7 @@
           v-if="this.$store.state.userInfo.userId">
           <button
             class="mx-4 h-full px-1 inline-block"
-            @click="toggleHamburger">
+            @click="$store.commit('TOGGLE_MOBILE_NAV', true)">
             <i
               class="h-5 w-5 icon_burger inline-block"
               style="transform: translateY(3px);" />
@@ -149,6 +148,58 @@
           </nuxt-link>
         </div>
       </div>
+      <transition name="mobileNav">
+        <div
+          class="bg-gray-800 h-auto absolute md:hidden flex flex-col
+          text-white pr-4 pl-3"
+          style="top: 0px ;right: 0; border-radius: 0 0 0 5px;"
+          v-if="$store.state.mobileNav">
+          <button
+            class="absolute top-0 right-0 w-8 h-8 text-xl"
+            style="outline: none; transform: scale(1.2, 1);top: 10px;right: 10px;"
+            @click="$store.commit('TOGGLE_MOBILE_NAV', false)">
+            X
+          </button>
+          <button
+            class="h-full px-3 accountBtn mt-12"
+            @click="$router.push('/account/edit')">
+            <i
+              class="icon_user w-5 h-5 inline-block"
+              style="transform: translate(-5px, 3px);" />
+            會員資料
+          </button>
+          <button
+            class="px-3 pt-6 pb-2"
+            @click="$router.push('/account/charge')">
+            <i
+              class="icon_coin inline-block w-5 h-5"
+              style="transform: translate(-5px, 4px);" />
+            儲值點數
+          </button>
+          <button
+            class="px-3 py-4"
+            @click="$router.push('/products?myProducts=true')">
+            <i
+              class="icon_time inline-block w-5 h-5"
+              style="transform: translate(-5px, 4px);" />
+            我的商品
+          </button>
+          <button
+            class="px-3 py-4"
+            @click="$router.push('/account/myorder')">
+            <i
+              class="icon_list inline-block w-5 h-5"
+              style="transform: translate(-5px, 4px);" />
+            我的訂單
+          </button>
+          <button
+            class="py-4 pb-5 rounded-b
+              w-full"
+            @click="logout">
+            登出
+          </button>
+        </div>
+      </transition>
     </nav>
 
     <div class="main pt-12 md:pt-16 bg" style="min-height: 23rem">
@@ -157,7 +208,7 @@
 
     <footer
       class="footer py-8 px-5 flex flex-col md:flex-row
-      justify-around tracking-wider leading-7 pl-12 md:pl-5 text-white
+      justify-around tracking-wider leading-7 pl-8 xs:pl-12 md:pl-5 text-white
       bg-blue-3 items-start">
       <div class="flex items-bottom py-1">
         <i
@@ -220,7 +271,7 @@
         24 小時線上客服
       </button>
       <div
-        class="justify-between w-1/3 md:w-1/6 mt-6 md:mt-0
+        class="justify-between mt-6 md:mt-0
         mr-10 py-1 flex md:hidden lg:flex">
         <nuxt-link
           to="/"
@@ -228,11 +279,12 @@
           icon_ig" />
         <nuxt-link
           to="/"
-          class="w-8 h-8 inline-block
-          icon_twitter" />
+          class="w-8 h-8 inline-block ml-6
+          icon_twitter"
+          style="transform: translateX(3px);" />
         <nuxt-link
           to="/"
-          class="w-8 h-8 inline-block
+          class="w-8 h-8 inline-block ml-6
           icon_fb" />
       </div>
     </footer>
@@ -243,7 +295,6 @@
 export default {
   data() {
     return {
-      hamburger: false,
     };
   },
   methods: {
@@ -251,11 +302,37 @@ export default {
       this.$store.dispatch('logout');
       this.$router.push('/');
     },
-    toggleHamburger() {
-      if (window.clientWidth >= 768) {
-        return;
+    async routerChange(router) {
+      const valid = await this.checkLogin();
+      if (valid) {
+        this.$router.push(router);
       }
-      this.hamburger = !this.hamburger;
+    },
+    goLoginConfirm(text) {
+      return this.$swalConfirm.fire({
+        title: '<h2 class="text-xl font-huninn tracking-wider">確定繼續嗎？</h2>',
+        html: `<p class="text-base font-huninn">${text}</p>`,
+        icon: 'warning',
+      });
+    },
+    async checkLogin() {
+      let status = 'valid';
+      if (!this.$store.state.userInfo.emailVerified) {
+        status = 'invalid';
+      }
+      if (!this.$store.state.userInfo.userId) {
+        status = 'register';
+      }
+      if (status !== 'valid') {
+        const { value } = await this.goLoginConfirm(status === 'register'
+          ? '將前往至登入頁面開始註冊流程！' : '將前往至會員頁面繼續驗證流程！');
+        if (!value) {
+          return false;
+        }
+        this.$router.push(status === 'register' ? '/login' : '/account/edit');
+      } else {
+        return true;
+      }
     },
   },
 };
@@ -286,7 +363,7 @@ export default {
   background: url(~assets/icon_footer_customerservice.svg) center center / contain no-repeat;
 }
 .icon_user{
-  background: url(~assets/icon_member.svg) center center / contain no-repeat;
+  background: url(~assets/icon_user.svg) center center / contain no-repeat;
 }
 .icon_notify{
   background: url(~assets/icon_header_message.svg) center center / contain no-repeat;
@@ -341,22 +418,21 @@ nav button{
   outline: none;
 }
 @media (max-width: 767px) {
+  // 我的點數
   .loginBtnWrap{
     & > button:hover{
       background: none;
     }
-    & > div:hover {
-      background: none;
-      .toggleNavbar{
-        background: none;
-        button:hover{
-          background: none;
-        }
-      }
-    }
-    // & .accountBtn:hover ~ .toggleNavbar {
-    //   display: block;
-    // }
   }
+}
+.mobileNav-enter-active {
+  transition: all .3s ease;
+}
+.mobileNav-leave-active {
+  transition: all .8s ease;
+}
+.mobileNav-enter, .mobileNav-leave-to{
+  transform: translateX(20px);
+  opacity: 0;
 }
 </style>

@@ -19,13 +19,13 @@
           {{ item.category | category }}
         </p>
         <img
-          :src="item.coverImg ? `data:image/png;base64,${item.coverImg}`: 'http://alpha.backer.id/assets/images/bg/kucingmalas.jpeg'"
+          :src="item.coverImg ? `data:image/png;base64,${item.coverImg}`: 'https://fakeimg.pl/830x320/282828/EAE0D0/?text=Default'"
           class="h-40 rounded-t-lg w-full object-cover">
         <div class="flex justify-center">
           <img
             :src="item.img && !item.img.includes('http') ?
               `data:image/png;base64,${item.img}`: item.img ? item.img :
-                'https://image.flaticon.com/icons/svg/545/545272.svg'"
+                'https://fakeimg.pl/192x192/282828/EAE0D0/?text=Icon'"
             class="rounded-full -mt-10 border-4 object-center object-cover
                 border-white mr-2 h-20 w-20">
         </div>
@@ -91,20 +91,46 @@ export default {
     };
   },
   methods: {
-    goMail(userId) {
+    async goMail(userId) {
       try {
-        if (!this.$store.state.userInfo.userId) {
-          throw new Error('請登入並繼續');
+        const valid = await this.checkLogin();
+        if (valid) {
+          if (this.$store.state.userInfo.userId === userId) {
+            throw new Error('點到自己的商品摟 >< !');
+          }
+          this.$router.push(`/mail/${userId}`);
         }
-        if (this.$store.state.userInfo.userId === userId) {
-          throw new Error('點到自己的商品摟 >< !');
-        }
-        this.$router.push(`/mail/${userId}`);
       } catch (err) {
         this.$swal.fire({
           icon: 'error',
           title: err.message,
         });
+      }
+    },
+    goLoginConfirm(text) {
+      return this.$swalConfirm.fire({
+        title: '<h2 class="text-xl font-huninn tracking-wider">確定繼續嗎？</h2>',
+        html: `<p class="text-base font-huninn">${text}</p>`,
+        icon: 'warning',
+      });
+    },
+    async checkLogin() {
+      let status = 'valid';
+      if (!this.$store.state.userInfo.emailVerified) {
+        status = 'invalid';
+      }
+      if (!this.$store.state.userInfo.userId) {
+        status = 'register';
+      }
+      if (status !== 'valid') {
+        const { value } = await this.goLoginConfirm(status === 'register'
+          ? '將前往至登入頁面開始註冊流程！' : '將前往至會員頁面繼續驗證流程！');
+        if (!value) {
+          return false;
+        }
+        this.$router.push(status === 'register' ? '/login' : '/account/edit');
+      } else {
+        return true;
       }
     },
   },

@@ -16,7 +16,7 @@
         </p>
         <button
           class="border-blue-3 text-blue-3 px-8 py-1 font-bold mt-6 text-lg joinBtn
-          shadow focus:outline-none select-none block mx-auto"
+          shadow focus:outline-none select-none block mx-auto md:ml-6"
           style="transform: translateX(-25px);"
           @click="$router.push('/login')">
           立即加入

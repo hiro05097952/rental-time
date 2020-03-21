@@ -2,8 +2,8 @@
   <div
     class="flex items-center justify-center py-12">
     <div
-      class="w-2/3 md:w-1/2 xl:w-1/3 bg-white p-5 rounded-b-lg relative
-      pt-10 mt-8 px-8 pb-0"
+      class="w-11/12 sm:w-2/3 md:w-1/2 xl:w-1/3 bg-white p-5 rounded-b-lg relative
+      pt-4 md:pt-10 mt-8 px-4 xs:px-8 pb-0"
       :class="{'bg-blue-1': isSignIn}">
       <!-- header -->
       <div
@@ -11,14 +11,14 @@
         tracking-wider text-gray-800"
         style="top: -30px; left: 0; right: 0;">
         <button
-          class="py-5 text-center w-1/2 bg-blue-1 font-bold"
+          class="py-2 md:py-5 text-center w-1/2 bg-blue-1 font-bold"
           :class="{'shadow-inner' : !isSignIn}"
           style="border-radius: 32px 32px 0 0; outline: none;"
           @click="isSignIn = true">
           登入
         </button>
         <button
-          class="py-5 text-center w-1/2 bg-white font-bold"
+          class="py-2 md:py-5 text-center w-1/2 bg-white font-bold"
           :class="{'shadow-inner' : isSignIn}"
           style="border-radius: 32px 32px 0 0; outline: none;"
           @click="isSignIn = false">
@@ -351,7 +351,7 @@ export default {
     async signUp() {
       try {
         await this.validate();
-        const { data } = await this.$axios.post('/api/signup', {
+        const { data } = await this.$axios.post('/api/user', {
           name: this.name,
           email: this.email,
           password: this.password,
@@ -363,6 +363,7 @@ export default {
         });
         this.$router.push('/');
       } catch (error) {
+        console.log(error.response.data);
         this.$swal.fire({
           icon: 'error',
           title: error.message || error.response.data.message,

@@ -1,6 +1,10 @@
 export default function ({
   store, redirect, route, $swal,
 }) {
+  if (store.state.mobileNav) {
+    store.commit('TOGGLE_MOBILE_NAV', false);
+  }
+
   // 登入但未驗證 Email
   if (route.path.includes('account/edit') && (!store.state.userInfo.emailVerified
     && store.state.userInfo.emailVerified !== undefined)) {
@@ -17,6 +21,10 @@ export default function ({
       icon: 'error',
       title: '請先至信箱完成驗證',
     });
-    redirect('/account/edit');
+    if (store.state.userInfo.userId) {
+      redirect('/account/edit');
+    } else {
+      redirect('/');
+    }
   }
 }

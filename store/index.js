@@ -7,6 +7,9 @@ export const mutations = {
   UPDATE_USER(state, userInfo) {
     state.userInfo = userInfo;
   },
+  TOGGLE_MOBILE_NAV(state, isOpen) {
+    state.mobileNav = isOpen;
+  },
 };
 
 export const actions = {
@@ -41,6 +44,7 @@ export const actions = {
 
 export const state = () => ({
   userInfo: {},
+  mobileNav: false,
 });
 
 export default {

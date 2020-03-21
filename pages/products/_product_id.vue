@@ -1,7 +1,7 @@
 <template>
   <div
     class="px-4 py-8 flex flex-col md:flex-row bg-blue-1 pt-24 relative text-gray-900
-    md:px-8">
+    md:px-8 items-start">
     <div class="main w-full md:w-3/4 flex-shrink">
       <div class="absolute text-gray-700 text-sm" style="top: 20px; left: 33px;">
         <nuxt-link to="/" class="link mr-1">
@@ -23,7 +23,7 @@
       </h2>
       <div class="main__item pr-0 md:pr-4">
         <img
-          :src="product.coverImg ? `data:image/png;base64,${product.coverImg}`: 'http://alpha.backer.id/assets/images/bg/kucingmalas.jpeg'"
+          :src="product.coverImg ? `data:image/png;base64,${product.coverImg}`: 'https://fakeimg.pl/830x320/282828/EAE0D0/?text=Default'"
           class="rounded-md w-full object-cover shadow"
           style="height: 20rem;">
 
@@ -40,35 +40,18 @@
             </p>
             <p
               class="text-white bg-blue-700 mx-2 px-4 py-1
-              inline-block rounded font-medium tracking-wider">
+              inline-block rounded font-medium tracking-wider cursor-pointer"
+              @click="$router.push(`/products?category=${product.category}`)">
               {{ product.category | category }}
             </p>
           </div>
 
           <div class="typeWrap mb-4 px-2 font-huninn flex items-center">
-            <div
-              class="h-4 w-4 border border-gray-500 rounded-sm"
-              :class="{'bg-green-400': product.type.includes('meeting')}" />
-            <p class="ml-2 mr-4">
-              面談
-            </p>
-            <div
-              class="h-4 w-4 border border-gray-500 rounded-sm"
-              :class="{'bg-green-400': product.type.includes('video')}" />
-            <p class="ml-2 mr-4">
-              視訊
-            </p>
-            <div
-              class="h-4 w-4 border border-gray-500 rounded-sm"
-              :class="{'bg-green-400': product.type.includes('phone')}" />
-            <p class="ml-2 mr-4">
-              電話
-            </p>
-            <div
-              class="h-4 w-4 border border-gray-500 rounded-sm"
-              :class="{'bg-green-400': product.type.includes('chat')}" />
-            <p class="ml-2 mr-4">
-              聊天室
+            <h2 class="font-medium tracking-wider">
+              交談形式：
+            </h2>
+            <p class="ml-2 mr-4 text-gray-800">
+              {{ acceptType }}
             </p>
           </div>
 
@@ -95,7 +78,7 @@
             <img
               :src="product.img && !product.img.includes('http') ?
                 `data:image/png;base64,${product.img}`: product.img ? product.img :
-                  'https://image.flaticon.com/icons/svg/545/545272.svg'"
+                  'https://fakeimg.pl/192x192/282828/EAE0D0/?text=Icon'"
               class="rounded-lg shadow object-center object-cover h-48 w-48">
             <div class="ml-8 w-full tracking-wider">
               <h3 class="text-xl font-medium text-gray-900 tracking-widest">
@@ -151,11 +134,15 @@
         <span class="text-xs text-gray-600">＊最低時間單位為30分鐘，加長時間以30分鐘為一單位</span>
       </div>
 
-      <h2 class="text-lg font-medium tracking-wider font-huninn">
+      <h2
+        class="text-lg font-medium tracking-wider font-huninn"
+        v-if="$store.state.userInfo && $store.state.userInfo.userId !== product.userId">
         選擇時間
       </h2>
 
-      <div class="px-0 mt-6 mb-8 lg:px-4">
+      <div
+        class="px-0 mt-6 mb-8 lg:px-4"
+        v-if="$store.state.userInfo && $store.state.userInfo.userId !== product.userId">
         <client-only>
           <v-date-picker
             mode="single"
@@ -194,35 +181,42 @@
         <span class="text-xs text-gray-600 ml-2">＊請選擇開始時間</span>
       </div>
 
-      <h2 class="text-lg font-medium tracking-wider font-huninn">
+      <h2
+        class="text-lg font-medium tracking-wider font-huninn"
+        v-if="$store.state.userInfo && $store.state.userInfo.userId !== product.userId">
         交談方式
       </h2>
 
-      <div class="mb-6 px-2 lg:px-4 mt-4">
-        <div class="mb-4 order__typeWrap select-none font-medium pl-2">
+      <div
+        class="mb-6 px-2 lg:px-4 mt-4">
+        <div
+          class="mb-4 order__typeWrap select-none font-medium pl-2"
+          v-if="$store.state.userInfo && $store.state.userInfo.userId !== product.userId">
           <div class="flex items-center">
-            <div class="mr-4">
+            <div
+              class="mr-4"
+              v-if="product.type.includes('meeting')">
               <input
                 class="hidden"
                 type="radio"
                 id="meeting"
                 value="meeting"
-                v-model="startType"
-                :disabled="!product.type.includes('meeting')">
+                v-model="startType">
               <label
                 class="inline-block h-4 w-4 border border-gray-600 rounded-sm"
                 style="transform: translate(-2px, 2px);"
                 for="meeting" />
               <label for="meeting">面談</label>
             </div>
-            <div class="mr-4">
+            <div
+              class="mr-4"
+              v-if="product.type.includes('video')">
               <input
                 class="hidden"
                 type="radio"
                 id="video"
                 value="video"
-                v-model="startType"
-                :disabled="!product.type.includes('video')">
+                v-model="startType">
               <label
                 class="inline-block h-4 w-4 border border-gray-600 rounded-sm"
                 style="transform: translate(-2px, 2px);"
@@ -232,28 +226,28 @@
           </div>
 
           <div class="flex items-center mt-2">
-            <div class="mr-4">
+            <div
+              class="mr-4"
+              v-if="product.type.includes('phone')">
               <input
                 class="hidden"
                 type="radio"
                 id="phone"
                 value="phone"
-                v-model="startType"
-                :disabled="!product.type.includes('phone')">
+                v-model="startType">
               <label
                 class="inline-block h-4 w-4 border border-gray-600 rounded-sm"
                 style="transform: translate(-2px, 2px);"
                 for="phone" />
               <label for="phone">電話</label>
             </div>
-            <div>
+            <div v-if="product.type.includes('chat')">
               <input
                 class="hidden"
                 type="radio"
                 id="chat"
                 value="chat"
-                v-model="startType"
-                :disabled="!product.type.includes('chat')">
+                v-model="startType">
               <label
                 class="inline-block h-4 w-4 border border-gray-600 rounded-sm"
                 style="transform: translate(-2px, 2px);"
@@ -264,12 +258,13 @@
           </div>
         </div>
 
-        <div v-if="!($store.state.userInfo && $store.state.userInfo.userId === product.userId)">
+        <div
+          v-if="$store.state.userInfo && $store.state.userInfo.userId !== product.userId">
           <button
             class="bg-blue-500 hover:bg-blue-700 text-white rounded-lg mt-3 w-full
           py-2 font-medium text-lg tracking-wider shadow font-huninn focus:outline-none
           select-none"
-            @click="$router.push(`/mail/${product.userId}`)">
+            @click="connect">
             事先諮詢
           </button>
           <button
@@ -279,7 +274,9 @@
             申請預約
           </button>
         </div>
-        <div v-else>
+        <div
+          v-if="$store.state.userInfo.userId
+            && $store.state.userInfo.userId === product.userId">
           <button
             class="bg-blue-500 hover:bg-blue-700 text-white rounded-lg mt-3 w-full
           py-2 font-medium text-lg tracking-wider shadow font-huninn focus:outline-none select-none"
@@ -330,21 +327,22 @@ export default {
   methods: {
     async order() {
       try {
-        if (this.$store.state.userInfo.emailVerified == null) {
-          this.$router.push('/login');
-          return;
+        const valid = await this.checkLogin();
+        if (valid) {
+          if (!this.selectedDate || !this.startTime) {
+            throw new Error('請填寫日期與開始時間');
+          }
+          if (this.$store.state.userInfo.point - this.qty * this.product.price < 0) {
+            throw new Error('點數不足，請至會員頁面儲值');
+          }
+          const date = new Date(this.selectedDate);
+          const now = new Date();
+          if (+date + this.startTime * 60000 < +now) {
+            throw new Error('請填寫大於目前時間');
+          }
+          this.$router.push(`/order/${this.$route.params.product_id}?startTime=${
+            +date + Number(this.startTime) * 60000}&qty=${this.qty}&&type=${this.startType}`);
         }
-        if (!this.$store.state.userInfo.emailVerified) {
-          throw new Error('請至信箱驗證');
-        }
-        if (!this.selectedDate || !this.startTime) {
-          throw new Error('請填寫日期與開始時間');
-        }
-        if (this.$store.state.userInfo.point - this.qty * this.product.price < 0) {
-          throw new Error('點數不足，請至會員頁面儲值');
-        }
-        this.$router.push(`/order/${this.$route.params.product_id}?startTime=${
-          +new Date(this.selectedDate) + Number(this.startTime) * 60000}&qty=${this.qty}&&type=${this.startType}`);
       } catch (err) {
         this.$swal.fire({
           icon: 'error',
@@ -372,6 +370,38 @@ export default {
           icon: 'error',
           title: response.data.message,
         });
+      }
+    },
+    async connect() {
+      const valid = await this.checkLogin();
+      if (valid) {
+        this.$router.push(`/mail/${this.product.userId}`);
+      }
+    },
+    goLoginConfirm(text) {
+      return this.$swalConfirm.fire({
+        title: '<h2 class="text-xl font-huninn tracking-wider">確定繼續嗎？</h2>',
+        html: `<p class="text-base font-huninn">${text}</p>`,
+        icon: 'warning',
+      });
+    },
+    async checkLogin() {
+      let status = 'valid';
+      if (!this.$store.state.userInfo.emailVerified) {
+        status = 'invalid';
+      }
+      if (!this.$store.state.userInfo.userId) {
+        status = 'register';
+      }
+      if (status !== 'valid') {
+        const { value } = await this.goLoginConfirm(status === 'register'
+          ? '將前往至登入頁面開始註冊流程！' : '將前往至會員頁面繼續驗證流程！');
+        if (!value) {
+          return false;
+        }
+        this.$router.push(status === 'register' ? '/login' : '/account/edit');
+      } else {
+        return true;
       }
     },
   },
@@ -435,6 +465,12 @@ export default {
       }
     },
   },
+  computed: {
+    acceptType() {
+      return this.product.type.join(' / ').replace('meeting', '面談').replace('video', '視訊').replace('phone', '電話')
+        .replace('chat', '聊天室');
+    },
+  },
 };
 </script>
 
@@ -445,9 +481,6 @@ export default {
   }
   label{
     @apply cursor-pointer;
-  }
-  input[type="radio"]:disabled + label {
-    @apply bg-gray-400;
   }
 }
 .icon_location{

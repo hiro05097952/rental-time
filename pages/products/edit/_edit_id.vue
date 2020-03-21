@@ -316,8 +316,7 @@
                   class="inline-block h-4 w-4 border border-gray-600 rounded-sm"
                   style="transform: translate(-2px, 2px);"
                   for="chat" />
-                <label for="chat">聊天室
-                </label>
+                <label for="chat">聊天室</label>
               </li>
               <li>
                 <span>{{ errors[0] }}</span>
@@ -420,15 +419,7 @@ export default {
   },
   data() {
     return {
-      product: {
-        title: '',
-        category: null,
-        description: '',
-        coverImg: null,
-        type: [],
-        meetingPlace: null,
-        price: null,
-      },
+      product: {},
       editImg: false,
       cacheImg: '',
       editorOption: {
@@ -462,7 +453,15 @@ export default {
         };
       }
       return {
-        product: {},
+        product: {
+          title: '',
+          category: null,
+          productDescription: '',
+          coverImg: '',
+          type: [],
+          meetingPlace: null,
+          price: null,
+        },
         cacheImg: '',
         isEditMode: false,
       };
@@ -493,15 +492,15 @@ export default {
     async updateProduct() {
       try {
         const {
-          title, category, description, type, meetingPlace, price, coverImg, productDescription,
+          title, category, type, meetingPlace, price, coverImg, productDescription,
         } = this.product;
         const form = new FormData();
-        if (typeof coverImg !== 'string') {
+        if (coverImg && typeof coverImg === 'object') {
           form.append('coverImg', coverImg);
         }
         form.append('title', title);
         form.append('category', category);
-        form.append('description', this.isEditMode ? productDescription : description);
+        form.append('description', productDescription);
         form.append('type', type);
         form.append('meetingPlace', meetingPlace);
         form.append('price', price);

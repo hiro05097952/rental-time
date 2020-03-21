@@ -97,7 +97,7 @@
             <img
               :src="orderInfo.img && !orderInfo.img.includes('http') ?
                 `data:image/png;base64,${orderInfo.img}`: orderInfo.img ? orderInfo.img :
-                  'https://image.flaticon.com/icons/svg/545/545272.svg'"
+                  'https://fakeimg.pl/192x192/282828/EAE0D0/?text=Icon'"
               class="rounded-lg shadow object-center object-cover h-40 w-40">
             <h3
               class="text-sm text-center tracking-wider mt-1">
@@ -116,8 +116,8 @@
           mt-2 hover:bg-gray-500 hover:text-white font-medium tracking-wider text-gray-800
           font-huninn"
             v-if="orderInfo.status === 'access'"
-            @click="$router.push(`/chat/${orderInfo.orderId}`)">
-            前往聊天室
+            @click="goVideoChat">
+            開始視訊
           </button>
         </div>
       </div>
@@ -216,7 +216,6 @@ export default {
         this.close();
         this.$emit('pass-get-orders');
       } catch ({ response }) {
-        console.log(response.data);
         this.$swal.fire({
           icon: 'error',
           title: response.data.message,
@@ -226,8 +225,8 @@ export default {
     async CancelConfirm(isAccess) {
       try {
         const { value } = await this.$swalConfirm.fire({
-          title: '<h2 class="text-xl">確定要取消訂單嗎</h2>',
-          html: isAccess ? '<p class="text-sm">因為販物已通過審核，現在取消的話將返回原本點數並扣除 25 %</p>' : '',
+          title: '<h2 class="text-xl font-huninn">確定要取消訂單嗎</h2>',
+          html: isAccess ? '<p class="text-sm font-huninn">因為販物已通過審核，現在取消的話將返回原本點數並扣除 25 %</p>' : '',
           icon: 'warning',
         });
         if (!value) {
@@ -240,6 +239,17 @@ export default {
           title: message,
         });
       }
+    },
+    async goVideoChat() {
+      const { value } = await this.$swalConfirm.fire({
+        title: '<h2 class="text-xl font-huninn">確定繼續嗎？</h2>',
+        html: '<p class="text-sm font-huninn">將前往聊天室並開啟視訊',
+        icon: 'warning',
+      });
+      if (!value) {
+        return;
+      }
+      this.$router.push(`/chat/${this.orderInfo.orderId}`);
     },
   },
   computed: {

@@ -51,6 +51,18 @@ export default {
       orderInfo: {},
     };
   },
+  asyncData({ route }) {
+    if (route.query.type === 'buyer') {
+      return {
+        isSeller: false,
+      };
+    }
+  },
+  // mounted() {
+  //   if (this.$route.query.type === 'buyer') {
+  //     this.isSeller = false;
+  //   }
+  // },
   methods: {
     updateInfo(item, isOpen) {
       this.orderInfo = item;

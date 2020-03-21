@@ -1,6 +1,6 @@
 <template>
-  <div class="px-8 py-8 pt-12 flex flex-col bg-blue-1 relative">
-    <div class="absolute text-gray-700 text-sm" style="top: 20px; left: 60px;">
+  <div class="px-4 md:px-8 py-8 pt-12 flex flex-col bg-blue-1 relative">
+    <div class="linkWrap absolute text-gray-700 text-sm" style="top: 20px;">
       <nuxt-link to="/" class="link mr-1">
         首頁
       </nuxt-link>
@@ -9,23 +9,25 @@
         尋找販時者
       </nuxt-link>
     </div>
-    <div class="search border-b border-gray-600 w-full px-3 py-4 pb-6 text-gray-700  font-huninn">
+    <div
+      class="search border-b border-gray-600 w-full lg:px-3
+      py-4 pb-6 text-gray-700  font-huninn">
       <div
-        class="search__header flex justify-around items-start
-        flex-wrap lg:justify-between lg:flex-no-wrap">
+        class="search__header flex items-start justify-center
+        flex-wrap sm:justify-start lg:flex-no-wrap">
         <div
-          class="relative mb-4 w-1/2">
+          class="relative mb-4 w-full xs:w-3/4 sm:w-1/2 lg:w-1/3 xs:mr-4">
           <input
             type="text"
             class="w-full py-3 h-12 border border-gray-600 pl-6
-          focus:outline-none tracking-wider shadow hover:border-gray-700 font-medium"
+            focus:outline-none tracking-wider shadow hover:border-gray-700 font-medium"
             style="border-radius: 25px;"
             placeholder="請輸入關鍵字">
           <button
             class="w-6 h-6 absolute top-0 bottom-0 m-auto icon_search"
             style="right: 20px;" />
         </div>
-        <div class="relative inline-block w-40 mb-4">
+        <div class="relative inline-block w-full xs:w-3/4 sm:w-40 mb-4 xs:mr-4">
           <select
             style="border-radius: 25px;"
             class="block appearance-none w-full bg-white border h-12
@@ -115,7 +117,7 @@
             class="icon_location absolute h-6 w-6 m-auto top-0 bottom-0 pointer-events-none"
             style="left: 20px;" />
         </div>
-        <div class="relative inline-block w-48">
+        <div class="relative inline-block w-full xs:w-3/4 sm:w-48 xs:mr-4 mb-4">
           <select
             style="border-radius: 25px; padding-left: 3.8rem;"
             class="block appearance-none w-full bg-white h-12
@@ -156,7 +158,8 @@
         </div>
         <label
           class="py-1 bg-white pr-6 relative border border-gray-600
-          focus:outline-none h-12 hover:border-gray-700 shadow pl-12 cursor-pointer"
+          focus:outline-none h-12 hover:border-gray-700 shadow pl-12
+          cursor-pointer w-full xs:w-3/4 sm:w-auto xs:mr-4"
           style="border-radius: 25px;"
           :class="{'bg-blue-2 text-white' : isIdentify}"
           for="identify">
@@ -172,6 +175,7 @@
           <input type="checkbox" name="identify" class="hidden" v-model="isIdentify" id="identify">
         </label>
       </div>
+
       <div class="search__tagWrap mt-6 lg:mt-4 flex flex-wrap px-4">
         <button
           @click="selectTag('entrepreneurship')"
@@ -253,10 +257,10 @@
           :class="tagDisplay('other')">
           其他
         </button>
-        <button @click="selectTag('all')">
+        <button @click="selectTag('all')" class="toolBtn">
           全部
         </button>
-        <button @click="tags = []">
+        <button @click="tags = []" class="toolBtn">
           清除
         </button>
       </div>
@@ -373,6 +377,11 @@ export default {
       },
     };
   },
+  mounted() {
+    if (this.$route.query.category) {
+      this.tags.push(this.$route.query.category);
+    }
+  },
   methods: {
     selectTag(tagName) {
       if (tagName === 'all') {
@@ -488,6 +497,9 @@ export default {
   &:focus{
     @apply outline-none;
   }
+  &.toolBtn{
+    @apply bg-teal-500;
+  }
 }
 .activeTag.activeTag{
   @apply bg-blue-3;
@@ -528,5 +540,13 @@ export default {
 }
 .link:hover{
   border-bottom: 1px solid gray;
+}
+.linkWrap{
+  left: 60px;
+}
+@media (max-width: 767px) {
+  .linkWrap{
+    left: 10%;
+  }
 }
 </style>

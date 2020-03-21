@@ -19,9 +19,9 @@
       <img
         :src="user.img && !user.img.includes('http') ?
           `data:image/png;base64,${user.img}`: user.img ? user.img :
-            'https://image.flaticon.com/icons/svg/545/545272.svg'"
+            'https://fakeimg.pl/192x192/282828/EAE0D0/?text=Icon'"
         class="object-center object-cover h-56 w-56
-        shadow-lg"
+        shadow-lg border border-gray-500"
         style="border-radius: 18px;">
       <label
         class="bg-white text-blue-3 shadow hover:bg-gray-100

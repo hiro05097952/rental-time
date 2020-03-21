@@ -85,7 +85,7 @@ export default {
   methods: {
     async getOrders() {
       try {
-        const { data } = await this.$axios.get(`/api/orders${this.isSeller ? '?isSeller="true"' : ''}`);
+        const { data } = await this.$axios.get(`/api/orders${this.isSeller ? '?isSeller=true' : ''}`);
         this.orders = data.orders;
       } catch ({ response }) {
         console.log(response.data.message);

@@ -10,6 +10,9 @@ export const mutations = {
   TOGGLE_MOBILE_NAV(state, isOpen) {
     state.mobileNav = isOpen;
   },
+  TOGGLE_SCREEN(state, isOpen) {
+    state.maxScreen = isOpen;
+  },
 };
 
 export const actions = {
@@ -45,6 +48,7 @@ export const actions = {
 export const state = () => ({
   userInfo: {},
   mobileNav: false,
+  maxScreen: false,
 });
 
 export default {

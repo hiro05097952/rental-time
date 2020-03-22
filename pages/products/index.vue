@@ -176,7 +176,7 @@
         </label>
       </div>
 
-      <div class="search__tagWrap mt-6 lg:mt-4 flex flex-wrap px-4">
+      <div class="search__tagWrap mt-6 lg:mt-4 flex flex-wrap px-2 xs:px-4">
         <button
           @click="selectTag('entrepreneurship')"
           :class="tagDisplay('entrepreneurship')">
@@ -265,9 +265,10 @@
         </button>
       </div>
       <ul
-        class="search__typeWrap flex mt-4 text-gray-800 text-sm font-medium pl-4 select-none
-        flex items-center font-sans">
-        <li>
+        class="search__typeWrap flex mt-2 text-gray-800 text-sm font-medium pl-2
+        xs:pl-4 select-none
+        flex items-center font-sans flex-wrap">
+        <li style="line-height: 3rem;">
           <h3 class="text-base tracking-wider mr-6">
             接受類型
           </h3>
@@ -308,40 +309,42 @@
       </ul>
     </div>
 
-    <div class="main">
+    <div class="main sm:pt-0 pt-4">
       <div
-        class="main__header h-16 flex items-center px-0 ml-4 text-gray-800 md:px-12
-        text-sm">
-        <h4 class="font-medium text-base">
+        class="main__header h-16 flex sm:items-center ml-2 xs:ml-4 text-gray-800 md:px-12
+        text-sm flex-col sm:flex-row items-start">
+        <h4 class="font-medium text-base mb-2 sm:mb-0">
           搜尋結果
         </h4>
-        <h4 class="ml-auto mr-10 font-medium text-base">
-          排序方式
-        </h4>
-        <button
-          :class="{'text-blue-2 hover:text-blue-3' : sort.name === 'createTime'}"
-          @click="sortBy('createTime')"
-          class="mr-8 hover:text-gray-900 hover:font-medium focus:outline-none">
-          最新
-        </button>
-        <button
-          :class="{'text-blue-2 hover:text-blue-3' : sort.name === 'hot'}"
-          @click="sortBy('hot')"
-          class="mr-8 hover:text-gray-900 hover:font-medium focus:outline-none">
-          熱門
-        </button>
-        <button
-          :class="{'text-blue-2 hover:text-blue-3' : sort.name === 'price'}"
-          @click="sortBy('price')"
-          class="mr-8 hover:text-gray-900 hover:font-medium focus:outline-none">
-          價格
-        </button>
-        <button
-          :class="{'text-blue-2 hover:text-blue-3': !sort.isAsc}"
-          @click="sortBy(null, true)"
-          class="hover:text-gray-900 hover:font-medium focus:outline-none text-lg">
-          ⇅
-        </button>
+        <div class="sm:ml-auto flex items-center">
+          <h4 class="mr-10 font-medium text-base">
+            排序方式
+          </h4>
+          <button
+            :class="{'text-blue-2 hover:text-blue-3' : sort.name === 'createTime'}"
+            @click="sortBy('createTime')"
+            class="mr-4 xs:mr-8 hover:text-gray-900 hover:font-medium focus:outline-none">
+            最新
+          </button>
+          <button
+            :class="{'text-blue-2 hover:text-blue-3' : sort.name === 'hot'}"
+            @click="sortBy('hot')"
+            class="mr-4 xs:mr-8 hover:text-gray-900 hover:font-medium focus:outline-none">
+            熱門
+          </button>
+          <button
+            :class="{'text-blue-2 hover:text-blue-3' : sort.name === 'price'}"
+            @click="sortBy('price')"
+            class="mr-4 xs:mr-8 hover:text-gray-900 hover:font-medium focus:outline-none">
+            價格
+          </button>
+          <button
+            :class="{'text-blue-2 hover:text-blue-3': !sort.isAsc}"
+            @click="sortBy(null, true)"
+            class="hover:text-gray-900 hover:font-medium focus:outline-none text-lg">
+            ⇅
+          </button>
+        </div>
       </div>
 
       <card :products="filterProducts" />

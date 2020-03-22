@@ -31,14 +31,16 @@
       w-11/12 lg:w-5/6 mx-auto border border-gray-600 mt-5 font-huninn"
       style="border-radius: 20px;"
       ref="productForm">
-      <div class="flex items-center mb-6 mx-auto w-full md:w-4/5 justify-around">
+      <div
+        class="flex items-center mb-6 mx-auto w-full md:w-4/5 justify-around
+        flex-col md:flex-row">
         <img
           :src="cacheImg.includes('base64') ? cacheImg : `data:image/png;base64,${cacheImg}`"
-          class="border object-center object-cover border-gray-300 w-3/5 h-56
-          shadow rounded-lg"
+          class="border object-center object-cover border-gray-300 md:w-3/5 h-56
+          shadow rounded-lg w-11/12"
           v-if="cacheImg">
         <div
-          class="border border-gray-300 w-3/5 h-56
+          class="border border-gray-300 w-11/12 md:w-3/5 h-56
           shadow text-center text-2xl font-bold text-gray-500 rounded-lg
           tracking-wider select-none"
           style="line-height: 14rem;"
@@ -55,7 +57,7 @@
         </label>
       </div>
 
-      <div class="w-full px-3 mb-12 flex justify-center">
+      <div class="w-full px-3 mb-12 flex justify-center flex-col md:flex-row">
         <div class="relative inline-block w-40 mr-5 md:mr-10 md:-ml-24 lg:-ml-56">
           <select
             style="border-radius: 25px;"
@@ -149,7 +151,7 @@
         </div>
 
         <ValidationProvider rules="required" name="分類" v-slot="{errors, classes}">
-          <div class="relative inline-block w-64" :class="classes">
+          <div class="relative inline-block w-64 mt-4 md:mt-0" :class="classes">
             <select
               style="border-radius: 25px;"
               class="block appearance-none w-full bg-white border h-10
@@ -229,9 +231,9 @@
       </div>
 
       <div class="mb-8">
-        <div class="flex pr-10 md:pl-4 items-center">
+        <div class="flex pr-10 pl-4 md:items-center flex-col md:flex-row items-start">
           <label
-            class="block tracking-wide font-medium md:w-1/5 w-1/3 text-center text-lg"
+            class="block tracking-wide font-medium md:w-1/5 w-2/3 md:text-center text-lg"
             for="title">
             販時名稱
           </label>
@@ -239,7 +241,7 @@
             rules="required|max:50"
             name="標題"
             v-slot="{errors, classes}"
-            class="md:w-4/5 w-2/3">
+            class="md:w-4/5 sm:w-2/3 w-full mt-4 md:mt-0">
             <div :class="classes">
               <input
                 class="appearance-none block w-full
@@ -255,16 +257,16 @@
       </div>
 
       <div class="mb-8">
-        <div class="flex pr-10 md:pl-4 items-center">
+        <div class="flex pr-10 pl-4 md:items-center flex-col md:flex-row items-start">
           <label
-            class="block tracking-wide font-medium text-lg md:w-1/5 w-1/3 text-center">
+            class="block tracking-wide font-medium text-lg md:w-1/5 w-2/3 md:text-center">
             交談方式
           </label>
           <ValidationProvider
             rules="required"
             v-slot="{errors, classes}"
             name="接受類型"
-            class="w-2/3 md:w-4/5">
+            class="w-full sm:w-2/3 md:w-4/5 mt-4 md:mt-0">
             <ul :class="classes" class="flex flex-wrap select-none typeWrap pl-2">
               <li class="mr-8">
                 <input
@@ -327,9 +329,11 @@
       </div>
 
       <div class="mb-6">
-        <div class="flex pr-10 md:pl-4 items-center">
+        <div
+          class="flex pr-10 pl-4 md:items-center items-start flex-col md:flex-row
+          relative">
           <label
-            class="block tracking-wide font-medium text-center md:w-1/5 w-1/3 text-lg"
+            class="block tracking-wide font-medium md:text-center md:w-1/5 w-2/3 text-lg"
             for="price">
             販時價格
           </label>
@@ -337,7 +341,7 @@
             rules="required|integer|max_value:10000|min_value:0|"
             name="價格"
             v-slot="{errors, classes}"
-            class="w-1/3 md:w-1/5">
+            class="w-2/3 md:w-1/5 mt-4 md:mt-0">
             <div class="flex items-center" :class="classes">
               <input
                 class="appearance-none inline-block w-full h-12
@@ -350,7 +354,9 @@
               <span class="priceInvalid">{{ errors[0] }}</span>
             </div>
           </ValidationProvider>
-          <p class="text-xl font-medium tracking-wider ml-4">
+          <p
+            class="text-xl font-medium tracking-wider ml-4 absolute md:static"
+            style="top: 53px; right: 10%;">
             / 30
             <span
               class="text-xs inline-block"
@@ -377,18 +383,18 @@
         </div>
       </div>
 
-      <div class="mt-12 text-center flex items-center justify-center">
+      <div class="mt-12 text-center flex items-center justify-center flex-col md:flex-row">
         <button
           class="bg-teal-500 hover:bg-teal-600 text-white py-2 px-10
           font-medium rounded tracking-wider text-lg focus:outline-none
-          ml-6 shadow select-none"
+          md:ml-6 shadow select-none"
           @click="$router.go(-1)">
           回上一頁
         </button>
         <button
           class="bg-blue-3 hover:bg-blue-2 text-white py-2 px-10
           font-medium rounded tracking-wider text-lg focus:outline-none
-          ml-6 shadow select-none"
+          md:ml-6 shadow select-none mt-4 md:mt-0"
           @click="confirmation">
           {{ $route.params.edit_id ? '儲存變更' : '新增販時' }}
         </button>
@@ -560,10 +566,9 @@ export default {
     top: 5px;
   }
   .priceInvalid{
-    top: 35px;
+    top: 50px;
   }
 }
-
 .icon_location{
   background: url('~assets/icon_product_location.svg') center center / contain no-repeat;
 }
@@ -582,21 +587,27 @@ export default {
   border-bottom: 1px solid white;
 }
 .priceNotify{
-  margin-left: 2.5rem;
+  margin-left: 5%;
 }
 .linkWrap{
   left: 30px;
 }
+.editorWrap{
+  padding-left: 5%;
+}
 @media (min-width: 767px) {
   .priceNotify{
-    margin-left: 13.5rem;
+    margin-left: 20%;
   }
   .editorWrap{
-    padding-left: 4.2rem
+    padding-left: 6.5%;
   }
   .is-invalid.is-invalid{
     li span {
       top: -7px;
+    }
+    .priceInvalid{
+      top: 35px;
     }
   }
   .linkWrap{

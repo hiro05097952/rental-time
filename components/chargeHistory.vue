@@ -6,7 +6,7 @@
     @mousewheel.prevent
     @touchmove.prevent
     @click.self="close">
-    <div class="bg-white w-2/3 px-8 py-4 relative rounded-md">
+    <div class="bg-white w-11/12 md:w-2/3 lg:w-1/2 px-4 md:px-8 py-4 relative rounded-md">
       <button
         class="absolute top-0 right-0 mt-3 mr-4 text-xl font-light text-gray-600
         hover:text-gray-800 icon_close w-8 h-8 hover:opacity-75"
@@ -17,13 +17,13 @@
       </h2>
       <div class="border border-gray-600 rounded-lg px-4 py-4">
         <ul class="border-b border-gray-600 py-1 flex justify-between text-center">
-          <li class="w-1/3">
+          <li class="w-2/5">
             日期
           </li>
-          <li class="w-1/3">
+          <li class="w-1/4">
             時間
           </li>
-          <li class="w-1/3">
+          <li class="w-1/5 xs:w-2/5">
             項目
           </li>
         </ul>
@@ -33,13 +33,13 @@
             tracking-wide"
             v-for="(item, index) in charges"
             :key="index">
-            <li class="w-1/3 tracking-wider">
+            <li class="w-2/5 tracking-wider">
               {{ item.createTime | date }}
             </li>
-            <li class="w-1/3">
+            <li class="w-1/5">
               {{ item.createTime | time }}
             </li>
-            <li class="w-1/3 pl-3">
+            <li class="w-1/5 xs:w-2/5 md:pl-3">
               {{ item.name }}
               <span
                 class="text-xs font-medium inline-block"

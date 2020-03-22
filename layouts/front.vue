@@ -1,6 +1,7 @@
 <template>
   <div
-    class="min-h-screen">
+    class="min-h-screen"
+    :class="{'maxScreen': $store.state.maxScreen}">
     <nav
       class="flex items-center justify-end fixed top-0 left-0 w-full
       tracking-wider h-12 md:h-16
@@ -170,7 +171,7 @@
           </button>
           <button
             class="px-3 pt-6 pb-2"
-            @click="toggleNavbar('/account/charge')">
+            @click="routerChange('/account/charge')">
             <i
               class="icon_coin inline-block w-5 h-5"
               style="transform: translate(-5px, 4px);" />
@@ -186,14 +187,22 @@
           </button>
           <button
             class="px-3 py-4"
-            @click="toggleNavbar('/account/myorder')">
+            @click="routerChange('/account/myorder')">
             <i
               class="icon_list inline-block w-5 h-5"
               style="transform: translate(-5px, 4px);" />
             我的訂單
           </button>
           <button
-            class="py-4 pb-5 rounded-b
+            class="px-3 py-4"
+            @click="routerChange('/mail')">
+            <i
+              class="icon_notify inline-block w-5 h-5"
+              style="transform: translate(-5px, 4px);" />
+            我的訊息
+          </button>
+          <button
+            class="py-3 pb-5 rounded-b
               w-full"
             @click="logout">
             登出
@@ -434,5 +443,9 @@ nav button{
 .mobileNav-enter, .mobileNav-leave-to{
   transform: translateX(20px);
   opacity: 0;
+}
+.maxScreen{
+  height: 100vh;
+  overflow: hidden;
 }
 </style>

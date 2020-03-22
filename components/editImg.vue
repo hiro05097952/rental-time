@@ -8,7 +8,9 @@
     @touchmove.prevent
     @click.self="close">
     <div
-      class="bg-white px-12 py-10 relative rounded-md flex flex-col items-center relative">
+      class="bg-white px-6 md:px-12 pt-12 pb-10 relative rounded-md
+      flex flex-col items-center relative
+      w-11/12 xs:w-auto">
       <button
         class="absolute top-0 right-0 mt-3 mr-4 text-xl font-light text-gray-600
         hover:text-gray-800 icon_close w-6 h-6 hover:opacity-75"
@@ -16,8 +18,7 @@
         @click="close" />
       <client-only>
         <div
-          style="height: 16rem;"
-          :style="{ width: `${isProduct ? 28 : 16 }rem` }">
+          :class="[!isProduct ? 'userImg' : 'coverImg']">
           <vue-croppie
             ref="croppieRef"
             :enable-orientation="true"
@@ -155,5 +156,25 @@ export default {
 <style scoped>
 .icon_close{
   background: url('~assets/icon_cross.svg') center center / contain no-repeat;
+}
+.userImg{
+  height: 16rem;
+  width: 16rem;
+}
+.coverImg{
+  height: 16rem;
+  width: 28rem;
+}
+@media (max-width: 767px) {
+  .coverImg{
+    height: 12rem;
+    width: 20rem;
+  }
+}
+@media (max-width: 424px) {
+  .coverImg{
+    height: 8rem;
+    width: 16rem;
+  }
 }
 </style>

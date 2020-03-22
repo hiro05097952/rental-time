@@ -1,7 +1,8 @@
 <template>
   <div class="main__container flex flex-col sm:flex-row flex-wrap">
     <div
-      class="main__container__item md:w-1/2 lg:w-1/3 py-4 px-4 md:px-6 cursor-pointer"
+      class="main__container__item w-full md:w-1/2 lg:w-1/3 py-4 xs:px-4
+      px-0 md:px-6 cursor-pointer"
       v-for="(item, index) in products"
       :key="index"
       @click="$router.push(`/products/${item.productId}`)">

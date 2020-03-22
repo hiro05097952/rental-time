@@ -13,7 +13,8 @@
     </div>
 
     <div
-      class="side imgWrap w-11/12 md:w-1/4 flex md:flex-col items-center md:mr-6
+      class="side imgWrap w-11/12 md:w-1/4 flex md:flex-col
+      items-center md:mr-6 xs:flex-row flex-col
       justify-center md:justify-start mx-auto py-8 md:py-0"
       style="border-radius: 20px;">
       <img
@@ -25,9 +26,9 @@
         style="border-radius: 18px;">
       <label
         class="bg-white text-blue-3 shadow hover:bg-gray-100
-        font-semibold px-12 rounded mt-6 tracking-wider border border-gray-600
+        font-semibold px-8 md:px-12 rounded mt-6 tracking-wider border border-gray-600
         hover:border-gray-700 text-lg inline-block py-1
-        ml-8 md:ml-0"
+        xs:ml-8 md:ml-0"
         for="userImg">
         更換
         <button id="userImg" class="hidden" @click="editImg = true" />
@@ -36,14 +37,13 @@
 
     <ValidationObserver
       class="main bg-white shadow-md px-2 lg:px-8 pt-12 pb-8 mb-4 flex flex-col
-      w-11/12 md:w-3/4 mx-auto border"
-      style="border-radius: 20px;"
+      w-full xs:w-11/12 md:w-3/4 mx-auto border containWrap"
       ref="userDataForm">
       <div class="mb-6">
-        <div class="w-full px-3 flex">
+        <div class="w-full px-1 xs:px-3 flex">
           <label
             class="block tracking-wide font-bold
-            w-1/5 bg-blue-1 h-12 text-center py-3"
+            w-1/5 bg-blue-1 h-12 text-center sm:py-3 py-4 sm:text-base text-sm"
             for="name">
             姓名
           </label>
@@ -64,10 +64,10 @@
               <button
                 class="text-white
               font-medium w-2/5 md:w-1/5 items-center rounded-lg tracking-wider h-10
-              ml-6 shadow"
+              ml-3 xs:ml-6 shadow focus:outline-none select-none text-sm xs:text-base"
                 :class="user.identified ? 'bg-gray-200 cursor-not-allowed'
                   : 'bg-blue-3 hover:bg-blue-2'"
-                :disabled="user.identified">
+                @click.prevent="errorNotify">
                 身份驗證
               </button>
             </div>
@@ -76,10 +76,10 @@
       </div>
 
       <div class="mb-6">
-        <div class="px-3 flex">
+        <div class="px-1 xs:px-3 flex">
           <label
             class="block tracking-wide font-bold
-            w-1/5 bg-blue-1 h-12 text-center py-3"
+            w-1/5 bg-blue-1 h-12 text-center py-4 sm:py-3 sm:text-base text-sm"
             for="email">
             EMAIL
           </label>
@@ -97,7 +97,8 @@
             <button
               class="text-white
               font-medium w-2/5 md:w-1/5 items-center rounded-lg tracking-wider h-10
-              ml-6 shadow focus:outline-none select-none "
+              shadow focus:outline-none select-none
+              ml-3 xs:ml-6 text-sm xs:text-base"
               :class="user.emailVerified !== 0
                 ? 'btnDisabled' : 'btnEnabled'"
               @click="sendEmailVerified">
@@ -109,10 +110,10 @@
       </div>
 
       <div class="mb-6" v-if="user.signInType !== 'third'">
-        <div class="flex px-3">
+        <div class="flex px-1 xs:px-3">
           <label
             class="block tracking-wide font-bold
-            w-1/5 bg-blue-1 h-12 text-center py-3"
+            w-1/5 bg-blue-1 h-12 text-center sm:py-3 py-4 sm:text-base text-sm"
             for="password">
             密碼
           </label>
@@ -126,8 +127,8 @@
               disabled>
             <button
               class="bg-blue-3 hover:bg-blue-2 text-white
-              font-medium w-2/5 md:w-1/5 rounded-lg tracking-wider ml-6 h-10
-              shadow"
+              font-medium w-2/5 md:w-1/5 rounded-lg tracking-wider h-10
+              shadow ml-3 xs:ml-6 shadow focus:outline-none select-none text-sm xs:text-base"
               @click="editPassword = true">
               更改密碼
             </button>
@@ -136,10 +137,10 @@
       </div>
 
       <div class="mb-6">
-        <div class="flex px-3">
+        <div class="flex px-1 xs:px-3">
           <label
             class="block tracking-wide font-bold
-            w-1/5 bg-blue-1 h-12 text-center py-3"
+            w-1/5 bg-blue-1 h-12 text-center sm:py-3 py-4 sm:text-base text-sm"
             for="address">
             地址
           </label>
@@ -163,10 +164,10 @@
       </div>
 
       <div class="mb-6">
-        <div class="flex px-3">
+        <div class="flex px-1 xs:px-3">
           <label
             class="block tracking-wide font-bold
-            w-1/5 bg-blue-1 h-12 text-center py-3"
+            w-1/5 bg-blue-1 h-12 text-center sm:py-3 py-4 sm:text-base text-sm"
             for="slogan">
             人生名言
           </label>
@@ -190,11 +191,11 @@
       </div>
 
       <div class="mb-2">
-        <div class="w-full px-3 mb-6 md:mb-0 flex">
+        <div class="w-full px-1 xs:px-3 mb-6 md:mb-0 flex">
           <label
             class="tracking-wide font-bold
-            w-1/5 bg-blue-1 text-center block"
-            style="line-height: 16rem;"
+            w-1/5 bg-blue-1 text-center flex items-center justify-center
+            text-sm xs:text-base"
             for="description">
             自我介紹
           </label>
@@ -213,13 +214,13 @@
         <button
           class="bg-teal-500 hover:bg-teal-600 text-white rounded-lg
           font-semibold px-8 rounded-sm tracking-wider text-lg h-10
-          ml-6 inline-block">
+          xs:ml-6 inline-block">
           取消
         </button>
         <button
           class="bg-blue-3 hover:bg-blue-2 text-white rounded-lg
           font-semibold px-8 rounded-sm tracking-wider text-lg h-10
-          ml-6"
+          ml-3 xs:ml-6"
           @click="confirmation">
           儲存變更
         </button>
@@ -345,6 +346,12 @@ export default {
         });
       }
     },
+    errorNotify() {
+      this.$swal.fire({
+        icon: 'error',
+        title: '此功能尚未開發哦',
+      });
+    },
   },
 };
 </script>
@@ -369,5 +376,13 @@ export default {
 }
 input{
   line-height: 3rem;
+}
+.containWrap{
+  border-radius: 20px;
+}
+@media (max-width: 374px) {
+  .containWrap{
+    border-radius: 0;
+  }
 }
 </style>

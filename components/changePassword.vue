@@ -6,7 +6,7 @@
     @mousewheel.prevent
     @touchmove.prevent
     @click.self="close">
-    <div class="bg-white w-2/3 px-2 py-4 relative rounded-md">
+    <div class="bg-white w-11/12 md:w-2/3 lg:w-1/2 px-2 py-4 relative rounded-md">
       <button
         class="absolute top-0 right-0 mt-3 mr-4 text-xl font-light text-gray-600
         hover:text-gray-800 icon_close w-8 h-8 hover:opacity-75"

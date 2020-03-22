@@ -1,5 +1,6 @@
 <template>
-  <div class="flex py-16 justify-center pt-24 px-2 lg:px-0">
+  <div
+    class="flex py-16 justify-center pt-24 px-2 lg:px-0">
     <div
       class="shadow-xl
         rounded-lg w-full sm:w-11/12 lg:w-5/6 mx-auto bg-white px-2 lg:px-10 pt-12 pb-8 relative">
@@ -62,6 +63,7 @@ export default {
     updateInfo(item, isOpen) {
       this.orderInfo = item;
       this.openOrderInfo = isOpen;
+      this.$store.commit('TOGGLE_SCREEN', isOpen);
     },
     getOrders() {
       this.$refs.orderListChild.getOrders();
@@ -70,7 +72,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .navBtn{
   @apply bg-indigo-200;
   box-shadow: inset 0 0 5px #BDBDBD;
@@ -81,5 +83,9 @@ export default {
 .activeBtn{
   background: white;
   box-shadow: none;
+}
+.modalOpen{
+  height: 100vh !important;
+  overflow: hidden;
 }
 </style>

@@ -1,21 +1,21 @@
 <template>
   <div
-    class="fixed inset-0 flex justify-center items-center"
+    class="fixed inset-0 flex justify-center items-center overflow-y-scroll"
     style="background: rgba(0, 0, 0, 0.5); z-index: 50;"
-    @scroll.prevent
-    @mousewheel.prevent
-    @touchmove.prevent
     @click.self="close">
     <div
       class="bg-gray-100 md:w-3/4 lg:w-1/2 sm:w-4/5 w-11/12 shadow-xl rounded-lg border-2
-      border-gray-700 px-4 md:px-12 pt-10 pb-8 relative">
+      border-gray-700 px-4 md:px-12 pt-16 md:pt-10 pb-8 relative overflow-y-scroll"
+      style="max-height: 80vh;">
       <button
         class="absolute top-0 right-0 mt-3 mr-4 text-xl font-light text-gray-600
         hover:text-gray-800 icon_close w-8 h-8 hover:opacity-75"
         style="outline: none;"
         @click="close" />
-      <div class="flex">
-        <ul class="flex flex-col pb-2 tracking-wider text-lg w-8/12">
+      <div class="flex flex-col-reverse sm:flex-row">
+        <ul
+          class="flex flex-col pb-2 tracking-wider text-lg sm:w-8/12
+          w-full mt-6 sm:mt-0">
           <li class="mb-5 text-base flex items-center">
             <h3
               class="text-gray-800 w-1/3 text-gray-900 mr-6 ml-2 text-right
@@ -91,7 +91,7 @@
           </li>
         </ul>
 
-        <div class="w-40">
+        <div class="w-40 mx-auto sm:mx-0">
           <div
             class="w-full">
             <img

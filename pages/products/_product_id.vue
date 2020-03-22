@@ -24,8 +24,7 @@
       <div class="main__item pr-0 md:pr-4">
         <img
           :src="product.coverImg ? `data:image/png;base64,${product.coverImg}`: 'https://fakeimg.pl/830x320/282828/EAE0D0/?text=Default'"
-          class="rounded-md w-full object-cover shadow"
-          style="height: 20rem;">
+          class="rounded-md w-full object-cover shadow coverImg">
 
         <div class="my-6 pb-2 mt-6 mx-2 border-b border-gray-600">
           <div class="flex items-start mb-5 text-gray-900 flex-wrap font-huninn">
@@ -74,13 +73,13 @@
             text-gray-900 font-huninn">
             販時者資訊
           </h2>
-          <div class="mt-8 px-2 flex">
+          <div class="mt-8 px-2 flex flex-col sm:flex-row">
             <img
               :src="product.img && !product.img.includes('http') ?
                 `data:image/png;base64,${product.img}`: product.img ? product.img :
                   'https://fakeimg.pl/192x192/282828/EAE0D0/?text=Icon'"
               class="rounded-lg shadow object-center object-cover h-48 w-48">
-            <div class="ml-8 w-full tracking-wider">
+            <div class="mt-4 sm:mt-0 ml-2 sm:ml-8 w-full tracking-wider">
               <h3 class="text-xl font-medium text-gray-900 tracking-widest">
                 {{ product.name }}
               </h3>
@@ -100,8 +99,8 @@
     </div>
 
     <div
-      class="side px-4 lg:px-8 ml-4 text-gray-800 bg-white rounded-lg pt-8 pb-4
-      border border-gray-700 shadow flex-shrink-0">
+      class="side px-4 lg:px-8 sm:ml-4 text-gray-800 bg-white rounded-lg pt-8 pb-4
+      border border-gray-700 shadow md:flex-shrink-0">
       <h2 class="text-lg font-medium tracking-wider font-huninn">
         時間價格
       </h2>
@@ -493,9 +492,12 @@ export default {
   max-width: 33%;
   min-width: 20rem;
 }
+.coverImg{
+  height: 20rem;
+}
 @media (max-width: 767px) {
   .side{
-    min-width: none;
+    min-width: 0;
     width: 90%;
     max-width: 90%;
     margin: 4rem auto 2rem;
@@ -505,6 +507,10 @@ export default {
   .side{
     width: 100%;
     max-width: 100%;
+    min-width: 0;
+  }
+  .coverImg{
+    height: 14rem;
   }
 }
 </style>

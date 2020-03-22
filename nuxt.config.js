@@ -99,4 +99,9 @@ module.exports = {
       cert: fs.readFileSync(path.resolve(__dirname, 'localhost+2.pem')),
     },
   },
+  env: {
+    google_clientId: process.env.google_clientId,
+    fb_appId: process.env.fb_appId,
+    BASE_URL: process.env.BASE_URL,
+  },
 };

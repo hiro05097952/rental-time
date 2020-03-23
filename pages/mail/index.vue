@@ -52,11 +52,12 @@
             for="selectMail"
             class="checkbox h-5 w-5 rounded-sm border
             border-gray-600 block shadow-sm text-center mx-auto
-            hover:border-gray-700 hover:bg-blue-1" />
+            hover:border-gray-700 hover:bg-blue-1"
+            @click="errorNotify" />
         </li>
         <li class="w-1/12 hidden md:block">
           <button
-            @click.stop
+            @click.stop="errorNotify"
             class="w-5 h-5 icon_star_normal opacity-50 focus:outline-none"
             style="transform: translateY(3px);" />
         </li>
@@ -139,7 +140,12 @@ export default {
     };
   },
   methods: {
-
+    errorNotify() {
+      this.$swal.fire({
+        icon: 'error',
+        title: '此功能尚未開發哦',
+      });
+    },
   },
   filters: {
     timeConverter(val) {

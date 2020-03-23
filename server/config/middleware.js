@@ -48,6 +48,10 @@ const verificationWhiteList = [
     path: '/api/test',
     method: 'GET',
   },
+  {
+    path: '/api/charge/server',
+    method: 'POST',
+  },
 ];
 router.use((req, res, next) => {
   // 白名單

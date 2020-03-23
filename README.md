@@ -5,17 +5,18 @@
 
 ## Demo
 
-Demo：[http://rental-time.herokuapp.com/](http://rental-time.herokuapp.com/)
+[http://rental-time.herokuapp.com/](http://rental-time.herokuapp.com/)
 
 
 ## 簡介
 
-此作品使用 Nuxt 打造，搭配 WebRTC 可達成一對一線上視訊
-後端則是使用 Node.js 搭配資料庫 MySQL
+此作品使用 Nuxt 打造，搭配 WebRTC 可達成一對一線上視訊。
+
+後端則是使用 Node.js 搭配資料庫 MySQL。
 
 ### 平台功能
 
-* 會員註冊 / 登入 ( 支持第三方 Google, FaceBook )
+* 會員註冊 / 登入 ( 支援第三方 Google, FaceBook )
 
 * 忘記密碼 ( 使用 JWT 驗證 )
 

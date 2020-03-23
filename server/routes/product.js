@@ -19,7 +19,7 @@ function covertToBase64(passBuf) {
 router.get('/:productId', async (req, res, next) => {
   try {
     const [product] = await db.query(`SELECT title, category, type, meetingPlace,
-    p.description productDescription, u.description userdescription, coverImg, p.createTime,
+    p.description productDescription, u.description userDescription, coverImg, p.createTime,
     p.productId, p.userId, img, name, address, slogan, identified, price
     FROM product p, user u WHERE p.userId = u.userId && productId = ${req.params.productId}`);
 

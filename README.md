@@ -88,13 +88,13 @@
 
 ### 編輯頁面
 
-![editUserInfo]](https://user-images.githubusercontent.com/50637947/77355099-d1b79e00-6d7e-11ea-94c9-43f252c402c7.png)
+![editUserInfo](https://user-images.githubusercontent.com/50637947/77355099-d1b79e00-6d7e-11ea-94c9-43f252c402c7.png)
 
 ![editProductInfo](https://user-images.githubusercontent.com/50637947/77355109-d419f800-6d7e-11ea-8dbf-7a573c21f114.png)
 
 ### 信箱 / 訊息
 
-![message1]](https://user-images.githubusercontent.com/50637947/77355187-fa3f9800-6d7e-11ea-93bf-cf02b2d3d392.png)
+![message1](https://user-images.githubusercontent.com/50637947/77355187-fa3f9800-6d7e-11ea-93bf-cf02b2d3d392.png)
 ![message2](https://user-images.githubusercontent.com/50637947/77355189-fca1f200-6d7e-11ea-8962-4125aeebf21b.png)
 
 ### 儲值點數
@@ -107,7 +107,7 @@
 
 ### 視訊聊天室
 
-![chatRoom]](https://user-images.githubusercontent.com/50637947/77355256-1d6a4780-6d7f-11ea-8c23-d5600694e03d.png)
+![chatRoom](https://user-images.githubusercontent.com/50637947/77355256-1d6a4780-6d7f-11ea-8c23-d5600694e03d.png)
 
 
 ## 聲明

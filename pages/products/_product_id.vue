@@ -89,8 +89,11 @@
                 v-if="product.slogan">
                 {{ product.slogan }}
               </p>
-              <p class="mt-4">
-                {{ product.userdescription || '此人尚無自我介紹' }}
+
+              <!-- eslint-disable-next-line vue/no-v-html -->
+              <p class="mt-4" v-html="product.userDescription" v-if="product.userDescription" />
+              <p v-else class="mt-4">
+                此人尚無自我介紹
               </p>
             </div>
           </div>

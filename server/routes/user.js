@@ -4,6 +4,7 @@ const router = express.Router();
 const uuidv1 = require('uuid/v1');
 const hash = require('hash.js');
 const jwt = require('jsonwebtoken');
+const htmlEncode = require('js-htmlencode');
 
 const db = require('../model/pool');
 const validate = require('../config/validate');
@@ -23,6 +24,7 @@ router.get('/', async (req, res, next) => {
       user.signInType = 'third';
     }
     delete user.password;
+    user.description = htmlEncode.htmlDecode(user.description.replace(/<br \/>/g, '\n'));
 
     res.send({
       success: true,
@@ -70,8 +72,10 @@ router.put('/', async (req, res, next) => {
   if (error) { return next(error.message); }
 
   try {
+    const userDescription = htmlEncode.htmlEncode(req.body.description).trim().replace(/\n/g, '<br />');
+
     await db.query(`UPDATE user SET name = "${req.body.name}", address = "${req.body.address}",
-    slogan = "${req.body.slogan}", description = "${req.body.description}"
+    slogan = "${req.body.slogan}", description = "${userDescription}"
     WHERE userId = "${req.session.user.userId}"`);
     res.send({
       success: true,

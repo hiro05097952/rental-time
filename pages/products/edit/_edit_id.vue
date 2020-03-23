@@ -419,6 +419,11 @@ if (typeof window !== 'undefined') {
 
 export default {
   name: 'EditProduct',
+  header() {
+    return {
+      title: '編輯販時 | 時販機',
+    };
+  },
   layout: 'front',
   components: {
     editImg,

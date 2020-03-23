@@ -297,6 +297,11 @@
 <script>
 export default {
   name: 'ProductInfo',
+  head() {
+    return {
+      title: `${this.product.title} | 時飯機`,
+    };
+  },
   async asyncData({ $axios, route }) {
     try {
       const { data } = await $axios.get(`/api/product/${route.params.product_id}`);

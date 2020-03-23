@@ -30,7 +30,11 @@ import chat from '~/components/chat.vue';
 
 export default {
   name: 'MailRoom',
-  // layout: 'front',
+  header() {
+    return {
+      title: `與 ${this.userInfo.name} 的訊息 | 時販機`,
+    };
+  },
   components: {
     chat,
   },

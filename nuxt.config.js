@@ -10,11 +10,20 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    title: process.env.npm_package_name || '',
+    title: '時販機 じはんき',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: process.env.npm_package_description || '' },
+      { hid: 'description', name: 'description', content: '空閑時間怎麼處理呢？ 在時販機上，您可以自由販賣或購買時間，一單位為 30 分鐘，不同的主題可以讓你選擇精進自己、分享快樂又或是殺時間的娛樂。快來看看吧！' },
+      { 'http-equiv': 'X-UA-Compatible', content: 'ie=edge' },
+      { property: 'og:title', content: 'Go Where' },
+      { property: 'og:description', content: '空閑時間怎麼處理呢？ 在時販機上，您可以自由販賣或購買時間，一單位為 30 分鐘，不同的主題可以讓你選擇精進自己、分享快樂又或是殺時間的娛樂。快來看看吧！' },
+      { property: 'og:image', content: 'https://images.unsplash.com/photo-1526688442562-41eb8259db9e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=668&q=80' },
+      { property: 'og:image:width', content: '600px' },
+      { property: 'og:image:height', content: '600px' },
+      { property: 'og:url', content: 'https://rental-time.herokuapp.com/' },
+      { property: 'og:site_name', content: '時販機 じはんき' },
+      { property: 'og:locale', content: 'zh_TW' },
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
@@ -23,7 +32,10 @@ module.exports = {
   /*
   ** Customize the progress-bar color
   */
-  loading: { color: '#fff' },
+  loading: {
+    color: '#FFCD12',
+    height: '3px',
+  },
   /*
   ** Global CSS
   */

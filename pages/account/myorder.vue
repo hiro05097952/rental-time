@@ -40,6 +40,11 @@ import orderInfo from '~/components/orderInfo.vue';
 
 export default {
   name: 'MyOrder',
+  header() {
+    return {
+      title: '我的販時＆購時 | 時販機',
+    };
+  },
   layout: 'front',
   components: {
     orderList,

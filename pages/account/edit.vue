@@ -241,6 +241,11 @@ import editImg from '~/components/editImg.vue';
 
 export default {
   name: 'EditUser',
+  header() {
+    return {
+      title: '編輯個人資訊 | 時販機',
+    };
+  },
   layout: 'front',
   components: {
     changePassword,

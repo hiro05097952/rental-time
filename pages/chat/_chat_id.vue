@@ -65,6 +65,11 @@ import chat from '~/components/chat.vue';
 
 export default {
   name: 'Chat',
+  header() {
+    return {
+      title: '販時聊天室 | 時販機',
+    };
+  },
   middleware: 'chat',
   components: {
     chat,

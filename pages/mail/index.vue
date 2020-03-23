@@ -123,6 +123,11 @@
 <script>
 export default {
   name: 'MailList',
+  header() {
+    return {
+      title: '我的訊息 | 時販機',
+    };
+  },
   layout: 'front',
   async asyncData({ $axios }) {
     try {

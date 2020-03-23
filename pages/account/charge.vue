@@ -22,6 +22,11 @@
 <script>
 export default {
   name: 'Charge',
+  header() {
+    return {
+      title: '儲值點數 | 時販機',
+    };
+  },
   layout: 'front',
   data() {
     return {

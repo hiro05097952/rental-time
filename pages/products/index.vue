@@ -357,6 +357,11 @@ import card from '~/components/card.vue';
 
 export default {
   name: 'Products',
+  head() {
+    return {
+      title: '尋找販時 | 時飯機',
+    };
+  },
   components: {
     card,
   },

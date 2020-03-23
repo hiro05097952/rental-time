@@ -118,6 +118,11 @@
 <script>
 export default {
   name: 'OrderConfirmation',
+  header() {
+    return {
+      title: '下標販時 | 時販機',
+    };
+  },
   layout: 'front',
   data() {
     return {

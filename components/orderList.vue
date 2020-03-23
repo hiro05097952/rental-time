@@ -88,7 +88,7 @@ export default {
         const { data } = await this.$axios.get(`/api/orders${this.isSeller ? '?isSeller=true' : ''}`);
         this.orders = data.orders;
       } catch ({ response }) {
-        console.log(response.data.message);
+        // console.log(response.data.message);
       }
     },
     timeConverter(value) {

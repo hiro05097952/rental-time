@@ -55,7 +55,7 @@ export default {
         userInfo: data.userInfo,
       };
     } catch ({ response }) {
-      console.log(response.data.message);
+      // console.log(response.data.message);
     }
   },
   methods: {

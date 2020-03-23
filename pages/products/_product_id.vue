@@ -302,7 +302,7 @@ export default {
       const { data } = await $axios.get(`/api/product/${route.params.product_id}`);
       return { product: data.product };
     } catch ({ response }) {
-      console.log(response);
+      // console.log(response);
       // error({ statusCode: response.status, message: response.data.message });
     }
   },

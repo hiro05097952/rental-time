@@ -126,12 +126,11 @@ export default {
   async asyncData({ $axios }) {
     try {
       const { data } = await $axios.get('/api/mails?isNew="true"');
-      // console.log(data);
       return {
         mails: data.mails,
       };
     } catch ({ response }) {
-      console.log(response.data.message);
+      // console.log(response.data.message);
     }
   },
   data() {

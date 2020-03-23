@@ -67,7 +67,7 @@ export default {
       const { data } = await this.$axios.get('/api/charges');
       this.charges = data.charges;
     } catch ({ response }) {
-      console.log(response.data.message);
+      // console.log(response.data.message);
     }
   },
   methods: {

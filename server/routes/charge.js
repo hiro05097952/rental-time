@@ -68,8 +68,8 @@ router.post('/', async (req, res, next) => {
 
     const parameters = {
       MerchantTradeNo: randomBytes(8).toString('hex'), // 請帶20碼uid, ex: f0a0d7e9fae1bb72bc93
-      ReturnURL: `${process.env.BASE_URL}/api/point/server`, // 後端網址
-      ClientBackURL: `${process.env.BASE_URL}`, // 導回前台網址
+      ReturnURL: `${process.env.BASE_URL}/api/charge/server`, // 後端網址
+      ClientBackURL: `${process.env.BASE_URL}/account/charge`, // 導回前台網址
       CustomField1: req.session.user.userId, // userId
       CustomField2: req.body.pointId, // pointId
       EncryptType: '1', // 加密類型 => SHA256

@@ -253,7 +253,7 @@ export default {
       const { data } = await $axios.get('/api/user');
       return { user: data.user };
     } catch ({ response }) {
-      console.log(response.data);
+      // console.log(response.data);
       // redirect('/');
       // error({ statusCode: response.status, message: response.data.message });
     }

@@ -25,7 +25,7 @@ export const actions = {
         commit('UPDATE_USER', data.userInfo);
       }
     } catch ({ response }) {
-      console.log('nuxt init!! =>', response.data.message);
+      // console.log('nuxt init!! =>', response.data.message);
     }
   },
   async logout({ commit }) {

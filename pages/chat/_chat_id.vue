@@ -105,11 +105,11 @@ export default {
         this.createPeerConnection();
         this.addLocalStream();
         this.onIceCandidates();
-        this.onIceconnectionStateChange();
+        // this.onIceconnectionStateChange();
         this.onAddStream();
         this.createSignal(true);
       } catch (err) {
-        console.log(err);
+        // console.log(err);
       }
     },
     async createMedia() {
@@ -125,17 +125,17 @@ export default {
       this.audioTracks = this.localstream.getAudioTracks();
       this.toggleTrack('video');
       this.toggleTrack('audio');
-      if (this.videoTracks.length > 0) {
-        console.log(`影像配置: ${this.videoTracks[0].label}`);
-      }
-      if (this.audioTracks.length > 0) {
-        console.log(`聲音配置: ${this.audioTracks[0].label}`);
-      }
+      // if (this.videoTracks.length > 0) {
+      //   console.log(`影像配置: ${this.videoTracks[0].label}`);
+      // }
+      // if (this.audioTracks.length > 0) {
+      //   console.log(`聲音配置: ${this.audioTracks[0].label}`);
+      // }
     },
     createPeerConnection() {
       // 建立 P2P 連接
       this.pc = new RTCPeerConnection(this.configuration);
-      console.log('建立 peer connection');
+      // console.log('建立 peer connection');
     },
     addLocalStream() {
       // 增加本地流
@@ -146,7 +146,7 @@ export default {
       // 找尋到 ICE 候選位置後，送去 server 與另一位配對
       this.pc.onicecandidate = ({ candidate }) => {
         if (!candidate) { return; }
-        console.log('onIceCandidate => ', candidate);
+        // console.log('onIceCandidate => ', candidate);
         this.$socket.emit('peerconnectSignaling', {
           candidate,
         });
@@ -161,17 +161,17 @@ export default {
     onAddStream() {
       // 監聽是否有流傳入，如果有的話就顯示影像
       this.pc.onaddstream = (event) => {
-        console.log('this => ', this);
         if (!this.$refs.remoteVideo.srcObject && event.stream) {
           this.$refs.remoteVideo.srcObject = event.stream;
-          console.log('接收流並顯示於遠端視訊！', event);
+          // console.log('接收流並顯示於遠端視訊！', event);
         }
       };
     },
     // send SDP
+    // eslint-disable-next-line no-unused-vars
     sendSignalingMessage(desc, offer) {
-      const isOffer = offer ? 'offer' : 'answer';
-      console.log(`寄出 ${isOffer}`);
+      // const isOffer = offer ? 'offer' : 'answer';
+      // console.log(`寄出 ${isOffer}`);
       this.$socket.emit('peerconnectSignaling', {
         desc,
       });
@@ -186,7 +186,7 @@ export default {
         await this.pc.setLocalDescription(this.offer);
         this.sendSignalingMessage(this.pc.localDescription, !!isOffer);
       } catch (err) {
-        console.log(err);
+        // console.log(err);
       }
     },
     toggleTrack(trackName) {
@@ -209,11 +209,11 @@ export default {
     async peerconnectSignaling({ desc, candidate }) {
       const vm = this;
       if (desc && !vm.pc.currentRemoteDescription) {
-        console.log('desc => ', desc);
+        // console.log('desc => ', desc);
         await vm.pc.setRemoteDescription(new RTCSessionDescription(desc));
         await vm.createSignal(desc.type === 'answer');
       } else if (candidate) {
-        console.log('candidate =>', candidate);
+        // console.log('candidate =>', candidate);
         vm.pc.addIceCandidate(new RTCIceCandidate(candidate));
       }
     },

@@ -308,7 +308,7 @@ export default {
           token,
         });
       } catch (err) {
-        console.log('google sign in err => ', err);
+        // console.log('google sign in err => ', err);
       }
     },
     fbInit(d, s, id) {

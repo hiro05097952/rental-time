@@ -133,7 +133,7 @@ export default {
         product: data.product,
       };
     } catch ({ response }) {
-      console.log(response.data.message);
+      // console.log(response.data.message);
     }
   },
   methods: {

@@ -35,7 +35,7 @@ export default {
     async upload(e) {
       const [file] = e.type === 'drop' ? e.dataTransfer.files : e.target.files;
       if (!file) { return; }
-      console.log(file);
+      // console.log(file);
       const form = new FormData();
       form.append('image', file);
       // try {

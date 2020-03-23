@@ -180,8 +180,7 @@ router.post('/password/reset', async (req, res, next) => {
       message: '已寄送至信箱',
     });
   } catch (err) {
-    // console.log('test => ', err);
-    next(err.sqlMessage || err);
+    next(err && err.sqlMessage);
   }
 });
 

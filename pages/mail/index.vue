@@ -125,7 +125,7 @@ export default {
   layout: 'front',
   async asyncData({ $axios }) {
     try {
-      const { data } = await $axios.get('/api/mails?isNew="true"');
+      const { data } = await $axios.get('/api/mails?isNew=true');
       return {
         mails: data.mails,
       };

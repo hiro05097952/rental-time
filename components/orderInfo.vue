@@ -249,6 +249,7 @@ export default {
       if (!value) {
         return;
       }
+      this.$store.commit('TOGGLE_SCREEN', false);
       this.$router.push(`/chat/${this.orderInfo.orderId}`);
     },
   },

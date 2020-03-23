@@ -26,7 +26,7 @@
           :src="product.coverImg ? `data:image/png;base64,${product.coverImg}`: 'https://fakeimg.pl/830x320/282828/EAE0D0/?text=Default'"
           class="rounded-md w-full object-cover shadow coverImg">
 
-        <div class="my-6 pb-2 mt-6 mx-2 border-b border-gray-600">
+        <div class="my-6 pb-2 mt-6 mx-2 border-b border-gray-600 ql-snow">
           <div class="flex items-start mb-5 text-gray-900 flex-wrap font-huninn">
             <h1 class="text-2xl font-medium tracking-widest pl-2 mr-auto font-sans">
               {{ product.title }}
@@ -56,7 +56,7 @@
 
           <!-- eslint-disable-next-line -->
           <div v-html="product.productDescription"
-               class="px-3 py-2 tracking-wider"
+               class="px-3 py-2 tracking-wider ql-editor"
                v-if="product.productDescription" />
           <div
             v-else

@@ -125,7 +125,7 @@ router.post('/server', async (req, res, next) => {
     if (req.body.CheckMacValue
       !== checkMacValueConverter(req.body, process.env.ECPAY_HashKey, process.env.ECPAY_HashIV)) {
       console.log('server 檢查碼不合格');
-      res.send('1');
+      res.send('0');
       return;
     }
 
@@ -135,7 +135,7 @@ router.post('/server', async (req, res, next) => {
       pointId,
     });
     const [point] = await db.query(`SELECT point FROM user WHERE userId = "${userId}"`);
-    await db.query(`UPDATE user SET point = "${+req.body.TotalAmount + +point.point}" WHERE userId = "${userId}"`);
+    await db.query(`UPDATE user SET point = ${+req.body.TradeAmt + +point.point} WHERE userId = "${userId}"`);
 
     res.send('1');
   } catch (err) {

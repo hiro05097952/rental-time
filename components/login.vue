@@ -14,14 +14,14 @@
           class="py-2 md:py-3 text-center w-1/2 bg-blue-1 font-bold text-gray-800"
           :class="{'shadow-inner' : !isSignIn}"
           style="border-radius: 32px 32px 0 0; outline: none;"
-          @click="isSignIn = true">
+          @click="toggleSignIn(true)">
           登入
         </button>
         <button
           class="py-2 md:py-3 text-center w-1/2 bg-white font-bold text-gray-800"
           :class="{'shadow-inner' : isSignIn}"
           style="border-radius: 32px 32px 0 0; outline: none;"
-          @click="isSignIn = false">
+          @click="toggleSignIn(false)">
           註冊
         </button>
       </div>
@@ -385,6 +385,11 @@ export default {
           }
         });
       });
+    },
+    toggleSignIn(isSignIn) {
+      this.isSignIn = isSignIn;
+      this.email = '';
+      this.password = '';
     },
   },
 };

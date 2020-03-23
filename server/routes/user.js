@@ -61,7 +61,7 @@ router.post('/', async (req, res, next) => {
       message: '註冊成功',
     });
   } catch (err) {
-    next(err.sqlMessage || err);
+    next(err && err.sqlMessage);
   }
 });
 

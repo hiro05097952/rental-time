@@ -72,6 +72,10 @@
 
 ![index2](https://user-images.githubusercontent.com/50637947/77354806-5fdf5480-6d7e-11ea-9317-37940b635721.png)
 
+![index3](https://user-images.githubusercontent.com/50637947/77360299-1267e500-6d88-11ea-977f-0cc6eb0eae65.png)
+
+![index4](https://user-images.githubusercontent.com/50637947/77360308-16940280-6d88-11ea-8fd4-d12bb69be372.png)
+
 ### 商品列表 / 資訊
 
 ![productList](https://user-images.githubusercontent.com/50637947/77354852-75547e80-6d7e-11ea-8116-73ffd6634f45.png)
@@ -80,7 +84,7 @@
 
 ![productInfo](https://user-images.githubusercontent.com/50637947/77354876-7dacb980-6d7e-11ea-8da7-ca967cfbd158.png)
 
-![productInfo2](https://user-images.githubusercontent.com/50637947/77354881-7f767d00-6d7e-11ea-9836-d80d660ceee8.png)
+![productInfo2](https://user-images.githubusercontent.com/50637947/77360129-c5840e80-6d87-11ea-828e-9b1321d08a9a.png)
 
 ### 登入 / 註冊
 

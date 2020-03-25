@@ -18,7 +18,10 @@ router.get('/', async (req, res, next) => {
     const products = await db.query(`SELECT title, category, type, meetingPlace,
     coverImg, p.createTime, p.productId, p.userId, img, name, slogan, identified, price
     FROM product p, user u
-    WHERE p.userId = u.userId ${req.query.limit ? `limit ${req.query.limit}` : ''}`);
+    WHERE p.userId = u.userId
+    ${req.query.search ? `&& (p.title LIKE '%${req.query.search}%'
+    || p.description LIKE '%${req.query.search}%' || u.name LIKE '%${req.query.search}%')` : ''}
+    ${req.query.limit ? `limit ${req.query.limit}` : ''}`);
 
     // convert blob to base64
     await products.forEach((item) => {

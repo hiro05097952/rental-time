@@ -24,14 +24,16 @@ router.get('/', async (req, res, next) => {
       user.signInType = 'third';
     }
     delete user.password;
-    user.description = htmlEncode.htmlDecode(user.description.replace(/<br \/>/g, '\n'));
+    if (user.description) {
+      user.description = htmlEncode.htmlDecode(user.description.replace(/<br \/>/g, '\n'));
+    }
 
     res.send({
       success: true,
       user,
     });
   } catch (err) {
-    next(err.sqlMessage || err);
+    next(err && err.sqlMessage);
   }
 });
 

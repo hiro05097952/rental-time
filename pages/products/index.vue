@@ -22,10 +22,13 @@
             class="w-full py-3 h-12 border border-gray-600 pl-6
             focus:outline-none tracking-wider shadow hover:border-gray-700 font-medium"
             style="border-radius: 25px;"
-            placeholder="請輸入關鍵字">
+            placeholder="請輸入關鍵字"
+            v-model="search"
+            @keypress.enter="searchProduct">
           <button
-            class="w-6 h-6 absolute top-0 bottom-0 m-auto icon_search"
-            style="right: 20px;" />
+            class="w-6 h-6 absolute top-0 bottom-0 m-auto icon_search focus:outline-none"
+            style="right: 20px;"
+            @click="searchProduct" />
         </div>
         <div class="relative inline-block w-full xs:w-3/4 sm:w-40 mb-4 xs:mr-4">
           <select
@@ -413,6 +416,14 @@ export default {
       if (isAsc) {
         this.sort.isAsc = this.sort.isAsc !== true;
       }
+    },
+    async searchProduct() {
+      let api = `/api/products?search=${this.search}`;
+      if (this.search === '') {
+        api = '/api/products';
+      }
+      const { data } = await this.$axios.get(api);
+      this.products = data.products;
     },
   },
   computed: {

@@ -37,9 +37,12 @@
 ## 使用技術
 
 * Vue
-  Vue Router
-  Vuex
-  Vue Cli 4
+  
+* Vue Router
+
+* Vuex
+
+* Vue Cli 4
 
 * Nuxt
 
@@ -48,7 +51,8 @@
 * WebSocket
 
 * Google SignIn
-  FaceBook SignIn
+
+* FaceBook SignIn
 
 * ESLint ( Airbnb )
 

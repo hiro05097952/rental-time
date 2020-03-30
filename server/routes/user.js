@@ -46,6 +46,7 @@ router.post('/', async (req, res, next) => {
     const sqlData = {
       ...req.body,
       password: hash.sha256().update(req.body.password).digest('hex'),
+      point: 1000, // 註冊送點數
       userId: uuidv1(),
     };
     delete sqlData.passwordConfirmation;

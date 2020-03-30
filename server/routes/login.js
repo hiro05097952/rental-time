@@ -82,6 +82,7 @@ router.post('/', async (req, res, next) => {
         password: sub,
         emailVerified: email_verified,
         img: picture,
+        point: 1000, // 送點數
       });
       if (!email_verified) {
         await nodeMailer.sendSignUpEmail({

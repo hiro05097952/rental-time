@@ -5,13 +5,6 @@ const router = express.Router();
 const db = require('../model/pool');
 const validate = require('../config/validate');
 
-function covertToBase64(passBuf) {
-  if (Buffer.isBuffer(passBuf)) {
-    const buf = Buffer.from(passBuf);
-    return buf.includes('http') ? buf.toString() : buf.toString('base64');
-  }
-  return passBuf;
-}
 router.post('/:toUserId', async (req, res, next) => {
   const { error } = validate.mailValidate(req.body);
   if (error) {
@@ -44,7 +37,6 @@ router.get('/:userId', async (req, res, next) => {
     || (fromUserId = "${req.session.user.userId}" && toUserId = "${req.params.userId}")`);
 
     const [userInfo] = await db.query(`SELECT name, userId, img FROM user WHERE userId = "${req.params.userId}"`);
-    userInfo.img = covertToBase64(userInfo.img);
 
     res.send({
       success: true,

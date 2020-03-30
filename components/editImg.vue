@@ -132,7 +132,7 @@ export default {
       } catch ({ response }) {
         this.$swal.fire({
           icon: 'error',
-          title: response.data.message,
+          title: response.data.message && response.data.message.message,
         });
       }
     },

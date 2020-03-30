@@ -11,9 +11,8 @@
         items-center mailImgWrap"
         v-if="$route.path.includes('mail')">
         <img
-          :src="userInfo.img && !userInfo.img.includes('http') ?
-            `data:image/png;base64,${userInfo.img}`: userInfo.img ? userInfo.img :
-              'https://fakeimg.pl/192x192/282828/EAE0D0/?text=Icon'"
+          :src="userInfo.img ? userInfo.img :
+            'https://fakeimg.pl/192x192/282828/EAE0D0/?text=Icon'"
           class="bg-teal-200 w-20 h-20 md:w-32 md:h-32 lg:w-40 lg:h-40 rounded mr-4 md:mr-0">
         <p
           class="text-center my-1 tracking-wider text-gray-900">

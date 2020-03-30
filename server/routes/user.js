@@ -15,11 +15,7 @@ router.get('/', async (req, res, next) => {
   try {
     const [user] = await db.query(`SELECT img, name, address, slogan, email, description,
     emailVerified, identified, point, password FROM user WHERE userId = "${req.session.user.userId}"`);
-    // convert buffer to base64
-    if (Buffer.isBuffer(user.img)) {
-      const buf = Buffer.from(user.img);
-      user.img = !buf.includes('http') ? buf.toString('base64') : buf.toString();
-    }
+
     if (req.session.user.userId === user.password) {
       user.signInType = 'third';
     }

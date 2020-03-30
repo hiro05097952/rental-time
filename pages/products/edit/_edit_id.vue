@@ -35,7 +35,7 @@
         class="flex items-center mb-6 mx-auto w-full md:w-4/5 justify-around
         flex-col md:flex-row">
         <img
-          :src="cacheImg.includes('base64') ? cacheImg : `data:image/png;base64,${cacheImg}`"
+          :src="cacheImg"
           class="border object-center object-cover border-gray-300 md:w-3/5 h-56
           shadow rounded-lg w-11/12"
           v-if="cacheImg">
@@ -528,10 +528,9 @@ export default {
         });
         this.$router.push('/products');
       } catch ({ response }) {
-        const title = response.data.message;
         this.$swal.fire({
           icon: 'error',
-          title,
+          title: response.data.message && response.data.message.message,
         });
       }
     },

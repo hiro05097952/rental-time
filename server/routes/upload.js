@@ -3,22 +3,24 @@ const express = require('express');
 const router = express.Router();
 
 const db = require('../model/pool');
-const upload = require('../config/multer');
+const multer = require('../config/multer');
+const uploadImg = require('../config/storage');
 
 // userImg
-router.post('/', upload.single('image'), async (req, res, next) => {
+router.post('/', multer.single('image'), async (req, res, next) => {
   try {
-    await db.query(`UPDATE user SET img = ? WHERE userId
-    = "${req.session.user.userId}"`, req.file.buffer);
+    const imgUrl = await uploadImg(req.file, req.session.user.userId);
 
-    const img = Buffer.from(req.file.buffer).toString('base64');
+    await db.query(`UPDATE user SET img = ? WHERE userId
+    = "${req.session.user.userId}"`, imgUrl);
+
     res.send({
       success: true,
       message: '上傳圖片成功',
-      img,
+      img: imgUrl,
     });
   } catch (err) {
-    next(err.sqlMessage);
+    next(err && err.sqlMessage);
   }
 });
 

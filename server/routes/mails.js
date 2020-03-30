@@ -4,13 +4,6 @@ const router = express.Router();
 
 const db = require('../model/pool');
 
-function covertToBase64(passBuf) {
-  if (Buffer.isBuffer(passBuf)) {
-    const buf = Buffer.from(passBuf);
-    return buf.includes('http') ? buf.toString() : buf.toString('base64');
-  }
-  return passBuf;
-}
 router.get('/', async (req, res, next) => {
   try {
     const mails = await db.query(`SELECT m.toUserId, u.name toUserName, u.img toUserImg, 
@@ -23,8 +16,6 @@ router.get('/', async (req, res, next) => {
 
     mails.forEach((item) => {
       item.type = item.fromUserId === req.session.user.userId ? 1 : 0;
-      item.fromUserImg = covertToBase64(item.fromUserImg);
-      item.toUserImg = covertToBase64(item.toUserImg);
     });
     res.send({
       success: true,

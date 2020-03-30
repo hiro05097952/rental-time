@@ -18,9 +18,8 @@
       justify-center md:justify-start mx-auto py-8 md:py-0"
       style="border-radius: 20px;">
       <img
-        :src="user.img && !user.img.includes('http') ?
-          `data:image/png;base64,${user.img}`: user.img ? user.img :
-            'https://fakeimg.pl/192x192/282828/EAE0D0/?text=Icon'"
+        :src="user.img ? user.img :
+          'https://fakeimg.pl/192x192/282828/EAE0D0/?text=Icon'"
         class="object-center object-cover h-56 w-56
         shadow-lg border border-gray-500"
         style="border-radius: 18px;">

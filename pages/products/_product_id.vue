@@ -23,7 +23,7 @@
       </h2>
       <div class="main__item pr-0 md:pr-4">
         <img
-          :src="product.coverImg ? `data:image/png;base64,${product.coverImg}`: 'https://fakeimg.pl/830x320/282828/EAE0D0/?text=Default'"
+          :src="product.coverImg ? product.coverImg : 'https://fakeimg.pl/830x320/282828/EAE0D0/?text=Default'"
           class="rounded-md w-full object-cover shadow coverImg">
 
         <div class="my-6 pb-2 mt-6 mx-2 border-b border-gray-600 ql-snow">
@@ -75,9 +75,8 @@
           </h2>
           <div class="mt-8 px-2 flex flex-col sm:flex-row">
             <img
-              :src="product.img && !product.img.includes('http') ?
-                `data:image/png;base64,${product.img}`: product.img ? product.img :
-                  'https://fakeimg.pl/192x192/282828/EAE0D0/?text=Icon'"
+              :src="product.img ? product.img :
+                'https://fakeimg.pl/192x192/282828/EAE0D0/?text=Icon'"
               class="rounded-lg shadow object-center object-cover h-48 w-48">
             <div class="mt-4 sm:mt-0 ml-2 sm:ml-8 w-full tracking-wider">
               <h3 class="text-xl font-medium text-gray-900 tracking-widest">

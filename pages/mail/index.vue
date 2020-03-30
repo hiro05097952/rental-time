@@ -63,9 +63,7 @@
         </li>
         <li class="w-1/4 md:w-1/6">
           <img
-            :src="item.anotherUserImg && !item.anotherUserImg.includes('http') ?
-              `data:image/png;base64,${item.anotherUserImg}` :
-              item.anotherUserImg ? item.anotherUserImg :
+            :src="item.anotherUserImg ? item.anotherUserImg :
               'https://fakeimg.pl/192x192/282828/EAE0D0/?text=Icon'"
             class="bg-indigo-200 w-20 h-20 rounded mx-auto">
         </li>

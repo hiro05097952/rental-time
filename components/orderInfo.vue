@@ -95,9 +95,8 @@
           <div
             class="w-full">
             <img
-              :src="orderInfo.img && !orderInfo.img.includes('http') ?
-                `data:image/png;base64,${orderInfo.img}`: orderInfo.img ? orderInfo.img :
-                  'https://fakeimg.pl/192x192/282828/EAE0D0/?text=Icon'"
+              :src="orderInfo.img ? orderInfo.img :
+                'https://fakeimg.pl/192x192/282828/EAE0D0/?text=Icon'"
               class="rounded-lg shadow object-center object-cover h-40 w-40">
             <h3
               class="text-sm text-center tracking-wider mt-1">

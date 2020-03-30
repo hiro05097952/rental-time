@@ -72,7 +72,7 @@ router.put('/:productId', multer.single('coverImg'), async (req, res, next) => {
 
     let imgUrl;
     if (req.file) {
-      imgUrl = await uploadImg(req.file, result.productId);
+      imgUrl = await uploadImg(req.file, `${req.session.user.userId}-cover${result.productId}`);
     }
 
     const description = htmlEncode.htmlEncode(req.body.description) || '';

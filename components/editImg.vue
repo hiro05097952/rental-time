@@ -130,9 +130,10 @@ export default {
           title: data.message,
         });
       } catch ({ response }) {
+        // console.log(response.data);
         this.$swal.fire({
           icon: 'error',
-          title: response.data.message && response.data.message.message,
+          title: response.data.message || response.data.message.message,
         });
       }
     },

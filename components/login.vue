@@ -370,7 +370,7 @@ export default {
       } catch (error) {
         this.$swal.fire({
           icon: 'error',
-          title: error.message || error.response.data.message,
+          title: error.message && error.response.data.message,
         });
       }
     },

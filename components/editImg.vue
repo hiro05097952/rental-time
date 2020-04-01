@@ -115,6 +115,13 @@ export default {
       this.uploadUserImg(blob);
     },
     async uploadUserImg(blob) {
+      if (!this.$store.state.userInfo.emailVerified) {
+        this.$swal.fire({
+          icon: 'error',
+          title: '請先驗證 Email 哦！',
+        });
+        return;
+      }
       try {
         const form = new FormData();
         form.append('image', blob);

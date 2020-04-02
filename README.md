@@ -5,8 +5,25 @@
 
 ## Demo
 
-[http://rental-time.herokuapp.com/](http://rental-time.herokuapp.com/)
+[Demo Link](http://rental-time.herokuapp.com/)
 
+[操作流程](https://gist.github.com/jedy05097952/63762af683b032a1c3a738d065e753dd)
+
+### 測試帳號
+
+```
+  a.
+  名稱：Judy
+  帳號：test1@gmail.com
+  密碼：test123123
+  販時名稱：拍出適合妳的大頭貼
+  
+  b.
+  名稱：Ｍiyu
+  帳號：test2@gmail.com
+  密碼：test123123
+  販時名稱：畫穿搭
+```
 
 ## 簡介
 

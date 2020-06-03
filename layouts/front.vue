@@ -56,11 +56,9 @@
         cursor-pointer text-white"
         v-else>
         <button
-          class="bg-blue-2 md:bg-blue-3 h-full md:px-4 flex pr-4"
+          class="bg-blue-2 md:bg-blue-3 h-full md:px-4 flex pr-4 items-center"
           @click="routerChange('/account/charge')">
-          <i
-            class="icon_coin w-6 h-6 hidden sm:block"
-            style="transform: translateY(3px);" />
+          <i class="icon_coin w-6 h-6 hidden sm:block" />
           <h3 class="ml-3 mr-1 text-xl tracking-wide">
             {{ $store.state.userInfo.point }}
           </h3>

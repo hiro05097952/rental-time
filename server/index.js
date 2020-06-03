@@ -127,7 +127,7 @@ async function start() {
   socketStart(server);
 
   consola.ready({
-    message: `Server listening on http://${host}:${port}`,
+    message: `Server listening on https://${host}:${port}`,
     badge: true,
   });
 }

@@ -209,7 +209,7 @@
       </transition>
     </nav>
 
-    <div class="main pt-12 md:pt-16 bg" style="min-height: 23rem">
+    <div class="main pt-12 md:pt-16 bg">
       <nuxt />
     </div>
 
@@ -354,6 +354,9 @@ export default {
     @apply bg-gray-500 border-transparent;
   }
 }
+.main > div{
+  min-height: calc(100vh - 232px - 4rem);
+}
 .icon_logo{
   background: url(~assets/icon_header_logo.svg) center center / contain no-repeat;
 }
@@ -430,6 +433,9 @@ nav button{
     & > button:hover{
       background: none;
     }
+  }
+  .main > div{
+    min-height: calc(100vh - 232px - 3rem);
   }
 }
 .mobileNav-enter-active {

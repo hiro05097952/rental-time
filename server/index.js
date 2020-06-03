@@ -7,6 +7,8 @@ const MySQLStore = require('express-mysql-session')(session);
 const cors = require('cors');
 require('dotenv').config();
 const https = require('https');
+const fs = require('fs');
+const path = require('path');
 
 const middlewareRouter = require('./config/middleware');
 const userRouter = require('./routes/user');
@@ -120,9 +122,16 @@ async function start() {
   app.use(nuxt.render);
 
   // Listen the server
-  const server = process.env.NODE_ENV !== 'production'
-    ? https.createServer(nuxt.options.server.https, app).listen(port, host)
-    : app.listen(port, host);
+  let server;
+  if (process.env.NODE_ENV !== 'production') {
+    const httpsConfig = {
+      key: fs.readFileSync(path.resolve(__dirname, '../localhost-key.pem')),
+      cert: fs.readFileSync(path.resolve(__dirname, '../localhost.pem')),
+    };
+    server = https.createServer(httpsConfig, app).listen(port, host);
+  } else {
+    server = app.listen(port, host);
+  }
   // socket
   socketStart(server);
 

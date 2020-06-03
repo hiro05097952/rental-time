@@ -1,6 +1,4 @@
 const whitelister = require('purgecss-whitelister');
-const fs = require('fs');
-const path = require('path');
 
 require('dotenv').config();
 
@@ -104,12 +102,6 @@ module.exports = {
   },
   router: {
     middleware: 'auth',
-  },
-  server: {
-    https: {
-      key: fs.readFileSync(path.resolve(__dirname, 'localhost-key.pem')),
-      cert: fs.readFileSync(path.resolve(__dirname, 'localhost.pem')),
-    },
   },
   env: {
     google_clientId: process.env.google_clientId,

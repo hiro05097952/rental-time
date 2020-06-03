@@ -88,7 +88,7 @@ module.exports = {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    baseURL: process.env.NODE_ENV === 'production' ? process.env.BASE_URL : 'https://localhost:3000',
+    baseURL: process.env.BASE_URL,
     https: true,
   },
   /*
@@ -107,8 +107,8 @@ module.exports = {
   },
   server: {
     https: {
-      key: fs.readFileSync(path.resolve(__dirname, 'localhost+2-key.pem')),
-      cert: fs.readFileSync(path.resolve(__dirname, 'localhost+2.pem')),
+      key: fs.readFileSync(path.resolve(__dirname, 'localhost-key.pem')),
+      cert: fs.readFileSync(path.resolve(__dirname, 'localhost.pem')),
     },
   },
   env: {

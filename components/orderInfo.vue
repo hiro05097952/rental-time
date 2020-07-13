@@ -95,8 +95,9 @@
           <div
             class="w-full">
             <img
-              :src="orderInfo.img ? orderInfo.img :
+              :src="orderInfo.img ||
                 'https://fakeimg.pl/192x192/282828/EAE0D0/?text=Icon'"
+              @error="defaultImg($event, 'https://fakeimg.pl/192x192/282828/EAE0D0/?text=Icon')"
               class="rounded-lg shadow object-center object-cover h-40 w-40">
             <h3
               class="text-sm text-center tracking-wider mt-1">
@@ -250,6 +251,9 @@ export default {
       }
       this.$store.commit('TOGGLE_SCREEN', false);
       this.$router.push(`/chat/${this.orderInfo.orderId}`);
+    },
+    defautImage(e, imgUrl) {
+      e.target.src = imgUrl;
     },
   },
   computed: {

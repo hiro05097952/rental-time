@@ -20,6 +20,7 @@
       <img
         :src="user.img ? user.img :
           'https://fakeimg.pl/192x192/282828/EAE0D0/?text=Icon'"
+        @error="defaultImg($event, 'https://fakeimg.pl/192x192/282828/EAE0D0/?text=Icon')"
         class="object-center object-cover h-56 w-56
         shadow-lg border border-gray-500"
         style="border-radius: 18px;">
@@ -355,6 +356,9 @@ export default {
         icon: 'error',
         title: '此功能尚未開發哦',
       });
+    },
+    defautImage(e, imgUrl) {
+      e.target.src = imgUrl;
     },
   },
 };

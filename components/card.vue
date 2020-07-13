@@ -20,12 +20,14 @@
           {{ item.category | category }}
         </p>
         <img
-          :src="item.coverImg ? item.coverImg : 'https://fakeimg.pl/830x320/282828/EAE0D0/?text=Default'"
+          :src="item.coverImg || 'https://fakeimg.pl/830x320/282828/EAE0D0/?text=Default'"
+          @error="defautImage($event, 'https://fakeimg.pl/830x320/282828/EAE0D0/?text=Default')"
           class="h-40 rounded-t-lg w-full object-cover">
         <div class="flex justify-center">
           <img
-            :src="item.img ? item.img :
+            :src="item.img ||
               'https://fakeimg.pl/192x192/282828/EAE0D0/?text=Icon'"
+            @error="defautImage($event, 'https://fakeimg.pl/192x192/282828/EAE0D0/?text=Icon')"
             class="rounded-full -mt-10 border-4 object-center object-cover
                 border-white mr-2 h-20 w-20">
         </div>
@@ -132,6 +134,9 @@ export default {
       } else {
         return true;
       }
+    },
+    defautImage(e, imgUrl) {
+      e.target.src = imgUrl;
     },
   },
   filters: {

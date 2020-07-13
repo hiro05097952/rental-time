@@ -63,8 +63,9 @@
         </li>
         <li class="w-1/4 md:w-1/6">
           <img
-            :src="item.anotherUserImg ? item.anotherUserImg :
+            :src="item.anotherUserImg ||
               'https://fakeimg.pl/192x192/282828/EAE0D0/?text=Icon'"
+            @error="defautImage($event, 'https://fakeimg.pl/192x192/282828/EAE0D0/?text=Default')"
             class="bg-indigo-200 w-20 h-20 rounded mx-auto">
         </li>
         <li class="w-1/4 md:w-1/6">
@@ -148,6 +149,9 @@ export default {
         icon: 'error',
         title: '此功能尚未開發哦',
       });
+    },
+    defautImage(e, imgUrl) {
+      e.target.src = imgUrl;
     },
   },
   filters: {

@@ -11,9 +11,10 @@
         items-center mailImgWrap"
         v-if="$route.path.includes('mail')">
         <img
-          :src="userInfo.img ? userInfo.img :
+          :src="userInfo.img ||
             'https://fakeimg.pl/192x192/282828/EAE0D0/?text=Icon'"
-          class="bg-teal-200 w-20 h-20 md:w-32 md:h-32 lg:w-40 lg:h-40 rounded mr-4 md:mr-0">
+          class="bg-teal-200 w-20 h-20 md:w-32 md:h-32 lg:w-40 lg:h-40 rounded mr-4 md:mr-0"
+          @error="defaultImg($event, 'https://fakeimg.pl/192x192/282828/EAE0D0/?text=Icon')">
         <p
           class="text-center my-1 tracking-wider text-gray-900">
           {{ userInfo.name }}
@@ -119,6 +120,9 @@ export default {
       this.$nextTick(() => {
         this.$refs.content.scrollTop = this.$refs.content.scrollHeight;
       });
+    },
+    defautImage(e, imgUrl) {
+      e.target.src = imgUrl;
     },
   },
   computed: {

@@ -6,8 +6,9 @@
         relative pb-8">
       <div class="absolute mt-10 mr-10 md:mr-24 top-0 right-0">
         <img
-          :src="product.img ? product.img :
+          :src="product.img ||
             'https://fakeimg.pl/192x192/282828/EAE0D0/?text=Icon'"
+          @error="defautImage($event, 'https://fakeimg.pl/192x192/282828/EAE0D0/?text=Default')"
           class="rounded-lg shadow object-center object-cover md:h-32 md:w-32
           w-24 h-24 lg:h-48 lg:w-48">
         <p class="text-center mt-2 text-gray-800">
@@ -161,6 +162,9 @@ export default {
           title: response.data.message,
         });
       }
+    },
+    defautImage(e, imgUrl) {
+      e.target.src = imgUrl;
     },
   },
   computed: {

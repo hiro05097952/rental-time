@@ -5,7 +5,7 @@
 
 ## Demo
 
-[Demo Link](http://rental-time.herokuapp.com/)
+[Demo Link](https://rental-time.herokuapp.com/)
 
 [操作流程](https://gist.github.com/jedy05097952/63762af683b032a1c3a738d065e753dd)
 

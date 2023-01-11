@@ -31,7 +31,7 @@
     "hash.js": "^1.1.7",
     "https": "^1.0.0",
     "js-htmlencode": "^0.3.0",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "morgan": "^1.9.1",
     "multer": "^1.4.2",
     "mysql": "^2.18.1",
